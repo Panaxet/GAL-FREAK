@@ -1,0 +1,1154 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0e0e12">
+<title>ОТПИЗДИ ИГОРЯ</title>
+<style>
+:root{--bg:#0e0e12;--panel:#16161d;--panel-2:#1c1c25;--ink:#e8e6dd;--muted:#7c7a85;--line:#2a2a34;--line-bright:#3a3a46;--display:'Impact','Arial Narrow Bold',sans-serif;--mono:'Courier New',monospace;--body:system-ui,-apple-system,'Segoe UI',Arial,sans-serif;--c-pong:#00e5a0;--c-wordle:#ffb020;--c-tetris:#7d5cff;--c-pinata:#ff3d6b;--c-osu:#00b4ff;--c-court:#c8a800;--c-duck:#a0e030;--star:#ffcc00}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;min-height:100%;background:var(--bg);color:var(--ink);font-family:var(--body);overflow-x:hidden}
+button,input{font:inherit;color:inherit}
+button{cursor:pointer;background:transparent;border:1.5px solid var(--line-bright);border-radius:2px;padding:10px 16px;font-weight:600;letter-spacing:.5px;transition:background .12s,border-color .12s,transform .12s;text-transform:uppercase;font-size:12px}
+button:hover{border-color:var(--ink);background:var(--panel-2)}
+button:active{transform:translateY(1px)}
+button.primary{background:var(--ink);color:var(--bg);border-color:var(--ink);padding:14px 28px}
+button.primary:hover{background:#fff}
+button.secondary{opacity:.7}
+button.secondary:hover{opacity:1}
+button:focus-visible,input:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
+button:disabled{opacity:.35;cursor:default}
+.hidden{display:none!important}
+.screen{display:none}
+.screen.active{display:block}
+.small{font-size:11px;color:var(--muted);letter-spacing:.3px}
+.eyebrow{font:600 10px var(--body);letter-spacing:3px;text-transform:uppercase;color:var(--muted)}
+.global-buttons{position:fixed;top:14px;right:14px;display:flex;gap:6px;z-index:90}
+.icon-btn{min-width:38px;height:36px;padding:0 10px;font-size:11px;font-weight:700;background:#0008;backdrop-filter:blur(6px);letter-spacing:1px}
+#resetBtn{position:fixed;bottom:8px;left:10px;z-index:95;font-size:9px;padding:4px 8px;opacity:.2;border-color:transparent;letter-spacing:1px}
+#resetBtn:hover,#resetBtn:focus-visible{opacity:1;border-color:var(--line-bright)}
+#menu{max-width:1080px;margin:auto;padding:56px 32px 60px;position:relative}
+.menu-top{display:flex;justify-content:space-between;gap:20px;align-items:center;margin-bottom:36px;border-bottom:1px solid var(--line);padding-bottom:16px}
+.brand{font-weight:700;letter-spacing:4px;font-size:11px;color:var(--muted);text-transform:uppercase}
+.save-badge{font-size:10px;color:var(--muted);letter-spacing:1px;text-transform:uppercase}
+.save-badge::before{content:"●";color:var(--c-pong);margin-right:6px;font-size:8px}
+.hero{display:grid;grid-template-columns:1.6fr 1fr;gap:36px;align-items:center;position:relative;margin-bottom:24px}
+.hero h1{font:clamp(56px,8.5vw,108px)/.92 var(--display);margin:10px 0 24px;letter-spacing:-1px;text-transform:uppercase}
+.hero h1 span{display:block;color:var(--muted)}
+.hero-copy{color:var(--muted);line-height:1.65;max-width:460px;font-size:14px}
+.hero-copy strong{color:var(--ink);font-weight:700}
+.hero-portrait{position:relative;width:min(100%,300px);aspect-ratio:1;margin:0 auto}
+.hero-portrait::before{content:"";position:absolute;inset:0;border:1px solid var(--line);border-radius:50%}
+.hero-portrait::after{content:"ПОДСУДИМЫЙ";position:absolute;bottom:6px;left:50%;transform:translateX(-50%);font:600 10px var(--body);letter-spacing:3px;color:var(--muted);background:var(--bg);padding:0 8px}
+.hero-portrait img{position:absolute;inset:6%;width:88%;height:88%;object-fit:cover;border-radius:50%;filter:grayscale(.15) contrast(1.05)}
+.portrait-upload{text-align:center;margin-top:12px}
+.portrait-upload button{font-size:10px;color:var(--muted);border:none;padding:6px 10px;letter-spacing:1px}
+.portrait-upload button:hover{color:var(--ink)}
+.difficulty{display:grid;grid-template-columns:repeat(3,1fr);gap:0;margin:36px 0 40px;border:1px solid var(--line)}
+.diff-btn{text-align:left;padding:16px 20px;border:none;border-right:1px solid var(--line);border-radius:0;text-transform:none;letter-spacing:0;background:transparent}
+.diff-btn:last-child{border-right:none}
+.diff-btn strong{display:block;font:700 14px var(--body);letter-spacing:.3px;text-transform:none}
+.diff-btn span{display:block;font-size:11px;color:var(--muted);margin-top:4px;text-transform:none}
+.diff-btn:hover{background:var(--panel)}
+.diff-btn.active{background:var(--panel-2)}
+.diff-btn.active strong::before{content:"◆ ";color:var(--c-pong);font-size:9px}
+.section-heading{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-bottom:18px}
+.section-heading h2{font:700 18px var(--body);margin:0;letter-spacing:2px;text-transform:uppercase;color:var(--muted)}
+#progressText{font-size:11px;color:var(--muted);letter-spacing:1px;text-transform:uppercase}
+.level-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line)}
+.level-card{min-height:160px;text-align:left;padding:16px;position:relative;overflow:hidden;display:flex;flex-direction:column;align-items:flex-start;background:var(--bg);border:none;border-radius:0;text-transform:none;letter-spacing:0;font-weight:400;cursor:pointer;transition:background .15s}
+.level-card:hover:not(.locked){background:var(--panel)}
+.level-card.completed{background:var(--panel)}
+.level-card.locked{opacity:.35;cursor:not-allowed}
+.level-card.locked::after{content:"🔒";position:absolute;top:14px;right:14px;font-size:14px;opacity:.5;filter:grayscale(1)}
+.level-card.secret-final{background:#1a0e26;border:1px solid #aa00ff44}
+.level-number{font:600 10px var(--mono);letter-spacing:2px;color:var(--muted);text-transform:uppercase}
+.level-name{font:700 14px var(--body);margin-top:auto;letter-spacing:.3px;line-height:1.2;text-transform:none}
+.level-meta{font-size:10px;color:var(--muted);margin-top:6px;line-height:1.4}
+.level-stars{position:absolute;top:14px;right:14px;font-size:13px;letter-spacing:2px;color:var(--star);display:flex;gap:1px}
+.level-stars .off{color:#333;opacity:.5}
+.level-card::before{content:"";position:absolute;top:0;left:0;width:100%;height:2px;background:var(--c-pong);opacity:0;transition:opacity .2s}
+.level-card:hover:not(.locked)::before{opacity:1}
+.level-card[data-color="pong"]::before{background:var(--c-pong)}
+.level-card[data-color="wordle"]::before{background:var(--c-wordle)}
+.level-card[data-color="tetris"]::before{background:var(--c-tetris)}
+.level-card[data-color="pinata"]::before{background:var(--c-pinata)}
+.level-card[data-color="osu"]::before{background:var(--c-osu)}
+.level-card[data-color="court"]::before{background:var(--c-court)}
+.level-card[data-color="duck"]::before{background:var(--c-duck)}
+.level-card[data-color="pyatnashki"]::before{background:#ff8a3c}
+.level-card[data-color="saper"]::before{background:#ff3a5a}
+.level-card[data-color="hanoi"]::before{background:#3ad080}
+.level-card[data-color="secret"]::before{background:#aa00ff}
+.complete-tag{position:absolute;bottom:14px;right:14px;color:var(--c-pong);font-size:9px;letter-spacing:1px;font-weight:700}
+.menu-footer{display:flex;justify-content:space-between;gap:12px;margin-top:24px;padding-top:16px;border-top:1px solid var(--line);font-size:10px;color:var(--muted);letter-spacing:1px;text-transform:uppercase}
+#flies{position:fixed;inset:0;pointer-events:none;z-index:12;overflow:hidden}
+.flying-eblan{position:absolute;white-space:nowrap;font:700 11px var(--body);letter-spacing:2px;color:var(--muted);opacity:.3;user-select:none;pointer-events:none;text-transform:uppercase}
+.flying-eblan.secret{cursor:pointer;pointer-events:auto;opacity:.35}
+.flying-eblan.secret:hover{opacity:.6;color:var(--ink)}
+.flying-eblan.activated{color:var(--c-pong);opacity:.7}
+.game-window{width:min(94vw,960px);height:min(90vh,720px);position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);display:flex;flex-direction:column;background:var(--bg-game);border:1px solid var(--line-bright);overflow:hidden}
+.window-hud{display:flex;align-items:center;gap:14px;min-height:58px;padding:12px 18px;border-bottom:1px solid var(--line);background:var(--panel)}
+.hud-title{font:700 14px var(--body);letter-spacing:3px;text-transform:uppercase;color:var(--muted);margin-right:auto}
+.hud-stat{font:700 15px var(--mono);white-space:nowrap}
+.back-btn{font-size:10px;padding:7px 12px;letter-spacing:1.5px}
+.window-body{flex:1;min-height:0;position:relative;display:flex;flex-direction:column;background:var(--bg-game)}
+.play-area{flex:1;min-height:0;overflow:auto;position:relative}
+.canvas-wrap{height:100%;width:100%;display:grid;place-items:center;overflow:hidden}
+canvas{display:block;touch-action:none;max-width:100%;max-height:100%}
+.game-bottom{min-height:54px;background:var(--panel);border-top:1px solid var(--line);padding:10px 18px;display:flex;flex-direction:column;justify-content:center;gap:4px}
+.igor-comment{color:var(--ink);font:600 12px var(--body);min-height:15px;opacity:.9}
+.igor-comment::before{content:"// ";color:var(--muted);font-family:var(--mono)}
+.controls-note{color:var(--muted);font-size:10px}
+.mobile-controls{display:none;gap:6px;padding:8px;justify-content:center}
+.mobile-controls button{min-width:44px;min-height:40px;padding:8px;font-size:11px}
+.phrase-popup{position:absolute;z-index:30;pointer-events:none;white-space:nowrap;font:700 16px var(--body);letter-spacing:1.5px;text-transform:uppercase;color:var(--ink);animation:phraseFly 1.4s both}
+.phrase-popup::before{content:"// "}
+#notice{position:fixed;bottom:40px;left:50%;transform:translateX(-50%);max-width:90vw;padding:12px 22px;background:var(--ink);color:var(--bg);z-index:150;font:700 12px var(--body);letter-spacing:2px;text-transform:uppercase;border-radius:2px}
+#flash{position:fixed;inset:0;background:#fff;pointer-events:none;z-index:140;opacity:0}
+.result-layout{min-height:100dvh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;gap:24px;padding:60px 24px}
+.result-sticker{font:600 10px var(--body);letter-spacing:4px;text-transform:uppercase;color:var(--muted)}
+.result-title{font:clamp(56px,12vw,120px)/1 var(--display);text-transform:uppercase;margin:0;letter-spacing:-1px}
+.result-flavor{max-width:540px;line-height:1.7;color:var(--muted);white-space:pre-line;font-size:14px}
+#mockery.active{display:grid;place-items:center;position:fixed;inset:0;z-index:110;background:#000c;backdrop-filter:blur(8px);padding:20px}
+.modal-card{width:min(100%,480px);text-align:center;padding:44px 32px;background:var(--panel);border:1px solid var(--line-bright)}
+.mockery-text{font:700 40px var(--display);text-transform:uppercase;margin:18px 0;letter-spacing:-.5px;color:var(--ink)}
+.mockery-sub{color:var(--muted);line-height:1.7;white-space:pre-line;font-size:13px;margin-bottom:26px}
+.modal-card button{margin:4px}
+#pauseOverlay{position:fixed;inset:0;background:#000d;backdrop-filter:blur(8px);z-index:100;display:grid;place-items:center;text-align:center}
+.pause-title{font:64px var(--display);text-transform:uppercase;margin:0 0 24px;letter-spacing:2px}
+#defeatOverlay{position:fixed;inset:0;z-index:200;display:none;place-items:center;text-align:center;background:#000;pointer-events:none}
+#defeatOverlay.show{display:grid;pointer-events:auto}
+.defeat-text{position:relative;z-index:2;font:clamp(60px,14vw,160px)/1 var(--display);text-transform:uppercase;letter-spacing:2px;animation:defeatZoom .8s ease-out}
+.defeat-sub{display:block;font:700 16px var(--body);letter-spacing:8px;margin-top:20px;color:#aaa;animation:defeatFade 1s .4s backwards}
+@keyframes defeatZoom{0%{opacity:0;transform:scale(2);filter:blur(20px)}60%{opacity:1;transform:scale(1);filter:blur(0)}100%{transform:scale(1)}}
+@keyframes defeatFade{from{opacity:0}to{opacity:1}}
+.defeat-you-died{color:#8a0000;text-shadow:0 0 40px #ff0000,0 0 20px #ff0000,0 4px 0 #000}
+.defeat-igor-laugh{color:var(--c-pinata);text-shadow:0 0 30px var(--c-pinata)}
+.defeat-game-over{color:#ffbb00;font-family:var(--mono);text-shadow:4px 4px 0 #000,8px 8px 0 #aa0000}
+.defeat-continue{color:#00e5a0;font-family:var(--mono);text-shadow:3px 3px 0 #000}
+.defeat-forget{color:#777;font-weight:400}
+.defeat-overlay-bg{position:absolute;inset:0;background:radial-gradient(ellipse at center,#1a0000,#000 70%)}
+.defeat-overlay-bg.laugh{background:radial-gradient(ellipse at center,#2a0011,#000 70%)}
+.defeat-overlay-bg.gameover{background:#000}
+.defeat-overlay-bg.continue{background:#000}
+.defeat-overlay-bg.forget{background:#000}
+.defeat-igor-img{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:min(70vw,500px);opacity:0;animation:igorLaughIn .6s .2s forwards;filter:contrast(1.2) brightness(1.1)}
+@keyframes igorLaughIn{from{opacity:0;transform:translate(-50%,-50%) scale(1.5) rotate(-10deg)}to{opacity:.15;transform:translate(-50%,-50%) scale(1) rotate(0)}}
+#game.active{background:#0a0a10}
+#wordle.active{background:#100c04}
+#tetris.active{background:#0b0617}
+#pinata.active{background:#1a0209}
+#osu.active{background:#020d18}
+#court.active{background:#141005}
+#duck.active{background:#0a1604}
+#pyatnashki.active{background:#1a0d04}
+#saper.active{background:#0d0d18}
+#hanoi.active{background:#0a1a10}
+#final.active{background:#1a0210}
+#game .window-hud{border-bottom-color:var(--c-pong)}
+#wordle .window-hud{border-bottom-color:var(--c-wordle)}
+#tetris .window-hud{border-bottom-color:var(--c-tetris)}
+#pinata .window-hud{border-bottom-color:var(--c-pinata)}
+#osu .window-hud{border-bottom-color:var(--c-osu)}
+#court .window-hud{border-bottom-color:var(--c-court)}
+#duck .window-hud{border-bottom-color:var(--c-duck)}
+#pyatnashki .window-hud{border-bottom-color:#ff8a3c}
+#saper .window-hud{border-bottom-color:#ff3a5a}
+#hanoi .window-hud{border-bottom-color:#3ad080}
+#final .window-hud{border-bottom-color:#aa00ff}
+.wordle-content{display:flex;flex-direction:column;height:100%;gap:12px;align-items:center;justify-content:center;padding:14px}
+.word-grid{display:grid;gap:6px;perspective:900px}
+.word-row{display:grid;gap:6px}
+.tile{width:clamp(32px,6vh,54px);height:clamp(32px,6vh,54px);position:relative;transform-style:preserve-3d;transition:transform .45s cubic-bezier(.2,.8,.2,1)}
+.tile.flipped{transform:rotateX(180deg)}
+.tile-face{position:absolute;inset:0;display:grid;place-items:center;font:700 24px var(--mono);background:transparent;border:1.5px solid var(--line-bright);backface-visibility:hidden;color:var(--ink)}
+.tile-back{transform:rotateX(180deg)}
+.tile.green .tile-back{background:#19874c;border-color:#19874c;color:#fff}
+.tile.yellow .tile-back{background:#a67c09;border-color:#a67c09;color:#fff}
+.tile.gray .tile-back{background:#1c1408;border-color:#1c1408;color:#5a5048}
+.keyboard{display:flex;flex-direction:column;gap:5px;width:min(100%,560px)}
+.key-row{display:flex;gap:5px;justify-content:center}
+.key{flex:1;min-width:0;padding:12px 0;font:600 13px var(--body);background:transparent;border:1.5px solid var(--line-bright);text-transform:uppercase;letter-spacing:1px}
+.key:hover{border-color:var(--c-wordle);color:var(--c-wordle)}
+.key.wide{flex:1.7;font-size:10px;letter-spacing:1.5px}
+.key.cmd{border-color:var(--c-wordle);color:var(--c-wordle)}
+.key.cmd:hover{background:var(--c-wordle);color:#100c04}
+.key.green{background:#19874c;color:#fff;border-color:#19874c}
+.key.yellow{background:#a67c09;color:#fff;border-color:#a67c09}
+.key.gray{background:#1c1408;border-color:#1c1408;color:#5a5048}
+.pinata-field{height:100%;min-height:250px;overflow:hidden;position:relative;background:#1a0209}
+.pinata-igor{position:absolute;width:88px;height:88px;border-radius:50%;overflow:hidden;cursor:pointer;transition:transform .08s;z-index:3;background:#000;border:2px solid var(--c-pinata)}
+.pinata-igor img{width:100%;height:100%;object-fit:cover;pointer-events:none;display:block}
+.pinata-igor.hit{animation:hitPulse .25s}
+@keyframes hitPulse{0%{transform:scale(1)}40%{transform:scale(.88)}100%{transform:scale(1)}}
+.pinata-particle{position:absolute;width:6px;height:6px;background:var(--c-pinata);pointer-events:none;z-index:4;border-radius:50%;animation:pinataParticle .7s ease-out forwards}
+@keyframes pinataParticle{0%{opacity:1;transform:translate(0,0) scale(1)}100%{opacity:0;transform:translate(var(--dx),var(--dy)) scale(.3)}}
+.pinata-bar-wrap{position:absolute;bottom:14px;left:18px;right:18px;z-index:5;height:16px;background:#000;border:1px solid #4a1a28}
+.pinata-bar-fill{height:100%;background:var(--c-pinata);transition:width .1s linear;width:0}
+.pinata-bar-lbl{position:absolute;inset:0;display:grid;place-items:center;font:600 10px var(--mono);letter-spacing:3px;color:#fff;text-shadow:0 1px 3px #000}
+.pinata-score-hud{position:absolute;top:14px;left:18px;font:700 22px var(--mono);letter-spacing:1px;z-index:5}
+.pinata-time-hud{position:absolute;top:14px;right:18px;font:700 22px var(--mono);letter-spacing:1px;z-index:5;color:var(--c-pinata)}
+.pinata-time-hud.warning{animation:pulse .5s infinite}
+@keyframes pulse{50%{opacity:.4}}
+.court-layout{height:100%;display:flex;flex-direction:column;padding:20px;gap:14px}
+.court-header{text-align:center;padding:4px 0 14px;border-bottom:1px solid var(--line)}
+.court-header h3{font:700 11px var(--body);color:var(--c-court);margin:0 0 6px;letter-spacing:4px;text-transform:uppercase}
+.court-header .sub{font-size:11px;color:var(--muted)}
+.court-cases{flex:1;display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);overflow-y:auto;border:1px solid var(--line)}
+.case-card{padding:22px;background:var(--bg);border:none;border-radius:0;cursor:pointer;transition:background .15s;display:flex;flex-direction:column;gap:12px;position:relative;overflow:hidden;text-align:left;text-transform:none;letter-spacing:0;font-weight:400;min-height:200px}
+.case-card:hover{background:var(--panel)}
+.case-card .badge{font:600 9px var(--mono);letter-spacing:3px;text-transform:uppercase;color:var(--muted);width:fit-content}
+.case-card .text{font:500 14px/1.55 var(--body);color:var(--ink);letter-spacing:.2px}
+.case-card.picked.correct{border-left:3px solid var(--c-pong);background:#02160f}
+.case-card.picked.correct::after{content:"ВЕРНО";position:absolute;top:14px;right:16px;color:var(--c-pong);font:700 10px var(--body);letter-spacing:3px}
+.case-card.picked.wrong{border-left:3px solid var(--c-pinata);background:#1a0209}
+.case-card.picked.wrong::after{content:"МИМО";position:absolute;top:14px;right:16px;color:var(--c-pinata);font:700 10px var(--body);letter-spacing:3px}
+.case-card.disabled{pointer-events:none}
+.court-footer{display:flex;justify-content:space-between;align-items:center;padding:12px 20px;background:var(--panel);border-top:1px solid var(--line);font:700 13px var(--mono);letter-spacing:1px}
+.court-footer .lbl{color:var(--muted);font-size:10px;letter-spacing:2px;text-transform:uppercase;margin-right:6px}
+.court-verdict{text-align:center;padding:8px;font:600 12px var(--body);letter-spacing:.5px;color:var(--muted);min-height:18px}
+.court-intro{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;padding:32px;text-align:center;gap:20px;background:#141005}
+.court-intro h2{font:700 clamp(32px,6vw,64px)/1 var(--display);color:var(--c-court);letter-spacing:-.5px;margin:0;text-transform:uppercase}
+.court-intro .stamp{font:700 10px var(--mono);letter-spacing:6px;color:#8a7840;text-transform:uppercase}
+.court-intro p{max-width:560px;line-height:1.7;color:var(--muted);font-size:14px}
+.court-intro .rules{max-width:520px;text-align:left;padding:16px 20px;border:1px solid var(--line);background:var(--panel);font-size:12px;line-height:1.8;color:#b0a880}
+.court-intro button{margin-top:8px}
+.pyat-field{width:100%;height:100%;display:grid;place-items:center;padding:50px 20px 20px}
+.pyat-board{display:grid;gap:3px;background:#2a1206;padding:6px;border:1px solid #4a2010;width:min(85%,520px);aspect-ratio:1;max-height:100%}
+.pyat-cell{background:#3a1808;border:1px solid #5a2810;cursor:pointer;position:relative;overflow:hidden;transition:transform .12s,background .12s;display:grid;place-items:center;color:#ff8a3c;font:700 20px var(--mono);background-size:cover}
+.pyat-cell:hover{background-color:#5a2810}
+.pyat-cell.empty{background:#1a0d04;cursor:default;border-color:#2a1206}
+.pyat-cell.movable{box-shadow:inset 0 0 0 2px #ff8a3c88}
+.pyat-hud{position:absolute;top:0;left:0;right:0;display:flex;justify-content:space-between;padding:8px 18px;background:#1a0d04;border-bottom:1px solid #4a2010;font:700 13px var(--mono);z-index:5}
+.pyat-hud .lbl{color:#8a6a4a;font-size:10px;letter-spacing:2px;text-transform:uppercase;margin-right:6px}
+.pyat-hud .val{color:#ff8a3c}
+.saper-field{width:100%;height:100%;display:grid;place-items:center;padding:54px 18px 18px}
+.saper-board{display:grid;gap:2px;background:#1a1a28;padding:5px;border:1px solid #3a3a55;max-width:100%;max-height:100%}
+.saper-cell{background:#252540;border:1px solid #3a3a55;cursor:pointer;font:700 14px var(--mono);color:#e0e0f0;display:grid;place-items:center;aspect-ratio:1;min-width:20px;min-height:20px;user-select:none;transition:background .08s}
+.saper-cell:hover{background:#3a3a60}
+.saper-cell.revealed{background:#15152a;border-color:#252540;cursor:default}
+.saper-cell.revealed:hover{background:#15152a}
+.saper-cell.mine{background:#3a0a1a;color:#ff3a5a;border-color:#ff3a5a}
+.saper-cell.exploded{background:#ff3a5a;color:#fff}
+.saper-cell.flag{color:#ffb020;background:#3a2010;border-color:#5a3018}
+.saper-cell.n1{color:#00b4ff}.saper-cell.n2{color:#00e5a0}.saper-cell.n3{color:#ffb020}
+.saper-cell.n4{color:#ff7a1a}.saper-cell.n5{color:#ff3d6b}.saper-cell.n6{color:#c8a800}
+.saper-cell.n7{color:#7d5cff}.saper-cell.n8{color:#e8e6dd}
+.saper-hud{position:absolute;top:0;left:0;right:0;display:flex;justify-content:space-between;padding:8px 18px;background:#0d0d18;border-bottom:1px solid #2a2a40;font:700 13px var(--mono);z-index:5}
+.saper-hud .lbl{color:#7c7a85;font-size:10px;letter-spacing:2px;text-transform:uppercase;margin-right:6px}
+.saper-hud .val{color:#ff3a5a}
+.saper-hud .mines{color:#ffb020}
+.hanoi-field{width:100%;height:100%;display:flex;flex-direction:column;padding:20px;gap:16px;position:relative}
+.hanoi-info{display:flex;justify-content:space-between;font:700 13px var(--mono);color:#8ad0a8;align-items:center}
+.hanoi-info .lbl{color:#4a7a5a;font-size:10px;letter-spacing:2px;text-transform:uppercase;display:block;margin-bottom:4px}
+.hanoi-info .val{color:#3ad080;font-size:16px}
+.hanoi-board{flex:1;display:grid;grid-template-columns:repeat(3,1fr);gap:14px;position:relative;min-height:120px}
+.hanoi-peg{position:relative;background:#102a18;border:1px solid #1f4a2a;cursor:pointer;display:flex;flex-direction:column-reverse;align-items:center;padding:8px;transition:background .15s;justify-content:flex-start;overflow:hidden}
+.hanoi-peg:hover{background:#142f1c}
+.hanoi-peg.selected{background:#1a4024;border-color:#3ad080}
+.hanoi-peg::before{content:"";position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:6px;height:70%;background:#1f4a2a}
+.hanoi-peg::after{content:"";position:absolute;bottom:0;left:0;right:0;height:8px;background:#1f4a2a}
+.hanoi-disk{position:relative;height:20px;border-radius:3px;margin-bottom:3px;z-index:1;border:1px solid #00000044;display:grid;place-items:center;font:700 10px var(--mono);color:#00000099;transition:transform .15s}
+.hanoi-peg.selected .hanoi-disk:last-child{transform:translateY(-8px)}
+.hanoi-footer{display:flex;justify-content:space-between;align-items:center;padding:10px 0 0;border-top:1px solid #1f4a2a;font-size:11px;color:#4a7a5a;letter-spacing:1px}
+.hanoi-footer button{font-size:11px;padding:6px 14px;letter-spacing:1px}
+.hanoi-rules-overlay{position:absolute;inset:0;background:#0a1a10f0;display:none;place-items:center;z-index:10;padding:20px;overflow-y:auto}
+.hanoi-rules-overlay.show{display:grid}
+.hanoi-rules-card{max-width:480px;background:#0f2418;border:1px solid #3ad080;padding:24px;color:#8ad0a8;line-height:1.7;font-size:13px}
+.hanoi-rules-card h4{font:700 12px var(--body);color:#3ad080;margin:0 0 12px;letter-spacing:4px;text-transform:uppercase}
+.hanoi-rules-card ul{margin:0 0 16px;padding-left:20px}
+.hanoi-rules-card li{margin-bottom:6px}
+.duck-round-overlay{position:absolute;inset:0;display:none;place-items:center;z-index:20;background:rgba(0,0,0,.75);pointer-events:none}
+.duck-round-overlay.show{display:grid}
+.duck-round-text{font:700 56px var(--display);color:var(--c-duck);letter-spacing:4px;text-transform:uppercase;animation:roundPulse 1.3s ease-out;text-align:center}
+.duck-round-text small{display:block;font:700 16px var(--body);color:var(--ink);letter-spacing:6px;margin-top:10px}
+@keyframes roundPulse{0%{opacity:0;transform:scale(.5)}30%{opacity:1;transform:scale(1.15)}60%{transform:scale(1)}100%{opacity:0;transform:scale(1)}}
+.duck-combo{position:absolute;top:70px;left:50%;transform:translateX(-50%);font:700 22px var(--mono);color:var(--c-duck);letter-spacing:2px;z-index:15;pointer-events:none;opacity:0;transition:opacity .3s}
+.duck-combo.show{opacity:1;animation:comboBounce .4s}
+@keyframes comboBounce{0%{transform:translateX(-50%) scale(.5)}50%{transform:translateX(-50%) scale(1.2)}100%{transform:translateX(-50%) scale(1)}}
+/* ФИНАЛЬНЫЙ КЛИКЕР — full screen */
+#final{padding:0!important;overflow:hidden!important}
+#final.active{display:block!important;position:fixed;inset:0;background:#1a0210}
+.final-stage{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:80px 140px 160px;overflow:hidden}
+.final-igor{width:min(60vh,480px);height:min(60vh,480px);border-radius:50%;overflow:hidden;border:4px solid #aa00ff;position:relative;cursor:pointer;transition:transform .05s;filter:contrast(1.05);box-shadow:0 0 60px #aa00ff66}
+.final-igor:active{transform:scale(.97)}
+.final-igor img{width:100%;height:100%;object-fit:cover;pointer-events:none;display:block;transition:filter .3s}
+.final-igor.hit{animation:secretHit .12s}
+@keyframes secretHit{0%{transform:scale(1)}50%{transform:scale(.95) rotate(-2deg)}100%{transform:scale(1)}}
+.final-hapfu{position:absolute;font:700 40px var(--display);color:#aa00ff;text-shadow:0 0 20px #aa00ff,0 0 40px #ff00aa,3px 3px 0 #000;pointer-events:none;z-index:100;white-space:nowrap;text-transform:uppercase;letter-spacing:2px}
+.final-bar-vertical{position:absolute;right:40px;top:80px;bottom:160px;width:44px;background:#0a0410;border:2px solid #aa00ff;overflow:hidden;z-index:5}
+.final-bar-fill{position:absolute;left:0;right:0;bottom:0;height:0%;background:linear-gradient(0deg,#ff00aa,#aa00ff,#ffffff);transition:height .05s linear;box-shadow:0 0 20px #aa00ff}
+.final-bar-label{position:absolute;right:8px;top:80px;bottom:160px;width:0;display:flex;align-items:center;justify-content:center;font:700 11px var(--mono);color:#aa00ff;letter-spacing:3px;text-transform:uppercase;writing-mode:vertical-rl;text-orientation:mixed;transform:rotate(180deg);text-shadow:0 0 10px #aa00ff;z-index:6;pointer-events:none}
+.final-hud-top{position:absolute;top:20px;left:0;right:0;display:flex;justify-content:center;gap:60px;z-index:6;pointer-events:none;font-family:var(--mono)}
+.final-counter{font:700 36px var(--mono);color:#aa00ff;text-shadow:0 0 20px #aa00ff;letter-spacing:2px}
+.final-timer{font:700 36px var(--mono);color:#ff00aa;text-shadow:0 0 20px #ff00aa;letter-spacing:2px}
+.final-btn-wrap{position:absolute;bottom:32px;left:50%;transform:translateX(-50%);z-index:10}
+.final-btn{font:700 clamp(20px,3vw,32px) var(--display);padding:24px 64px;background:#aa00ff;color:#fff;border:4px solid #000;letter-spacing:4px;text-transform:uppercase;cursor:pointer;box-shadow:0 0 40px #aa00ff88,6px 6px 0 #000;transition:all .05s;user-select:none}
+.final-btn:hover{background:#cc44ff;transform:translateY(-2px)}
+.final-btn:active{transform:translate(3px,3px);box-shadow:0 0 30px #aa00ff88,3px 3px 0 #000}
+.final-exit{position:absolute;top:14px;left:14px;z-index:20;font-size:10px;padding:7px 12px;letter-spacing:1.5px}
+.shake-hard{animation:shakeHard .3s}
+@keyframes shakeHard{0%,100%{transform:translate(0,0)}25%{transform:translate(-5px,3px)}50%{transform:translate(5px,-3px)}75%{transform:translate(-3px,-2px)}}
+@keyframes phraseFly{0%{opacity:0;transform:translate(-50%,10px) scale(.6)}20%{opacity:1;transform:translate(-50%,0) scale(1)}80%{opacity:1}100%{opacity:0;transform:translate(-50%,-40px)}}
+@media(max-width:800px){.level-grid{grid-template-columns:repeat(3,1fr)}.hero{grid-template-columns:1.4fr 1fr;gap:20px}.court-cases{grid-template-columns:1fr}}
+@media(max-width:600px){#menu{padding:60px 18px 50px}.hero h1{font-size:clamp(42px,13vw,64px)}.hero-copy{font-size:12px}.hero-portrait{max-width:200px}.difficulty{grid-template-columns:1fr}.diff-btn{border-right:none;border-bottom:1px solid var(--line)}.diff-btn:last-child{border-bottom:none}.level-grid{grid-template-columns:repeat(2,1fr)}.level-card{min-height:140px;padding:14px}.level-name{font-size:13px}.menu-footer{flex-direction:column;font-size:9px}.game-window{width:100vw;height:100dvh;border:none;top:0;left:0;transform:none}.window-hud{padding:10px 12px;min-height:52px;padding-right:96px}.hud-title{font-size:11px;letter-spacing:2px}.hud-stat{font-size:12px}.back-btn{font-size:9px;padding:6px 10px}.global-buttons{top:8px;right:8px}.icon-btn{min-width:34px;height:32px;font-size:10px;padding:0 8px}.game-bottom{padding:8px 12px;min-height:50px}.igor-comment{font-size:11px}.mobile-controls{display:flex}.answers{grid-template-columns:1fr}.tile{width:clamp(32px,9vw,48px);height:clamp(32px,9vw,48px)}.key{padding:11px 0;font-size:12px}.case-card{padding:16px;min-height:auto}.case-card .text{font-size:12px}.pinata-igor{width:70px;height:70px}.pyat-field{padding:50px 10px 10px}.hanoi-field{padding:12px;gap:10px}.duck-round-text{font-size:36px}.final-stage{padding:60px 60px 140px}.final-igor{width:min(50vw,300px);height:min(50vw,300px)}.final-bar-vertical{right:16px;top:70px;bottom:140px;width:32px}.final-hapfu{font-size:28px}.final-btn{padding:16px 32px;font-size:18px;letter-spacing:2px}}
+body.paused *{animation-play-state:paused!important}
+</style>
+</head>
+<body>
+<div class="global-buttons">
+  <button id="pauseBtn" class="icon-btn hidden" aria-label="Пауза">II</button>
+  <button id="muteBtn" class="icon-btn" aria-label="Звук">SOUND</button>
+</div>
+<button id="resetBtn">сброс</button>
+<div id="flies" aria-hidden="true"></div>
+<div id="flash"></div>
+<div id="notice" class="hidden" role="status" aria-live="polite"></div>
+
+<div class="screen active" id="menu">
+  <div class="menu-top">
+    <div class="brand">RITA / ARCADE</div>
+    <div class="save-badge" id="saveStatus">Сохранение активно</div>
+  </div>
+  <div class="hero">
+    <div>
+      <div class="eyebrow">Сезон 01 — Игорь против всех</div>
+      <h1>ОТПИЗДИ<span>ИГОРЯ</span></h1>
+      <p class="hero-copy">— официальная игра по версии Риты —<br><strong>11 уровней. Один Игорь.</strong><br>Пройди путь до финала.</p>
+    </div>
+    <div>
+      <div class="hero-portrait"><img id="menuPortrait" alt="Игорь"></div>
+      <div class="portrait-upload"><button id="uploadBtn">Сменить портрет</button></div>
+    </div>
+  </div>
+  <div class="difficulty">
+    <button class="diff-btn" data-diff="loser"><strong>Игорь Хуиланчик</strong><span>для слабаков · ★</span></button>
+    <button class="diff-btn" data-diff="normal"><strong>Игорь</strong><span>нормальный режим · ★★</span></button>
+    <button class="diff-btn" data-diff="monster"><strong>Чудовищный Ебака Игорь</strong><span>без шансов · ★★★</span></button>
+  </div>
+  <div class="section-heading"><h2>Выбирай неприятность</h2><span id="progressText"></span></div>
+  <div class="level-grid" id="levelGrid"></div>
+  <div class="menu-footer"><span>Совет: некоторые оскорбления умеют хранить секреты</span><span>Вымышленный Игорь. Настоящее упрямство</span></div>
+</div>
+
+<div class="screen" id="game"></div>
+<div class="screen" id="wordle"></div>
+<div class="screen" id="tetris"></div>
+<div class="screen" id="pinata"></div>
+<div class="screen" id="osu"></div>
+<div class="screen" id="court"></div>
+<div class="screen" id="duck"></div>
+<div class="screen" id="pyatnashki"></div>
+<div class="screen" id="saper"></div>
+<div class="screen" id="hanoi"></div>
+<div class="screen" id="final"></div>
+
+<div class="screen" id="result">
+  <div class="result-layout">
+    <div class="result-sticker">Рита одобряет</div>
+    <h2 class="result-title" id="resultTitle">ПОБЕДА</h2>
+    <div class="result-flavor" id="resultFlavor"></div>
+    <div><button class="primary" id="btnMenu">В меню</button><button class="secondary" id="btnReplay">Ещё раз</button></div>
+  </div>
+</div>
+
+<div class="screen" id="mockery" role="dialog" aria-modal="true">
+  <div class="modal-card">
+    <div class="eyebrow">Игорь запомнит это</div>
+    <h2 class="mockery-text" id="mockeryTitle">НУ ТЫ И ЛОХ</h2>
+    <p class="mockery-sub" id="mockerySub"></p>
+    <button class="primary" id="mockeryRetry">Реванш</button>
+    <button class="secondary" id="mockeryBtn">Хватит</button>
+  </div>
+</div>
+
+<div id="pauseOverlay" class="hidden" role="dialog" aria-modal="true">
+  <div>
+    <p class="eyebrow">Игорь тоже переводит дух</p>
+    <h2 class="pause-title">ПАУЗА</h2>
+    <button id="resumeBtn" class="primary">Продолжить</button>
+    <p class="small">Esc — продолжить</p>
+  </div>
+</div>
+
+<div id="defeatOverlay"></div>
+
+<script>
+"use strict";
+const $=(q,r=document)=>r.querySelector(q);
+const $$=(q,r=document)=>[...r.querySelectorAll(q)];
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+const rand=(a,b)=>a+Math.random()*(b-a);
+const pick=a=>a[Math.floor(Math.random()*a.length)];
+const shuffle=a=>{const o=[...a];for(let i=o.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[o[i],o[j]]=[o[j],o[i]]}return o};
+const timeText=t=>{const s=Math.max(0,Math.ceil(t));return `${Math.floor(s/60).toString().padStart(2,"0")}:${(s%60).toString().padStart(2,"0")}`};
+const W=800,H=520;
+const BALL_START=5,BALL_STEP=2,BALL_STEP_EVERY=15,PLATFORM_SPEED=520,ROUND_TIME=120;
+const DIFFICULTY={
+  loser:   {aiQuality:.3, wordLen:4, tetrisGrowSpeed:.5, osuLifetime:1600, osuSpawnGap:.55, osuTarget:3000, osuMissLimit:5, duckSpeed:1.0, duckManeuver:0.6, pinataSpeed:1.1},
+  normal:  {aiQuality:.6, wordLen:5, tetrisGrowSpeed:.85, osuLifetime:1200, osuSpawnGap:.35, osuTarget:6000, osuMissLimit:10, duckSpeed:1.4, duckManeuver:1.2, pinataSpeed:1.8},
+  monster: {aiQuality:.95, wordLen:6, tetrisGrowSpeed:1.15, osuLifetime:900, osuSpawnGap:.22, osuTarget:10000, osuMissLimit:15, duckSpeed:2.2, duckManeuver:2.0, pinataSpeed:2.4}
+};
+const LEVELS=[
+  {id:1,screen:"game",color:"pong",name:"Пинг-понг",sub:"5 голов. Разминка."},
+  {id:2,screen:"pyatnashki",color:"pyatnashki",name:"Собери Маобэя",sub:"Кот Риты разобран."},
+  {id:3,screen:"wordle",color:"wordle",name:"Игордл",sub:"Слово за 6 попыток."},
+  {id:4,screen:"saper",color:"saper",name:"Разминируй релиз",sub:"Одна мина — прод горит."},
+  {id:5,screen:"hanoi",color:"hanoi",name:"Башни Игоря",sub:"Переложи все диски."},
+  {id:6,screen:"pinata",color:"pinata",name:"Догони Игоря",sub:"Он бегает. Заполни шкалу."},
+  {id:7,screen:"tetris",color:"tetris",name:"Тетрис",sub:"20 линий и мусор."},
+  {id:8,screen:"osu",color:"osu",name:"OSU Хапфу",sub:"Попади в кружки."},
+  {id:9,screen:"duck",color:"duck",name:"Duck Hunt",sub:"Утки с фото Игоря."},
+  {id:10,screen:"court",color:"court",name:"Суд над Игорем",sub:"Правда или фейк."},
+  {id:11,screen:"final",color:"secret",name:"УВОЛЬ ИГОРЯ",sub:"Финал. Кликер.",final:true}
+];
+const P={
+  igorScored:["Лох","Ха-ха-ха","Ты чё, спишь","Слабак","И это всё","Позор семьи","Глаза разуй"],
+  youScored:["Это нечестно","Ты читер","Мама","Не считается","Я моргнул","У меня лаг"],
+  playerWins:["Ладно, ты выиграл. Но это нечестно.","Я тебе поддался.","Реванш будет.","Насмешки запомни. Я вернусь."],
+  mockery:["Ну ты и лох","Игорь выиграл. Бывает","Это было жалко","Реванш или слёзы","Ты проиграл"],
+  mockerySub:["Даже кот смотрит на тебя с осуждением.","Игорь рассказал всем. Даже холодильнику.","Рита сделала вид, что ничего не видела."],
+  pinata:["Ой, больно, чё","Не по лицу, я жених","Мама, они меня бьют","Я в суд подам","Руки убрал, животное"],
+  osuWin:["Ладно, ты крут. Но это в последний раз","Хм. Неплохо. Для лоха"],
+  duckHit:["Я редкий вид","Кря. В смысле, ай","Я был облаком","Ай, бля","Мама"],
+  duckMiss:["Ты в небо попал","Прицел купи","Утки передают спасибо","Ха-ха-ха, мазила","Мимо, лох"],
+  duckEscape:["Не попал, лох","Убежал","Ха-ха, я тут","Улетел","Пока, Игорь"],
+  wordleStart:["Ну давай, покажи, что умеешь","Тут даже обезьяна справится"],
+  wordleGood:["О, случайно угадал","Повезло","Ты подозрительно близко"],
+  wordleBad:["Ха-ха-ха","Лох","Ты серьёзно","Ты точно в школу ходил"],
+  wordleNoMatch:["Вообще ни одной буквы","Ну ты и даёшь","Может тебе в кубики"],
+  wordleLose:["Лоооох","Я так и знал","Ты проиграл буквам"],
+  wordleWin:["Чё-то повезло","Я поддался","О, случайно угадал"],
+  tetris:["Держи мусор, лох","Подарочек","Играй с этим","И это ты называешь строительством"],
+  tetrisComment:["Красиво строишь. Жалко будет","У тебя вообще план есть","Смотрю и ржу","Долго думаешь. Мне аж скучно"],
+  courtStart:["Докажи, что я виновен. Если сможешь","Судья, я невиновен!","Опять меня судить."],
+  pyatnashki:["Кот разобран. Собери.","Маобэй не одобряет.","Осторожнее с котом Риты."],
+  saper:["Одна мина — и релиз сгорит.","Игорь уже наставил мин.","Смотри под ноги."],
+  saperDeath:[
+    "Релиз улетел в прод. Мина на клетке {n}.",
+    "Игорь передаёт привет с той стороны прода.",
+    "Багов не нашли? Кроме одного. Мина {n}.",
+    "Пользователи уже пишут в поддержку. Мина {n}.",
+    "Ты кликнул. Прод сломался. Классика. Мина {n}.",
+    "Хорошая новость: баг воспроизводится всегда. Мина {n}.",
+    "Даже Игорь бы справился лучше. Мина {n}.",
+    "Рита уже пишет баг-репорт. С твоим именем.",
+    "Хьюстон, у нас мина {n}.",
+    "Опять. На той же клетке. То есть {n}."
+  ],
+  hanoi:["Классика. Накосячишь — я виноват.","Переложи все диски.","Большой на меньший нельзя."],
+  secret:["Хапфу тебе","Получай","Лови","Ещё раз","Ха-ха-ха","Больше","Сильнее","Быстрее","Хапфу!"]
+};
+const Storage=(()=>{
+  const KEY="otpizdi_igorya_v15";
+  const fresh=()=>({completed:{},best:{},stars:{},difficulty:"normal",secretUnlocked:false,secretFound:[]});
+  let data=fresh();
+  function load(){data=fresh();try{const raw=JSON.parse(localStorage.getItem(KEY)||"null");if(raw&&typeof raw==="object"){if(raw.completed)for(let n=1;n<=11;n++)data.completed[n]=raw.completed[n]===true;if(raw.best)for(const[k,v]of Object.entries(raw.best))if(/^[0-9]+:(loser|normal|monster)$/.test(k)&&Number.isFinite(v))data.best[k]=v;if(raw.stars&&typeof raw.stars==="object")data.stars=raw.stars;if(DIFFICULTY[raw.difficulty])data.difficulty=raw.difficulty;if(Array.isArray(raw.secretFound))data.secretFound=[...new Set(raw.secretFound.filter(n=>Number.isInteger(n)&&n>=0&&n<4))];data.secretUnlocked=data.secretFound.length===4}}catch(_){}return data}
+  function save(){try{localStorage.setItem(KEY,JSON.stringify(data))}catch(_){}}
+  return{load,save,setCompleted:n=>{data.completed[n]=true;save()},isCompleted:n=>!!data.completed[n],setDifficulty:d=>{if(DIFFICULTY[d]){data.difficulty=d;save()}},getDifficulty:()=>data.difficulty,isSecretUnlocked:()=>data.secretUnlocked,foundSecret:n=>data.secretFound.includes(n),markSecret:n=>{if(n>=0&&n<4&&!data.secretFound.includes(n))data.secretFound.push(n);if(data.secretFound.length===4)data.secretUnlocked=true;save()},allSecretsFound:()=>data.secretFound.length===4,record:(n,d,s)=>{const k=`${n}:${d}`;const old=data.best[k]??-1;if(s>old){data.best[k]=s;save();return true}return false},
+    // звёзды
+    addStar:(n)=>{const cur=data.stars[n]||0;const diff=currentDifficulty==="loser"?1:currentDifficulty==="normal"?2:3;if(diff>cur){data.stars[n]=diff;save()}},
+    getStars:n=>data.stars[n]||0,
+    isUnlocked:(id,secret)=>{if(secret)return true;if(data.secretUnlocked)return true;if(id===1)return true;return !!data.completed[id-1]},
+    reset:()=>{data=fresh();try{localStorage.removeItem(KEY)}catch(_){}save()}};
+})();
+const SoundManager=(()=>{
+  let ctx=null,master=null,muted=false;
+  try{muted=localStorage.getItem("igor_muted")==="1"}catch(_){}
+  function init(){if(!ctx){const AC=window.AudioContext||window.webkitAudioContext;if(!AC)return null;try{ctx=new AC();master=ctx.createGain();master.gain.value=muted?0:.28;master.connect(ctx.destination)}catch(_){return null}}if(ctx.state==="suspended")ctx.resume().catch(()=>{});return ctx}
+  function tone(freq,dur=.08,type="square",slide=0,delay=0,volume=.17){if(muted)return;const c=init();if(!c||c.state!=="running")return;const start=c.currentTime+Math.max(0,delay);const osc=c.createOscillator(),gain=c.createGain();osc.type=type;osc.frequency.setValueAtTime(freq,start);osc.frequency.linearRampToValueAtTime(Math.max(25,freq+slide),start+dur);gain.gain.setValueAtTime(0,start);gain.gain.linearRampToValueAtTime(volume,start+.004);gain.gain.exponentialRampToValueAtTime(.0001,start+dur);osc.connect(gain);gain.connect(master);osc.start(start);osc.stop(start+dur+.02);osc.onended=()=>{osc.disconnect();gain.disconnect()}}
+  function setMuted(v){muted=!!v;if(master)master.gain.setValueAtTime(muted?0:.28,ctx.currentTime);if("speechSynthesis"in window)speechSynthesis.cancel();try{localStorage.setItem("igor_muted",muted?"1":"0")}catch(_){};$("#muteBtn").textContent=muted?"MUTE":"SOUND"}
+  return{init,tone,setMuted,isMuted:()=>muted,context:()=>ctx,output:()=>master,cancel:()=>{if("speechSynthesis"in window)speechSynthesis.cancel()}};
+})();
+const Sfx=(()=>{
+  const t=(...a)=>SoundManager.tone(...a);
+  const seq=(n,type="triangle",step=.09,dur=.12)=>n.forEach((f,i)=>t(f,dur,type,0,i*step,.2));
+  return{hit:()=>t(220,.04,"square",-80),hitHard:()=>t(140,.08,"sawtooth",-90),scoreYou:()=>seq([660,880]),scoreIgor:()=>t(200,.2,"sawtooth",-100),win:()=>seq([261.63,329.63,392,523.25],"triangle",.13,.22),lose:()=>seq([392,329,261,130],"sawtooth",.15,.2),click:()=>t(880,.02),type:()=>t(rand(400,600),.015),line:()=>seq([523,659,784]),pop:()=>t(600,.03),coin:()=>seq([1046,1318]),osuPerfect:()=>seq([880,1320],"triangle",.04,.09),osuGood:()=>t(660,.09,"triangle"),osuMiss:()=>t(100,.13,"sawtooth",-45),boom:()=>t(60,.4,"sawtooth",-30,0,.35),zap:()=>t(1100,.16,"sawtooth",-950),shoot:()=>t(800,.09,"sawtooth",-700),reload:()=>seq([300,400],"square",.12,.05),secret:()=>seq([523,659,784,1046],"triangle",.07,.2),correct:()=>seq([523,784,1046],"triangle",.08,.15),wrong:()=>seq([300,200,150],"sawtooth",.1,.18),defeat:()=>{t(80,1.4,"sawtooth",-40,0,.28);setTimeout(()=>t(60,1.8,"sawtooth",-30,0,.24),200)}};
+})();
+const Music={set(){},tick(){}};
+const IGOR_PHOTO="data:image/svg+xml;base64,"+btoa('<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256"><rect width="256" height="256" fill="#1c1c25"/><path d="M85 171H169V222H85Z" fill="#c99772"/><ellipse cx="128" cy="111" rx="80" ry="88" fill="#e8b58a"/><path d="M46 100Q33 10 127 16Q218 0 209 103L178 53L138 65L100 47L71 72Z" fill="#2a1f22"/><ellipse cx="94" cy="117" rx="15" ry="12" fill="#f5f1e8"/><ellipse cx="167" cy="117" rx="15" ry="12" fill="#f5f1e8"/><circle cx="99" cy="118" r="5" fill="#1a1417"/><circle cx="162" cy="118" r="5" fill="#1a1417"/><path d="M127 120L115 148L137 150" stroke="#a86a4a" stroke-width="5" fill="none"/><path d="M89 171Q129 193 174 162Q151 211 104 191Z" fill="#3a2028"/></svg>');
+const CAT_PHOTO="data:image/svg+xml;base64,"+btoa('<svg xmlns="http://www.w3.org/2000/svg" width="300" height="300" viewBox="0 0 300 300"><rect width="300" height="300" fill="#3a1808"/><ellipse cx="150" cy="180" rx="95" ry="80" fill="#c9915a"/><ellipse cx="150" cy="130" rx="72" ry="62" fill="#d9a06a"/><path d="M88 90 L72 36 L120 72 Z" fill="#d9a06a"/><path d="M212 90 L228 36 L180 72 Z" fill="#d9a06a"/><path d="M96 84 L88 54 L116 76 Z" fill="#ffb5c0"/><path d="M204 84 L212 54 L184 76 Z" fill="#ffb5c0"/><circle cx="124" cy="130" r="10" fill="#1a0d04"/><circle cx="176" cy="130" r="10" fill="#1a0d04"/><circle cx="126" cy="127" r="3" fill="#fff"/><circle cx="178" cy="127" r="3" fill="#fff"/><path d="M150 148 L140 162 L160 162 Z" fill="#ff8a8a"/><path d="M150 168 Q130 182 115 172" stroke="#1a0d04" stroke-width="3" fill="none"/><path d="M150 168 Q170 182 185 172" stroke="#1a0d04" stroke-width="3" fill="none"/></svg>');
+const Portrait=(()=>{
+  const img=new Image();let ready=false,src=IGOR_PHOTO;
+  img.onload=()=>{ready=true;$("#menuPortrait").src=src};
+  function load(v){ready=false;src=v;img.src=v}
+  function init(){try{const s=localStorage.getItem("igor_photo_v15");load(s&&s.startsWith("data:image/")?s:IGOR_PHOTO)}catch(_){load(IGOR_PHOTO)}}
+  function draw(ctx,x,y,w,h){x=Math.floor(x);y=Math.floor(y);if(ready){const s=Math.min(img.naturalWidth,img.naturalHeight);ctx.drawImage(img,(img.naturalWidth-s)/2,(img.naturalHeight-s)/2,s,s,x,y,w,h)}else{ctx.fillStyle="#c99772";ctx.fillRect(x,y,w,h)}}
+  async function upload(file){if(!file||!file.type.startsWith("image/"))return;if(file.size>15*1024*1024){Juice.notice("Файл больше 15 МБ");return}const url=URL.createObjectURL(file),t=new Image();try{await new Promise((res,rej)=>{t.onload=res;t.onerror=rej;t.src=url});const c=document.createElement("canvas");c.width=c.height=256;const g=c.getContext("2d"),s=Math.min(t.width,t.height);g.drawImage(t,(t.width-s)/2,(t.height-s)/2,s,s,0,0,256,256);const d=c.toDataURL("image/jpeg",.86);load(d);try{localStorage.setItem("igor_photo_v15",d)}catch(_){Juice.notice("Только на сессию")}Juice.notice("Портрет принят")}catch(_){Juice.notice("Не удалось")}finally{URL.revokeObjectURL(url)}}
+  return{init,draw,upload,src:()=>src,reset:()=>load(IGOR_PHOTO)};
+})();
+const Juice=(()=>{
+  let noticeTime=0,flashTime=0;
+  const shakes=new Map();
+  function shake(el){el.classList.remove("shake-hard");void el.offsetWidth;el.classList.add("shake-hard");shakes.set(el,.34)}
+  function popup(container,text,x,y){const el=document.createElement("div");el.className="phrase-popup";el.textContent=text;el.style.left=x+"px";el.style.top=y+"px";container.append(el);el.addEventListener("animationend",()=>el.remove(),{once:true})}
+  function notice(text){$("#notice").textContent=text;$("#notice").classList.remove("hidden");noticeTime=3.0}
+  function flash(){flashTime=.16}
+  function tick(dt){if(noticeTime>0&&(noticeTime-=dt)<=0)$("#notice").classList.add("hidden");flashTime=Math.max(0,flashTime-dt);$("#flash").style.opacity=flashTime>0?String(flashTime/.16*.4):"0";for(const[el,t]of shakes){if(t<=dt){el.classList.remove("shake-hard");shakes.delete(el)}else shakes.set(el,t-dt)}}
+  return{shake,popup,notice,flash,tick};
+})();
+let activeGame=null,currentLevel=null,currentDifficulty="normal";
+let paused=false,finished=false,lastLevel=null;
+const held=new Set();
+function makeScene(id,help,withCanvas=false){
+  const screen=$("#"+id);
+  screen.innerHTML=`<div class="game-window"><div class="window-hud"><div class="hud-title">${currentLevel.name}</div><div class="hud-stat"></div><button class="back-btn">Назад</button></div><div class="window-body"><div class="play-area"></div><div class="mobile-controls"></div><div class="game-bottom"><div class="igor-comment" aria-live="polite"></div><div class="controls-note"></div></div></div></div>`;
+  const abort=new AbortController();
+  const on=(el,ev,fn,opt={})=>el.addEventListener(ev,fn,{...opt,signal:abort.signal});
+  const area=$(".play-area",screen),stat=$(".hud-stat",screen),comment=$(".igor-comment",screen);
+  $(".controls-note",screen).textContent=help;
+  on($(".back-btn",screen),"click",()=>Router.go("menu"));
+  let observer=null,canvas=null,g=null;
+  if(withCanvas){area.innerHTML='<div class="canvas-wrap"><canvas aria-label="Поле"></canvas></div>';canvas=$("canvas",area);const dpr=Math.min(2,window.devicePixelRatio||1);canvas.width=W*dpr;canvas.height=H*dpr;g=canvas.getContext("2d",{alpha:false});g.setTransform(dpr,0,0,dpr,0,0);const fit=()=>{const b=area.getBoundingClientRect(),s=Math.min(b.width/W,b.height/H);canvas.style.width=Math.max(1,Math.floor(W*s))+"px";canvas.style.height=Math.max(1,Math.floor(H*s))+"px"};observer=new ResizeObserver(fit);observer.observe(area);fit()}
+  function say(text){comment.textContent=text}
+  function point(e){const r=canvas.getBoundingClientRect();return{x:(e.clientX-r.left)*W/r.width,y:(e.clientY-r.top)*H/r.height}}
+  function popup(text){Juice.popup(area,text,area.clientWidth/2,area.clientHeight*.5)}
+  function touchControls(items,handler){const panel=$(".mobile-controls",screen);for(const[label,code]of items){const b=document.createElement("button");b.textContent=label;b.dataset.code=code;panel.append(b);on(b,"pointerdown",e=>{if(paused||finished)return;e.preventDefault();held.add(code);b.setPointerCapture(e.pointerId);handler(code)});for(const ev of["pointerup","pointercancel","lostpointercapture"])on(b,ev,()=>held.delete(code))}}
+  function key(handler){on(document,"keydown",e=>{if(paused||finished||e.ctrlKey||e.metaKey||e.altKey)return;if(["ArrowLeft","ArrowRight","ArrowUp","ArrowDown","Space"].includes(e.code))e.preventDefault();handler(e)})}
+  return{screen,area,stat,on,canvas,g,point,say,popup,touchControls,key,cfg:DIFFICULTY[currentDifficulty],destroy:()=>{abort.abort();if(observer)observer.disconnect();screen.innerHTML=""}};
+}
+function backdrop(g,color="#0e0e12"){g.fillStyle=color;g.fillRect(0,0,W,H)}
+function txt(g,v,x,y,size=20,color="#e8e6dd",align="center"){g.fillStyle=color;g.font=`${size}px 'Courier New',monospace`;g.textAlign=align;g.textBaseline="middle";g.fillText(String(v),Math.floor(x),Math.floor(y))}
+function circlePortrait(g,x,y,r){g.save();g.beginPath();g.arc(x,y,r,0,Math.PI*2);g.clip();Portrait.draw(g,x-r,y-r,r*2,r*2);g.restore();g.strokeStyle="#2a2a34";g.lineWidth=1.5;g.beginPath();g.arc(x,y,r,0,Math.PI*2);g.stroke()}
+function setPaused(v){if(!activeGame||finished)v=false;paused=v;held.clear();$("#pauseOverlay").classList.toggle("hidden",!paused);document.body.classList.toggle("paused",paused);if(paused)SoundManager.cancel()}
+const DEFEAT_TYPES=[
+  {key:"you-died",title:"YOU DIED",sub:"ИГОРЬ РЖЁТ ГДЕ-ТО РЯДОМ"},
+  {key:"igor-laugh",title:"ИГОРЬ ЛИКУЕТ",sub:"ХА-ХА-ХА-ХА-ХА"},
+  {key:"game-over",title:"GAME OVER",sub:"CONTINUE? 10..."},
+  {key:"continue",title:"CONTINUE?",sub:"ВСТАВЬ МОНЕТУ"},
+  {key:"forget",title:"ЗАБУДЬ",sub:"И НАЧНИ ЗАНОВО"}
+];
+function showDefeatOverlay(cb){
+  const t=pick(DEFEAT_TYPES);
+  const ov=$("#defeatOverlay");ov.innerHTML="";
+  const bg=document.createElement("div");bg.className="defeat-overlay-bg "+(t.key==="igor-laugh"?"laugh":t.key==="game-over"?"gameover":t.key==="continue"?"continue":t.key==="forget"?"forget":"");
+  ov.append(bg);
+  if(t.key==="igor-laugh"){const img=document.createElement("img");img.className="defeat-igor-img";img.src=Portrait.src();ov.append(img)}
+  const wrap=document.createElement("div");wrap.style.cssText="position:relative;z-index:2";
+  const txtEl=document.createElement("div");txtEl.className="defeat-text defeat-"+t.key;txtEl.textContent=t.title;
+  const sub=document.createElement("span");sub.className="defeat-sub";sub.textContent=t.sub;txtEl.append(sub);
+  wrap.append(txtEl);ov.append(wrap);ov.classList.add("show");Sfx.defeat();
+  const dur=t.key==="continue"?2600:t.key==="forget"?2200:2000;
+  setTimeout(()=>{ov.classList.remove("show");ov.innerHTML="";cb()},dur);
+}
+function finishGame(win,score,detail,title="ПОБЕДА"){
+  if(finished)return;
+  finished=true;setPaused(false);SoundManager.cancel();held.clear();
+  const record=Storage.record(currentLevel.id,currentDifficulty,Math.floor(score));
+  if(win){
+    Storage.setCompleted(currentLevel.id);
+    Storage.addStar(currentLevel.id);
+    $("#resultTitle").textContent=title;
+    $("#resultFlavor").textContent=detail+(record?"\n\n★ Новый рекорд":"")+"\n\nИгорь: «"+pick(P.playerWins)+"»";
+    Sfx.win();Router.showResult();
+  }else{
+    Sfx.lose();
+    showDefeatOverlay(()=>{
+      $("#mockeryTitle").textContent=pick(P.mockery);
+      $("#mockerySub").textContent=detail+"\n\n"+pick(P.mockerySub);
+      $("#mockery").classList.add("active");$("#pauseBtn").classList.add("hidden");
+    });
+  }
+}
+/* 1. ПИНГ-ПОНГ */
+const Pong=(()=>{function start(){
+  const s=makeScene("game","Мышь/тач/←→/A D · 5 голов · 2 минуты",true);
+  let px=400,ix=400,target=400,aiTarget=400,aiClock=0;
+  let you=0,igor=0,remaining=ROUND_TIME,serve=.8;
+  let ballSpeed=BALL_START;let nextSpeedUp=ROUND_TIME-BALL_STEP_EVERY;
+  const pw=132,ph=16,r=14;let b={x:400,y:260,vx:0,vy:0};
+  function reset(dir){b.x=400;b.y=260;const angle=rand(-.5,.5),speed=ballSpeed*60;b.vx=Math.sin(angle)*speed;b.vy=Math.cos(angle)*speed*dir;serve=.75}
+  reset(Math.random()<.5?1:-1);
+  s.on(s.canvas,"pointermove",e=>{if(!paused)target=s.point(e).x});
+  s.on(s.canvas,"pointerdown",e=>{if(!paused)target=s.point(e).x});
+  s.touchControls([["◀","ArrowLeft"],["▶","ArrowRight"]],()=>{});
+  window.addEventListener("keydown",e=>{if(paused||finished)return;if(["ArrowLeft","ArrowRight","KeyA","KeyD"].includes(e.code))e.preventDefault();if(["ArrowLeft","KeyA"].includes(e.code))held.add("ArrowLeft");if(["ArrowRight","KeyD"].includes(e.code))held.add("ArrowRight")});
+  window.addEventListener("keyup",e=>{if(["ArrowLeft","KeyA"].includes(e.code))held.delete("ArrowLeft");if(["ArrowRight","KeyD"].includes(e.code))held.delete("ArrowRight")});
+  function predict(){if(b.vy>=0)return 400;const t=(44+r-b.y)/b.vy;if(t<=0)return b.x;const span=W-2*r,period=2*span;let x=((b.x+b.vx*t-r)%period+period)%period;if(x>span)x=period-x;return r+x}
+  function hit(center,down){const rel=clamp((b.x-center)/(pw/2),-1,1);const a=rel*.9,sp=Math.hypot(b.vx,b.vy);b.vx=Math.sin(a)*sp;b.vy=Math.cos(a)*sp*(down?1:-1);Sfx.hitHard()}
+  function goal(player){if(player){you++;Sfx.scoreYou();s.say(pick(P.youScored))}else{igor++;Sfx.scoreIgor();s.say(pick(P.igorScored))}s.popup(player?"ТВОЙ ГОЛ":"ИГОРЬ ЗАБИЛ");if(you>=5||igor>=5){finishGame(you>igor,you*100,`Счёт ${you}:${igor}.`);return}reset(player?1:-1)}
+  function step(dt){const dir=(held.has("ArrowRight")?1:0)-(held.has("ArrowLeft")?1:0);if(dir)target=px+dir*PLATFORM_SPEED*dt;target=clamp(target,pw/2,W-pw/2);px+=clamp(target-px,-PLATFORM_SPEED*dt,PLATFORM_SPEED*dt);aiClock-=dt;if(aiClock<=0){const q=s.cfg.aiQuality;aiTarget=clamp(predict()+(1-q)*W*.4*rand(-1,1),pw/2,W-pw/2);aiClock=(1-q)*.4+.05}ix+=clamp(aiTarget-ix,-PLATFORM_SPEED*dt,PLATFORM_SPEED*dt);if(serve>0){serve-=dt;return}b.x+=b.vx*dt;b.y+=b.vy*dt;if(b.x<r){b.x=r;b.vx=Math.abs(b.vx)}if(b.x>W-r){b.x=W-r;b.vx=-Math.abs(b.vx)}if(b.vy<0&&b.y-r<=44&&b.y>=22&&Math.abs(b.x-ix)<pw/2+r){b.y=44+r;hit(ix,true)}if(b.vy>0&&b.y+r>=H-44&&b.y<=H-22&&Math.abs(b.x-px)<pw/2+r){b.y=H-44-r;hit(px,false)}if(b.y<-r)goal(true);if(b.y>H+r)goal(false)}
+  function draw(){const g=s.g;backdrop(g,"#0a0a10");g.strokeStyle="#1f1f28";g.setLineDash([4,8]);g.lineWidth=1;g.beginPath();g.moveTo(0,H/2);g.lineTo(W,H/2);g.stroke();g.setLineDash([]);txt(g,igor,W/2,160,90,"#1c1c25");txt(g,you,W/2,360,90,"#1c1c25");g.fillStyle="#c99772";g.fillRect(Math.floor(ix-pw/2),24,pw,ph);g.fillStyle="#00e5a0";g.fillRect(Math.floor(px-pw/2),H-40,pw,ph);circlePortrait(g,b.x,b.y,r);if(serve>0)txt(g,"ПОДАЧА",400,215,16,"#7c7a85");s.stat.textContent=`${you} : ${igor} · ${timeText(remaining)}`}
+  return{update(dt){remaining-=dt;if(remaining<=nextSpeedUp){const old=ballSpeed;ballSpeed+=BALL_STEP;nextSpeedUp-=BALL_STEP_EVERY;s.popup("+2 СКОРОСТИ");const k=ballSpeed/old;b.vx*=k;b.vy*=k}const n=Math.ceil(dt/(1/120));for(let i=0;i<n&&!finished;i++)step(dt/n);if(remaining<=0&&!finished)finishGame(you>igor,you*100,`Счёт ${you}:${igor}.`)},draw,destroy:s.destroy};
+}return{start}})();
+/* 2. ПЯТНАШКИ */
+const Pyatnashki=(()=>{
+  function start(){
+    const s=makeScene("pyatnashki","Клик по плитке рядом с пустой");
+    const size=s.cfg.wordLen===4?3:s.cfg.wordLen===5?4:5;
+    const total=size*size;
+    let board=[];
+    for(let i=0;i<total-1;i++)board.push(i);board.push(null);
+    let emptyIdx=total-1;
+    for(let i=0;i<200;i++){const moves=[];const r=Math.floor(emptyIdx/size),c=emptyIdx%size;if(r>0)moves.push(emptyIdx-size);if(r<size-1)moves.push(emptyIdx+size);if(c>0)moves.push(emptyIdx-1);if(c<size-1)moves.push(emptyIdx+1);const m=pick(moves);board[emptyIdx]=board[m];board[m]=null;emptyIdx=m}
+    let moves=0,time=0;
+    s.area.innerHTML=`<div class="pyat-hud"><div><span class="lbl">Ходы</span><span class="val" id="pyatMoves">0</span></div><div><span class="lbl">Поле</span><span class="val">${size}×${size}</span></div><div><span class="lbl">Время</span><span class="val" id="pyatTime">0:00</span></div></div><div class="pyat-field"><div class="pyat-board" id="pyatBoard" style="grid-template-columns:repeat(${size},1fr);grid-template-rows:repeat(${size},1fr)"></div></div>`;
+    const boardEl=$("#pyatBoard",s.area);const movesEl=$("#pyatMoves",s.area);const timeEl=$("#pyatTime",s.area);
+    function render(){boardEl.innerHTML="";const emptyNow=board.indexOf(null);for(let i=0;i<total;i++){const cell=document.createElement("div");cell.className="pyat-cell";const val=board[i];if(val===null){cell.classList.add("empty")}else{const r=Math.floor(val/size),c=val%size;cell.style.backgroundImage=`url("${CAT_PHOTO}")`;cell.style.backgroundSize=`${size*100}% ${size*100}%`;if(size>1)cell.style.backgroundPosition=`${(c/(size-1))*100}% ${(r/(size-1))*100}%`}const r0=Math.floor(i/size),c0=i%size,r1=Math.floor(emptyNow/size),c1=emptyNow%size;if(Math.abs(r0-r1)+Math.abs(c0-c1)===1)cell.classList.add("movable");cell.addEventListener("click",()=>clickCell(i));boardEl.append(cell)}}
+    function clickCell(i){if(paused||finished)return;const ei=board.indexOf(null);const r0=Math.floor(i/size),c0=i%size,r1=Math.floor(ei/size),c1=ei%size;if(Math.abs(r0-r1)+Math.abs(c0-c1)!==1)return;board[ei]=board[i];board[i]=null;moves++;movesEl.textContent=moves;Sfx.pop();render();if(isSolved()){Sfx.win();setTimeout(()=>finishGame(true,moves,`Маобэй собран за ${moves} ходов и ${timeText(time)}.`,"СОБРАН"),400)}}
+    function isSolved(){for(let i=0;i<total-1;i++)if(board[i]!==i)return false;return board[total-1]===null}
+    render();s.say(pick(P.pyatnashki));
+    return{update(dt){if(finished)return;time+=dt;timeEl.textContent=timeText(time)},draw(){},destroy:s.destroy};
+  }return{start}})();
+/* 3. WORDLE */
+const Wordle=(()=>{
+  const WORDS={4:["МАМА","ПАПА","КОТЫ","СЛОН","РОТА","НОГА","РУКА","ГОРА","ЛУНА","ЗИМА","ЛЕТО","МОРЕ","ПОЛЕ","ЛИСА","СОВА","РЫБА"],5:["ИГОРЬ","ШКОЛА","КНИГА","ДВЕРЬ","ДИВАН","ЛОЖКА","ВИЛКА","ЧАШКА","БАНАН","АРБУЗ","ЗЕБРА","ВЕТЕР","ГОРОД","САХАР","ПОЕЗД","КОШКА"],6:["РАКЕТА","СОБАКА","КОРОВА","ВОРОНА","МАШИНА","ДОРОГА","ПОГОДА","РАБОТА","КОРОНА","МОЛОКО","ЯБЛОКО","ОГУРЕЦ","ПЛАТЬЕ","ПИСЬМО","МОНЕТА","РАДУГА"]};
+  function start(){
+    const s=makeScene("wordle","Русская клавиатура · Enter · Backspace · Ё = Е");
+    const len=s.cfg.wordLen,answer=pick(WORDS[len]);
+    let row=0,input="",reveal=null,done=false,delay=0;
+    const keyState=new Map(),rank={gray:1,yellow:2,green:3};
+    s.area.innerHTML='<div class="wordle-content"><div class="word-grid"></div><div class="keyboard"></div></div>';
+    const grid=$(".word-grid",s.area),kb=$(".keyboard",s.area),cells=[];
+    for(let y=0;y<6;y++){const line=document.createElement("div");line.className="word-row";line.style.gridTemplateColumns=`repeat(${len},1fr)`;grid.append(line);cells[y]=[];for(let x=0;x<len;x++){const tile=document.createElement("div");tile.className="tile";tile.innerHTML='<div class="tile-face tile-front"></div><div class="tile-face tile-back"></div>';line.append(tile);cells[y].push(tile)}}
+    const rows=[["Й","Ц","У","К","Е","Н","Г","Ш","Щ","З","Х","Ъ"],["Ф","Ы","В","А","П","Р","О","Л","Д","Ж","Э"],["ENTER","Я","Ч","С","М","И","Т","Ь","Б","Ю","DEL"]];
+    rows.forEach(r=>{const line=document.createElement("div");line.className="key-row";kb.append(line);r.forEach(c=>{const b=document.createElement("button");b.className="key";b.dataset.letter=c;if(c==="ENTER"||c==="DEL"){b.classList.add("wide","cmd");b.textContent=c==="ENTER"?"ВВОД":"УДАЛ"}else b.textContent=c;line.append(b)})});
+    function render(){if(row<6&&!reveal&&!done)cells[row].forEach((c,i)=>$(".tile-front",c).textContent=input[i]||"");s.stat.textContent=`${len} БУКВ · ${Math.max(0,6-row)} ПОПЫТОК`}
+    function evaluate(guess){const colors=Array(len).fill("gray"),counts={};for(let i=0;i<len;i++){if(guess[i]===answer[i])colors[i]="green";else counts[answer[i]]=(counts[answer[i]]||0)+1}for(let i=0;i<len;i++){if(colors[i]!=="green"&&counts[guess[i]]>0){colors[i]="yellow";counts[guess[i]]--}}return colors}
+    function submit(){if(input.length!==len){Juice.shake(grid);s.say(`Нужно ${len} букв.`);return}const guess=input,colors=evaluate(guess);reveal={time:0,index:0,guess,colors};Sfx.click()}
+    function action(ch){if(paused||finished||reveal||done)return;if(ch==="ENTER")submit();else if(ch==="DEL"){input=input.slice(0,-1);Sfx.type()}else if(/^[А-Я]$/.test(ch)&&input.length<len){input+=ch;Sfx.type()}render()}
+    s.on(kb,"click",e=>{const b=e.target.closest("[data-letter]");if(b)action(b.dataset.letter)});
+    s.key(e=>{if(e.repeat)return;if(e.key==="Enter"){e.preventDefault();action("ENTER")}else if(e.key==="Backspace"){e.preventDefault();action("DEL")}else action(e.key.toUpperCase().replace("Ё","Е"))});
+    render();s.say("Ну давай. Удиви алфавит.");
+    return{update(dt){if(done){delay-=dt;if(delay<=0)finishGame(input===answer,input===answer?(7-row)*100:0,`Слово: ${answer}. Попыток: ${row}.`);return}if(!reveal)return;reveal.time+=dt;while(reveal.index<len&&reveal.time>=reveal.index*.1){const i=reveal.index++,tile=cells[row][i],color=reveal.colors[i],ch=reveal.guess[i];$(".tile-back",tile).textContent=ch;tile.classList.add(color,"flipped");if((rank[color]||0)>(rank[keyState.get(ch)]||0))keyState.set(ch,color);const b=$(`[data-letter="${ch}"]`,kb);if(b&&!b.classList.contains("cmd"))b.className="key "+keyState.get(ch);Sfx.pop()}if(reveal.time>=(len-1)*.1+.5){const win=reveal.guess===answer;const has=reveal.colors.some(c=>c!=="gray");row++;if(win||row===6){done=true;delay=.8;s.say(win?pick(P.wordleWin):pick(P.wordleLose))}else{s.say(has?pick(P.wordleGood):pick(P.wordleNoMatch));input=""}reveal=null;render()}},draw(){},destroy:s.destroy};
+  }return{start}})();
+/* 4. САПЁР */
+const Saper=(()=>{
+  function start(){
+    const s=makeScene("saper","ЛКМ открыть · ПКМ флаг · первый клик безопасен");
+    const cfgSizes={loser:{w:8,h:8,mines:8},normal:{w:10,h:10,mines:15},monster:{w:12,h:12,mines:22}};
+    const {w,h,mines}=cfgSizes[currentDifficulty];
+    const total=w*h;
+    let grid=[];
+    for(let i=0;i<total;i++)grid.push({mine:false,revealed:false,flag:false,near:0});
+    let firstClick=true,revealedCount=0,flagged=0,ended=false,exploded=null,time=0;
+    function neighbors(i){const r=Math.floor(i/w),c=i%w;const out=[];for(let dr=-1;dr<=1;dr++)for(let dc=-1;dc<=1;dc++){if(dr===0&&dc===0)continue;const nr=r+dr,nc=c+dc;if(nr>=0&&nr<h&&nc>=0&&nc<w)out.push(nr*w+nc)}return out}
+    function init(exceptIdx){for(let i=0;i<total;i++){grid[i].mine=false;grid[i].revealed=false;grid[i].flag=false;grid[i].near=0}const forbidden=new Set([exceptIdx,...neighbors(exceptIdx)]);let placed=0;while(placed<mines){const i=Math.floor(Math.random()*total);if(grid[i].mine||forbidden.has(i))continue;grid[i].mine=true;placed++}for(let i=0;i<total;i++){if(grid[i].mine)continue;grid[i].near=neighbors(i).filter(j=>grid[j].mine).length}firstClick=false}
+    s.area.innerHTML=`<div class="saper-hud"><div><span class="lbl">Мины</span><span class="val mines" id="saperMines">${mines}</span></div><div><span class="lbl">Открыто</span><span class="val" id="saperOpen">0</span></div><div><span class="lbl">Время</span><span class="val" id="saperTime">0:00</span></div></div><div class="saper-field"><div class="saper-board" id="saperBoard" style="grid-template-columns:repeat(${w},1fr)"></div></div>`;
+    const boardEl=$("#saperBoard",s.area),minesEl=$("#saperMines",s.area),openEl=$("#saperOpen",s.area),timeEl=$("#saperTime",s.area);
+    function render(){boardEl.innerHTML="";for(let i=0;i<total;i++){const c=grid[i];const el=document.createElement("div");el.className="saper-cell";el.dataset.idx=i;if(c.revealed){el.classList.add("revealed");if(c.mine){el.classList.add(exploded===i?"exploded":"mine");el.textContent="*"}else if(c.near>0){el.classList.add("n"+c.near);el.textContent=c.near}}else if(c.flag){el.classList.add("flag");el.textContent="F"}el.addEventListener("click",()=>click(i));el.addEventListener("contextmenu",e=>{e.preventDefault();flag(i)});boardEl.append(el)}minesEl.textContent=mines-flagged;openEl.textContent=revealedCount;timeEl.textContent=timeText(time)}
+    function click(i){
+      if(paused||finished||ended)return;
+      if(grid[i].revealed||grid[i].flag)return;
+      if(firstClick)init(i);
+      if(grid[i].mine){
+        ended=true;exploded=i;grid[i].revealed=true;
+        for(let j=0;j<total;j++)if(grid[j].mine)grid[j].revealed=true;
+        render();Sfx.boom();Juice.shake(s.screen);
+        s.say("ЭТО НЕ БАГ, ЭТО ФИЧА!");
+        const phrase=pick(P.saperDeath).replace("{n}",i+1);
+        setTimeout(()=>finishGame(false,0,phrase),5000);
+        return;
+      }
+      const stack=[i];
+      while(stack.length){const idx=stack.pop();if(grid[idx].revealed)continue;grid[idx].revealed=true;revealedCount++;if(grid[idx].near===0){for(const n of neighbors(idx))if(!grid[n].revealed&&!grid[n].mine)stack.push(n)}}
+      Sfx.pop();render();checkWin();
+    }
+    function flag(i){if(paused||finished||ended)return;if(grid[i].revealed)return;grid[i].flag=!grid[i].flag;flagged+=grid[i].flag?1:-1;Sfx.click();render()}
+    function checkWin(){if(revealedCount===total-mines){ended=true;Sfx.win();setTimeout(()=>finishGame(true,Math.max(0,1000-Math.floor(time)*5),`Релиз спасён за ${timeText(time)}.`,"ЧИСТО"),400)}}
+    render();s.say(pick(P.saper));
+    return{update(dt){if(!ended&&!finished)time+=dt;timeEl.textContent=timeText(time)},draw(){},destroy:s.destroy};
+  }return{start}})();
+/* 5. ХАНОЙ */
+const Hanoi=(()=>{
+  function start(){
+    const s=makeScene("hanoi","Клик по стержню — взять/положить");
+    const diskCount=s.cfg.wordLen===4?3:s.cfg.wordLen===5?5:7;
+    let pegs=[[],[],[]];
+    for(let i=diskCount;i>=1;i--)pegs[0].push(i);
+    let selected=null,moves=0,time=0;
+    const colorsArr=["#ff3a5a","#ff7a1a","#ffb020","#00e5a0","#00b4ff","#7d5cff","#e8e6dd"];
+    s.area.innerHTML=`<div class="hanoi-field"><div class="hanoi-info"><div><span class="lbl">Ходы</span><span class="val" id="hanoiMoves">0</span></div><div><span class="lbl">Минимум</span><span class="val">${Math.pow(2,diskCount)-1}</span></div><div><span class="lbl">Дисков</span><span class="val">${diskCount}</span></div><div><span class="lbl">Время</span><span class="val" id="hanoiTime">0:00</span></div><button id="hanoiRules" style="font-size:10px;padding:6px 12px;letter-spacing:1.5px">Правила</button></div><div class="hanoi-board" id="hanoiBoard"></div><div class="hanoi-footer"><span>Клик по стержню — взять/положить</span><button id="hanoiReset">Сброс</button></div><div class="hanoi-rules-overlay" id="hanoiRulesOverlay"><div class="hanoi-rules-card"><h4>Правила</h4><ul><li>Переложи всю башню с левого стержня на правый.</li><li>За один ход — только один верхний диск.</li><li>Большой диск нельзя класть на маленький.</li><li>Средний стержень — промежуточный.</li></ul><button id="hanoiRulesClose" style="font-size:11px;padding:6px 14px">Закрыть</button></div></div></div>`;
+    const boardEl=$("#hanoiBoard",s.area),movesEl=$("#hanoiMoves",s.area),timeEl=$("#hanoiTime",s.area),overlay=$("#hanoiRulesOverlay",s.area);
+    function render(){boardEl.innerHTML="";for(let p=0;p<3;p++){const pegEl=document.createElement("div");pegEl.className="hanoi-peg"+(selected===p?" selected":"");for(const d of pegs[p]){const disk=document.createElement("div");disk.className="hanoi-disk";disk.style.width=(20+(d/diskCount)*70)+"%";disk.style.background=colorsArr[(d-1)%colorsArr.length];pegEl.append(disk)}pegEl.addEventListener("click",()=>clickPeg(p));boardEl.append(pegEl)}movesEl.textContent=moves;timeEl.textContent=timeText(time)}
+    function clickPeg(p){if(paused||finished)return;if(selected===null){if(pegs[p].length===0){s.say("Пусто.");return}selected=p;Sfx.click();render();return}if(selected===p){selected=null;Sfx.click();render();return}const from=pegs[selected],to=pegs[p];const disk=from[from.length-1],top=to[to.length-1];if(top!==undefined&&top<disk){Sfx.wrong();s.say("Большой на меньший нельзя.");selected=null;render();return}from.pop();to.push(disk);moves++;selected=null;Sfx.pop();render();if(pegs[2].length===diskCount){Sfx.win();const min=Math.pow(2,diskCount)-1;const score=Math.max(0,(min*3-moves)*10);setTimeout(()=>finishGame(true,score,`Дисков: ${diskCount}. Ходов: ${moves}.`,"БАШНЯ"),500)}}
+    function reset(){pegs=[[],[],[]];for(let i=diskCount;i>=1;i--)pegs[0].push(i);selected=null;moves=0;time=0;render()}
+    $("#hanoiReset",s.area).addEventListener("click",reset);
+    $("#hanoiRules",s.area).addEventListener("click",()=>overlay.classList.add("show"));
+    $("#hanoiRulesClose",s.area).addEventListener("click",()=>overlay.classList.remove("show"));
+    render();s.say(pick(P.hanoi));
+    return{update(dt){if(!finished)time+=dt},draw(){},destroy:s.destroy};
+  }return{start}})();
+/* 6. ДОГОНИ ИГОРЯ */
+const Pinata=(()=>{function start(){
+  const s=makeScene("pinata","Тапай Игоря · заполни шкалу до 100%");
+  let score=0,hits=0,remaining=60,time=0,progress=0;
+  let igorX=0,igorY=0,vx=0,vy=0,size=88;
+  s.area.innerHTML=`<div class="pinata-field"><div class="pinata-score-hud">0</div><div class="pinata-time-hud">60</div><div class="pinata-igor" style="display:none"><img alt="Игорь"></div><div class="pinata-bar-wrap"><div class="pinata-bar-fill"></div><div class="pinata-bar-lbl">УНИЖЕНИЕ</div></div></div>`;
+  const field=$(".pinata-field",s.area),igor=$(".pinata-igor",field);
+  $("img",igor).src=Portrait.src();
+  const scoreHud=$(".pinata-score-hud",field),timeHud=$(".pinata-time-hud",field),barFill=$(".pinata-bar-fill",field);
+  let fieldW=field.clientWidth||600,fieldH=field.clientHeight||400;
+  function initPos(){fieldW=field.clientWidth;fieldH=field.clientHeight;igorX=fieldW/2-size/2;igorY=fieldH/2-size/2;const dir=Math.random()*Math.PI*2;const sp=110*s.cfg.pinataSpeed;vx=Math.cos(dir)*sp;vy=Math.sin(dir)*sp;igor.style.display="block";igor.style.left=igorX+"px";igor.style.top=igorY+"px"}
+  setTimeout(initPos,50);
+  function spawnParticles(cx,cy){for(let i=0;i<8;i++){const p=document.createElement("div");p.className="pinata-particle";const a=Math.random()*Math.PI*2,d=30+Math.random()*60;p.style.setProperty("--dx",Math.cos(a)*d+"px");p.style.setProperty("--dy",Math.sin(a)*d+"px");p.style.left=(cx-3)+"px";p.style.top=(cy-3)+"px";field.append(p);setTimeout(()=>p.remove(),700)}}
+  s.on(igor,"pointerdown",e=>{
+    if(paused||finished)return;
+    e.preventDefault();e.stopPropagation();
+    score++;hits++;progress=Math.min(100,progress+8);
+    barFill.style.width=progress+"%";
+    Sfx.hitHard();
+    igor.classList.add("hit");setTimeout(()=>igor.classList.remove("hit"),250);
+    const rect=igor.getBoundingClientRect(),frect=field.getBoundingClientRect();
+    spawnParticles(rect.left-frect.left+rect.width/2,rect.top-frect.top+rect.height/2);
+    let nx,ny,tries=0;
+    do{nx=Math.random()*(fieldW-size);ny=Math.random()*(fieldH-size);tries++}while(tries<20&&Math.hypot(nx-igorX,ny-igorY)<Math.min(fieldW,fieldH)*0.4);
+    igorX=nx;igorY=ny;
+    const a=Math.random()*Math.PI*2;
+    const sp=(140+score*12)*s.cfg.pinataSpeed;
+    vx=Math.cos(a)*sp;vy=Math.sin(a)*sp;
+    if(hits%3===0)s.say(pick(P.pinata));
+    if(progress>=100&&!finished){Sfx.win();setTimeout(()=>finishGame(true,score,`Игорь доведён за ${timeText(time)}. Очков: ${score}.`,"ИСТЕРИКА"),400)}
+  });
+  s.say("Попробуй попасть. Я быстрый.");
+  return{update(dt){
+    time+=dt;remaining-=dt;
+    if(remaining<0)remaining=0;
+    const drain=currentDifficulty==="loser"?1.5:2.5;
+    progress=Math.max(0,progress-drain*dt);
+    barFill.style.width=progress+"%";
+    if(!igor.style.display||igor.style.display==="none")return;
+    igorX+=vx*dt;igorY+=vy*dt;
+    if(igorX<0){igorX=0;vx=Math.abs(vx)}if(igorX+size>fieldW){igorX=fieldW-size;vx=-Math.abs(vx)}
+    if(igorY<0){igorY=0;vy=Math.abs(vy)}if(igorY+size>fieldH){igorY=fieldH-size;vy=-Math.abs(vy)}
+    if(Math.random()<0.7*dt*s.cfg.pinataSpeed*3){const a=Math.random()*Math.PI*2;const sp=(140+score*12)*s.cfg.pinataSpeed;vx=Math.cos(a)*sp;vy=Math.sin(a)*sp}
+    igor.style.left=igorX+"px";igor.style.top=igorY+"px";
+    scoreHud.textContent=score;timeHud.textContent=Math.ceil(remaining);
+    timeHud.classList.toggle("warning",remaining<10);
+    s.stat.textContent=`${score} · ${Math.floor(progress)}%`;
+    if(remaining<=0&&!finished)finishGame(progress>=60,score,`Шкала: ${Math.floor(progress)}%.`);
+  },draw(){},destroy:s.destroy};
+}return{start}})();
+/* 7. ТЕТРИС */
+const Tetris=(()=>{
+  const SHAPES=[[[0,0,0,0],[1,1,1,1],[0,0,0,0],[0,0,0,0]],[[2,2],[2,2]],[[0,3,0],[3,3,3],[0,0,0]],[[0,4,4],[4,4,0],[0,0,0]],[[5,5,0],[0,5,5],[0,0,0]],[[6,0,0],[6,6,6],[0,0,0]],[[0,0,7],[7,7,7],[0,0,0]]];
+  const colors=["","#00d9ff","#ffff00","#bb65ff","#00ff99","#ff4477","#397cff","#ffa348","#666"];
+  function start(){
+    const s=makeScene("tetris","←→ движение · ↓ быстрее · ↑ поворот · пробел сброс · цель 20 линий",true);
+    let board=Array.from({length:20},()=>Array(10).fill(0));
+    let bag=[],queue=[],piece,score=0,lines=0,fall=0,lock=0,lockResets=0;
+    let repeat=0,lastDir=0,commentTimer=12,gameTime=0;
+    function dynamicSpeed(){const mult=currentDifficulty==="monster"?0.25:currentDifficulty==="normal"?0.375:0.5;const base=0.72*mult;const growth=Math.min(0.6,(gameTime/30)*0.2*s.cfg.tetrisGrowSpeed);return Math.max(0.06,base*(1-growth))}
+    function nextType(){if(!bag.length)bag=shuffle([0,1,2,3,4,5,6]);return bag.pop()}
+    for(let i=0;i<4;i++)queue.push(nextType());
+    function collide(p=piece,dx=0,dy=0,m=p.m){return m.some((row,y)=>row.some((v,x)=>{if(!v)return false;const xx=p.x+x+dx,yy=p.y+y+dy;return xx<0||xx>=10||yy>=20||(yy>=0&&board[yy][xx]!==0)}))}
+    function spawn(){const type=queue.shift();queue.push(nextType());piece={m:SHAPES[type].map(r=>r.slice()),x:3,y:-1};fall=0;lock=0;lockResets=0;if(collide())finishGame(false,score,`Очки: ${score}. Линии: ${lines}/20.`)}
+    function move(dx){if(!collide(piece,dx,0)){piece.x+=dx;if(lockResets<12){lock=0;lockResets++}}}
+    function rotate(){const m=piece.m[0].map((_,x)=>piece.m.map(row=>row[x]).reverse());for(const off of[0,-1,1,-2,2]){if(!collide(piece,off,0,m)){piece.m=m;piece.x+=off;if(lockResets<12){lock=0;lockResets++}Sfx.pop();return}}}
+    function land(){let above=false;piece.m.forEach((row,y)=>row.forEach((v,x)=>{if(v){const yy=piece.y+y;if(yy<0)above=true;else board[yy][piece.x+x]=v}}));if(above){finishGame(false,score,`Потолок. Очки: ${score}.`);return}const previous=lines;const remaining=board.filter(row=>row.some(v=>v===0));const cleared=20-remaining.length;board=remaining;while(board.length<20)board.unshift(Array(10).fill(0));if(cleared){const level=1+Math.floor(lines/5);score+=[0,100,300,500,800][cleared]*level;lines+=cleared;Sfx.line();s.popup(cleared===4?"ТЕТРИС":`+${cleared} ЛИНИИ`);if(lines>=20){finishGame(true,score,`20 линий. Очки: ${score}.`,"ЧИСТО");return}const count=Math.floor(lines/3)-Math.floor(previous/3);for(let n=0;n<count;n++){if(board[0].some(Boolean)){finishGame(false,score,`Мусор вытеснил башню. Очки: ${score}.`);return}board.shift();const row=Array(10).fill(8);row[Math.floor(rand(0,10))]=0;board.push(row)}if(count){Sfx.boom();Juice.shake(s.area);s.say(pick(P.tetris))}}else Sfx.hit();spawn()}
+    function action(code){if(finished||paused)return;if(code==="ArrowLeft")move(-1);if(code==="ArrowRight")move(1);if(code==="ArrowUp"||code==="KeyX")rotate();if(code==="ArrowDown"&&!collide(piece,0,1)){piece.y++;score++}if(code==="Space"){while(!collide(piece,0,1)){piece.y++;score+=2}land();Sfx.hitHard()}}
+    s.key(e=>{if(!e.repeat)action(e.code)});
+    s.touchControls([["◀","ArrowLeft"],["↻","ArrowUp"],["▼","ArrowDown"],["СБРОС","Space"],["▶","ArrowRight"]],action);
+    spawn();s.say("Я тут немного приберусь. Снизу.");
+    const cell=24,bx=264,by=20;
+    function block(g,x,y,v,alpha=1){if(y<0)return;g.globalAlpha=alpha;g.fillStyle=colors[v];g.fillRect(Math.floor(bx+x*cell+1),Math.floor(by+y*cell+1),cell-2,cell-2);g.globalAlpha=1}
+    return{update(dt){gameTime+=dt;const dir=(held.has("ArrowRight")?1:0)-(held.has("ArrowLeft")?1:0);if(dir!==lastDir){lastDir=dir;repeat=.16}else if(dir){repeat-=dt;if(repeat<=0){move(dir);repeat=.065}}const speed=held.has("ArrowDown")?.045:dynamicSpeed();fall+=dt;while(fall>=speed&&!finished){fall-=speed;if(!collide(piece,0,1)){piece.y++;lock=0;if(held.has("ArrowDown"))score++}else break}if(collide(piece,0,1)){lock+=dt;if(lock>=.42)land()}else lock=0;commentTimer-=dt;if(commentTimer<=0){s.say(pick(P.tetrisComment));commentTimer=rand(12,20)}},draw(){const g=s.g;backdrop(g,"#0b0617");g.fillStyle="#0a0413";g.fillRect(bx,by,240,480);g.strokeStyle="#1c1030";g.lineWidth=1;for(let x=0;x<=10;x++){g.beginPath();g.moveTo(bx+x*cell,by);g.lineTo(bx+x*cell,by+480);g.stroke()}for(let y=0;y<=20;y++){g.beginPath();g.moveTo(bx,by+y*cell);g.lineTo(bx+240,by+y*cell);g.stroke()}board.forEach((row,y)=>row.forEach((v,x)=>{if(v)block(g,x,y,v)}));const ghost={...piece,y:piece.y};while(!collide(ghost,0,1))ghost.y++;ghost.m.forEach((row,y)=>row.forEach((v,x)=>{if(v)block(g,ghost.x+x,ghost.y+y,v,.17)}));piece.m.forEach((row,y)=>row.forEach((v,x)=>{if(v)block(g,piece.x+x,piece.y+y,v)}));txt(g,"ОЧКИ",130,65,11,"#7c7a85");txt(g,score,130,100,32,"#e8e6dd");txt(g,"ЛИНИИ",130,160,11,"#7c7a85");txt(g,`${lines} / 20`,130,200,28,"#7d5cff");txt(g,"УРОВЕНЬ "+(1+Math.floor(lines/5)),130,265,13,"#7c7a85");txt(g,"СЛЕДУЮЩИЕ",635,55,11,"#7c7a85");queue.slice(0,3).forEach((type,i)=>{SHAPES[type].forEach((row,y)=>row.forEach((v,x)=>{if(v){g.fillStyle=colors[v];g.fillRect(585+x*22,90+i*105+y*22,20,20)}}))});s.stat.textContent=`${score} · ${lines}/20`},destroy:s.destroy};
+  }return{start}})();
+/* 8. OSU */
+const Osu=(()=>{
+  const PATTERNS=["circle","zigzag","square","star","line","burst"];
+  function start(){
+    const s=makeScene("osu","Клик по кругу · PERFECT/GOOD/MISS · набери очки",true);
+    const CR=44,AR=82,GHOST=400;
+    let score=0,combo=0,remaining=60,miss=0,good=0,perfect=0;
+    let queue=[],qi=0,active=[],ghosts=[],spawnTimer=0;
+    const target=s.cfg.osuTarget,missLimit=s.cfg.osuMissLimit;
+    function pattern(){const type=pick(PATTERNS),count=4+Math.floor(rand(0,4)),cx=W/2,cy=H/2,m=90,pts=[];for(let i=0;i<count;i++){switch(type){case"circle":{const a=i/count*Math.PI*2;pts.push({x:cx+Math.cos(a)*180,y:cy+Math.sin(a)*130});break}case"zigzag":pts.push({x:m+(W-m*2)*(i/(count-1)),y:cy+(i%2?-1:1)*100});break;case"square":{const sx=cx-160,sy=cy-110,w=320,h=220;const c=[{x:sx,y:sy},{x:sx+w,y:sy},{x:sx+w,y:sy+h},{x:sx,y:sy+h}];pts.push(c[i%4]);break}case"star":{const a=i/count*Math.PI*2-Math.PI/2,r=i%2?90:180;pts.push({x:cx+Math.cos(a)*r,y:cy+Math.sin(a)*r});break}case"line":pts.push({x:m+(W-m*2)*(i/(count-1)),y:cy+(i-count/2)*40});break;case"burst":{const a=i/count*Math.PI*2,r=Math.min(i*30,180);pts.push({x:cx+Math.cos(a)*r,y:cy+Math.sin(a)*r});break}}}return pts}
+    function push(){if(!queue.length||qi>=queue.length){queue=pattern();qi=0}const p=queue[qi++];ghosts.push({x:p.x,y:p.y,started:performance.now(),life:s.cfg.osuLifetime})}
+    function checkLose(){if(miss>=missLimit)finishGame(false,score,`Промахов: ${miss} из ${missLimit}.`)}
+    function judgeAt(type){if(type==="perfect"){perfect++;combo++;score+=Math.floor(300*(1+combo*.05));Sfx.osuPerfect();s.popup("PERFECT")}else if(type==="good"){good++;combo++;score+=100;Sfx.osuGood();s.popup("GOOD")}else{miss++;combo=0;Sfx.osuMiss();s.popup("MISS")}if(score>=target){finishGame(true,score,`Очков: ${score}. Perfect: ${perfect}, Good: ${good}, Miss: ${miss}.`,"ПОБЕДА");return}checkLose()}
+    function point(e){const r=s.canvas.getBoundingClientRect();return{x:(e.clientX-r.left)*W/r.width,y:(e.clientY-r.top)*H/r.height}}
+    function click(e){if(paused||finished)return;const p=point(e),now=performance.now();let bestC=null,bestDist=Infinity;for(const a of active){if(a.hit||a.missed)continue;const d=Math.hypot(p.x-a.x,p.y-a.y);if(d<CR+20&&d<bestDist){bestC=a;bestDist=d}}if(!bestC)return;const age=now-bestC.born,prog=age/bestC.life;bestC.hit=true;if(prog>=.35&&prog<=.65)judgeAt("perfect");else if(prog>=.2&&prog<=.8)judgeAt("good");else judgeAt("miss")}
+    s.on(s.canvas,"pointerdown",click);spawnTimer=0;push();
+    function draw(){const g=s.g;backdrop(g,"#020d18");g.strokeStyle="#0a2a44";g.lineWidth=1;for(let x=0;x<W;x+=40){g.beginPath();g.moveTo(x,0);g.lineTo(x,H);g.stroke()}for(let y=0;y<H;y+=40){g.beginPath();g.moveTo(0,y);g.lineTo(W,y);g.stroke()}const now=performance.now();for(const gh of ghosts){const prog=(now-gh.started)/GHOST;if(prog<1){g.globalAlpha=.15+.35*Math.sin(prog*Math.PI);g.fillStyle="#ff66aa";g.beginPath();g.arc(gh.x,gh.y,CR,0,Math.PI*2);g.fill();g.globalAlpha=1}}for(const a of active){if(a.hit||a.missed)continue;const prog=(now-a.born)/a.life;if(prog<=1.2){const alpha=Math.min(1,prog*3),ar=AR-(AR-CR)*Math.min(1,prog);g.globalAlpha=alpha*.9;g.strokeStyle="#ff66aa";g.lineWidth=3;g.beginPath();g.arc(a.x,a.y,ar,0,Math.PI*2);g.stroke();g.globalAlpha=alpha;g.fillStyle="#ff0066";g.beginPath();g.arc(a.x,a.y,CR,0,Math.PI*2);g.fill();g.strokeStyle="#fff";g.lineWidth=2;g.beginPath();g.arc(a.x,a.y,CR,0,Math.PI*2);g.stroke();g.fillStyle="#fff";g.font="bold 22px Impact,sans-serif";g.textAlign="center";g.textBaseline="middle";g.fillText("OSU",a.x,a.y)}}g.globalAlpha=1;g.fillStyle="#0a1a2a";g.fillRect(20,H-40,W-40,16);g.fillStyle="#ff0066";g.fillRect(20,H-40,(W-40)*Math.min(1,score/target),16);txt(g,`ОЧКИ ${score} / ${target}`,W/2,H-32,10,"#e8e6dd");txt(g,`ПРОМАХИ ${miss}/${missLimit}`,W-100,32,12,"#ff3d6b");s.stat.textContent=`${score} · ${remaining.toFixed(0)}с`}
+    return{update(dt){remaining-=dt;const now=performance.now();for(let i=ghosts.length-1;i>=0;i--){const gh=ghosts[i];if(now-gh.started>=GHOST){active.push({x:gh.x,y:gh.y,born:now,life:gh.life,hit:false,missed:false});ghosts.splice(i,1)}}spawnTimer-=dt;if(spawnTimer<=0){spawnTimer=s.cfg.osuSpawnGap;push()}for(let i=active.length-1;i>=0;i--){const a=active[i];if(a.hit||a.missed){if(now-a.born>a.life+200)active.splice(i,1);continue}const prog=(now-a.born)/a.life;if(prog>1){a.missed=true;miss++;combo=0;Sfx.osuMiss();checkLose()}if(now-a.born>a.life+300)active.splice(i,1)}if(remaining<=0&&!finished){if(score>=target)finishGame(true,score,`Очков: ${score}.`,"ПОБЕДА");else finishGame(false,score,`Не добрал: ${score} из ${target}.`)}},draw,destroy:s.destroy};
+  }return{start}})();
+/* 9. DUCK HUNT */
+const Duck=(()=>{
+  const ROUNDS=3,DUCKS_PER_ROUND=8,AMMO_PER_ROUND=12;
+  function start(){
+    const s=makeScene("duck","Прицел мышь · выстрел клик · R перезарядка · цель: убить N уток",true);
+    const requiredKills=currentDifficulty==="loser"?Math.ceil(24*0.75):Math.ceil(24*0.8);
+    let score=0,hits=0,round=1,ducksLeft=DUCKS_PER_ROUND,ammo=AMMO_PER_ROUND;
+    let spawnTimer=0,roundPause=0,mx=W/2,my=H/2,aimX=W/2,aimY=H/2,flash=0;
+    let ammoMax=AMMO_PER_ROUND,combo=0,overlayTime=0;
+    const ducks=[];
+    s.area.insertAdjacentHTML("beforeend",'<div class="duck-round-overlay" id="roundOverlay"><div class="duck-round-text" id="roundText">РАУНД 1<small>СТАРТ</small></div></div>');
+    s.area.insertAdjacentHTML("beforeend",'<div class="duck-combo" id="duckCombo"></div>');
+    const overlay=$("#roundOverlay",s.area),roundText=$("#roundText",s.area),comboEl=$("#duckCombo",s.area);
+    function showRound(n){roundText.innerHTML=`РАУНД ${n}<small>СТАРТ</small>`;overlay.classList.add("show");overlayTime=1.4;setTimeout(()=>overlay.classList.remove("show"),1300)}
+    showRound(1);
+    function spawn(){const side=Math.random()<.5?-1:1;const speed=(90+Math.random()*70)*s.cfg.duckSpeed;ducks.push({x:side<0?-40:W+40,y:H*.35+Math.random()*H*.25,vx:-side*speed,vy:-40-Math.random()*60,wing:0,wobble:Math.random()*Math.PI*2,changeTimer:rand(.3,.7)/s.cfg.duckManeuver,lifeTimer:7+Math.random()*2,hit:false,hitTime:0});ducksLeft--}
+    function shoot(px,py){if(paused||finished)return;if(ammo<=0)return;ammo--;Sfx.shoot();flash=.08;let hitAny=false;for(let i=ducks.length-1;i>=0;i--){const d=ducks[i];if(d.hit)continue;if(Math.abs(px-d.x)<28&&Math.abs(py-d.y)<24){d.hit=true;d.hitTime=performance.now();combo++;let mult=1;if(combo>=3)mult=2;const base=(100+(round-1)*50)*mult;score+=base;hits++;Sfx.hitHard();if(combo>=3){comboEl.textContent=`КОМБО ×${combo} · +${base}`;comboEl.classList.add("show");setTimeout(()=>comboEl.classList.remove("show"),900)}setTimeout(()=>{const idx=ducks.indexOf(d);if(idx!==-1)ducks.splice(idx,1)},400);break}}if(!hitAny)combo=0}
+    function point(e){const r=s.canvas.getBoundingClientRect();return{x:(e.clientX-r.left)*W/r.width,y:(e.clientY-r.top)*H/r.height}}
+    s.on(s.canvas,"pointermove",e=>{const p=point(e);mx=p.x;my=p.y});
+    s.on(s.canvas,"pointerdown",e=>{const p=point(e);mx=p.x;my=p.y;aimX=p.x;aimY=p.y;shoot(p.x,p.y)});
+    s.key(e=>{if(e.key==="r"||e.key==="R"||e.key==="к"||e.key==="К"){e.preventDefault();ammo=ammoMax}});
+    function draw(){
+      const g=s.g;
+      const grad=g.createLinearGradient(0,0,0,H*.75);
+      grad.addColorStop(0,"#5ab6e0");grad.addColorStop(.5,"#8ed0e8");grad.addColorStop(1,"#c0e8f0");
+      g.fillStyle=grad;g.fillRect(0,0,W,H*.75);
+      g.fillStyle="rgba(255,255,255,.85)";
+      for(let i=0;i<5;i++){const cx=((i*200)+performance.now()*.008)%(W+240)-120;const cy=60+i*30%150;g.beginPath();g.arc(cx,cy,28,0,Math.PI*2);g.arc(cx+30,cy,36,0,Math.PI*2);g.arc(cx+65,cy,26,0,Math.PI*2);g.arc(cx+35,cy-16,28,0,Math.PI*2);g.fill()}
+      g.fillStyle="#2d5a2d";g.fillRect(0,H*.6,W,H*.15);
+      for(let i=0;i<15;i++){const tx=(i*70+20)%(W+80)-20;const th=60+((i*13)%40);g.fillStyle=i%2?"#1e4a1e":"#2a5a2a";g.beginPath();g.moveTo(tx,H*.6);g.lineTo(tx+25,H*.6-th);g.lineTo(tx+50,H*.6);g.closePath();g.fill();g.fillRect(tx+22,H*.6-th+20,6,th-20)}
+      g.fillStyle="#3a6a2a";g.fillRect(0,H*.72,W,H*.28);
+      g.fillStyle="#4a8a2a";g.fillRect(0,H*.72,W,12);
+      g.fillStyle="#2a4a1a";for(let i=0;i<8;i++){g.beginPath();g.arc(50+i*110,H*.75,26,Math.PI,0);g.fill()}
+      const now=performance.now();
+      for(const d of ducks){if(d.hit&&now-d.hitTime>500)continue;g.save();const yOff=Math.sin(d.wobble)*5;if(d.hit)g.globalAlpha=1-(now-d.hitTime)/1000;g.translate(d.x,d.y+yOff);g.fillStyle="#3a1a0a";const up=Math.sin(d.wing)>0;g.beginPath();g.ellipse(-6,up?-12:6,20,7,up?-.5:.5,0,Math.PI*2);g.fill();g.beginPath();g.ellipse(6,up?-12:6,20,7,up?.5:-.5,0,Math.PI*2);g.fill();g.fillStyle="#5a2a10";g.beginPath();g.ellipse(0,0,22,14,0,0,Math.PI*2);g.fill();circlePortrait(g,d.vx>0?15:-15,-6,11,"#000");g.restore()}
+      const gunX=W/2,gunY=H+30;const angle=Math.atan2(aimY-gunY,aimX-gunX);
+      g.save();g.translate(gunX,gunY);g.rotate(angle);g.fillStyle="#2a2a2a";g.fillRect(0,-13,260,26);g.fillStyle="#3a3a3a";g.fillRect(0,-13,260,6);g.fillStyle="#1a1a1a";g.fillRect(240,-11,20,22);g.fillStyle="#6a3a1a";g.beginPath();g.moveTo(0,-16);g.lineTo(-80,-30);g.lineTo(-90,20);g.lineTo(0,16);g.closePath();g.fill();g.fillStyle="#8a5a2a";g.fillRect(0,-16,10,32);g.fillStyle="#1a1a1a";g.fillRect(30,12,8,14);g.restore();
+      g.strokeStyle="#fff";g.lineWidth=2;g.beginPath();g.moveTo(aimX-20,aimY);g.lineTo(aimX-6,aimY);g.moveTo(aimX+6,aimY);g.lineTo(aimX+20,aimY);g.moveTo(aimX,aimY-20);g.lineTo(aimX,aimY-6);g.moveTo(aimX,aimY+6);g.lineTo(aimX,aimY+20);g.stroke();g.beginPath();g.arc(aimX,aimY,4,0,Math.PI*2);g.stroke();
+      if(flash>0){g.fillStyle=`rgba(255,220,120,${flash*4})`;g.fillRect(0,0,W,H)}
+      txt(g,"ПАТРОНЫ "+"|".repeat(ammo)+"_".repeat(ammoMax-ammo),W-180,32,13,"#ffbb00");
+      txt(g,`РАУНД ${round}/${ROUNDS}`,100,32,13,"#fff");
+      txt(g,`ЦЕЛЬ: ${hits}/${requiredKills}`,100,58,13,"#ffbb00");
+      if(combo>0)txt(g,`КОМБО ×${combo}`,W/2,H-30,14,"#ffbb00");
+    }
+    function end(){
+      const won=hits>=requiredKills;
+      if(won)finishGame(true,score,`Убито ${hits} из ${DUCKS_PER_ROUND*ROUNDS}. Цель ${requiredKills} — выполнена.`,"ОХОТНИК");
+      else finishGame(false,score,`Убито ${hits} из ${DUCKS_PER_ROUND*ROUNDS}. Нужно ${requiredKills}.`);
+    }
+    return{update(dt){
+      aimX+=(mx-aimX)*.3;aimY+=(my-aimY)*.3;
+      flash=Math.max(0,flash-dt);
+      if(overlayTime>0)overlayTime-=dt;
+      if(roundPause>0){roundPause-=dt;if(roundPause<=0&&round<ROUNDS){round++;ducksLeft=DUCKS_PER_ROUND;spawnTimer=0;roundPause=0;ammo=ammoMax;combo=0;showRound(round)}}else{
+        spawnTimer-=dt;
+        if(spawnTimer<=0&&ducks.length<2&&ducksLeft>0){spawnTimer=1.0;spawn()}
+        for(let i=ducks.length-1;i>=0;i--){
+          const d=ducks[i];if(d.hit)continue;
+          d.wobble+=dt*6*(1+s.cfg.duckManeuver*0.4);
+          d.wing+=dt*14;
+          d.changeTimer-=dt;d.lifeTimer-=dt;
+          d.x+=d.vx*dt;
+          d.y+=d.vy*dt+Math.sin(d.wobble*2.2)*60*dt*s.cfg.duckManeuver;
+          if(d.changeTimer<=0){d.changeTimer=rand(.25,.55)/s.cfg.duckManeuver;d.vy=-60-Math.random()*120*(0.6+s.cfg.duckManeuver*0.5);d.vx+=(Math.random()-.5)*80*s.cfg.duckManeuver}
+          if(d.y<80){d.y=80;d.vy=Math.abs(d.vy)}
+          if(d.y>H*.7){d.y=H*.7;d.vy=-Math.abs(d.vy)}
+          if(d.x<-80||d.x>W+80||d.lifeTimer<=0){combo=0;ducks.splice(i,1)}
+        }
+        if(ducksLeft<=0&&ducks.length===0&&roundPause<=0){if(round>=ROUNDS)end();else roundPause=1.2}
+      }
+      s.stat.textContent=`${score} · убито ${hits}/${requiredKills}`;
+    },draw,destroy:s.destroy};
+  }return{start}})();
+/* 10. СУД */
+const Court=(()=>{
+  const CASES=[
+    {truth:true,text:"Игорь на синке сказал, что нашёл ряд багов. В итоге завёл только тот, который Рита уже завела раньше."},
+    {truth:false,text:"Игорь на синке сказал, что нашёл багов больше всех. В итоге завёл три бага, но два из них отклонили как дубли."},
+    {truth:true,text:"Настя завела баг, который должен был найти Игорь — по его проверке. Игорь ничего не нашёл."},
+    {truth:false,text:"Игорь завёл баг, который потом Настя нашла повторно — Игорь неправильно описал шаги."},
+    {truth:true,text:"Игорь на созвоне сказал, что «вливался в рабочий процесс». При этом время не трекал."},
+    {truth:false,text:"Игорь на созвоне сказал, что «раскапывал сложный баг». Время трекал, но ни одной таски не закрыл."},
+    {truth:true,text:"Игорь не пришёл на синк команды. Оказалось — проспал. У него 5 вечера."},
+    {truth:false,text:"Игорь опоздал на синк на 40 минут. Сказал, что были проблемы с интернетом."},
+    {truth:true,text:"Игорь взял досматривать фичу Риты. Должен был закончить во вторник. Сказал — «часа 4 осталось». Не успел ни в срок, ни после."},
+    {truth:false,text:"Игорь взял фичу Риты. Должен был закончить в четверг. Сказал — «часа 2 осталось». Закончил в пятницу утром."},
+    {truth:true,text:"Игорь заводит баги на ошибки в конфигах, которые обычно не заводят."},
+    {truth:false,text:"Игорь заводит баги на опечатки в текстах, которые обычно не заводят."},
+    {truth:true,text:"Игорь отправил баг на мердж в основную ветку, при том что у бага была другая ветка."},
+    {truth:false,text:"Игорь отправил два бага в одну и ту же ветку. Один из них был закрыт месяц назад."},
+    {truth:true,text:"Игорь за неделю ни одного бага не завёл. В тест-ране 120 проверок не сделано. Статус — «в отпуске с понедельника»."},
+    {truth:false,text:"Игорь за неделю завёл 3 бага. В тест-ране 80 проверок не сделано. Статус — «в отпуске со среды»."},
+    {truth:true,text:"Игорь на созвоне сказал: «я смотрю желейную лотерею... ОЙ, планету»."},
+    {truth:false,text:"Игорь на созвоне сказал: «я смотрю лотерейный билет... ой, то есть планету»."},
+    {truth:true,text:"Игорь взял больничный на удаление прыща со лба — и скинул фотку в тестерский чат."},
+    {truth:false,text:"Игорь взял больничный на удаление зуба мудрости — и скинул фотку щеки в тестерский чат."},
+    {truth:true,text:"Игорь заразил тупостью другого тестера. Тот тоже не смог сделать презентацию."},
+    {truth:false,text:"Игорь заразил ленью другого тестера. Тот тоже не завёл ни одного бага за неделю."},
+    {truth:true,text:"Игорь хочет привести свою девушку в команду на позицию мидла."},
+    {truth:false,text:"Игорь хочет привести своего друга в команду на позицию джуна."},
+    {truth:true,text:"Игорь говорит, что все выхи нервничал лид и думал, как ему давать пиздюлей."},
+    {truth:false,text:"Игорь говорит, что все выхи Рита думала, как ему давать пиздюлей."},
+    {truth:true,text:"Игорь сказал, что «смотрит баг». Время не трекал. Ничего не сделал."},
+    {truth:false,text:"Игорь сказал, что «смотрит баг». Время трекал 4 часа. Завёл как «не воспроизводится»."},
+    {truth:true,text:"Игорь сказал, что заведёт ряд багов до конца дня. К концу дня — ни одного. Зато статус «в отпуске с понедельника»."},
+    {truth:false,text:"Игорь сказал, что заведёт баги. До конца дня завёл 1. Статус — «в отпуске со вторника»."}
+  ];
+  const TOTAL=10;
+  function start(){
+    const s=makeScene("court","Каждый раунд — 2 версии. Обе про косяк. Где правда?");
+    let round=0,you=0,igor=0,locked=false,started=false;
+    const used=new Set();
+    const intro=document.createElement("div");
+    intro.className="court-intro";
+    intro.innerHTML=`
+      <div class="stamp">ЗАСЕДАНИЕ · 2025</div>
+      <h2>СУД НАД<br>ИГОРЕМ</h2>
+      <p>Гражданин Игорь обвиняется в систематическом ебланстве на рабочем месте. Вы вызваны присяжным.</p>
+      <div class="rules">
+        <strong style="color:#e0d0a0">Ваша задача:</b>
+        <ul style="margin:8px 0 0;padding-left:20px">
+          <li>10 раундов. В каждом — 2 версии событий.</li>
+          <li>Одна — реальный косяк Игоря, другая — выдумка.</li>
+          <li>Выбери правильную. За верный выбор +1 очко вам.</li>
+          <li>За ошибочный +1 очко Игорю.</li>
+          <li>В конце — чей счёт больше, тот и победил.</li>
+        </ul>
+      </div>
+      <button class="primary" id="courtStart">НАЧАТЬ ЗАСЕДАНИЕ</button>`;
+    s.area.append(intro);
+    function pairFor(){
+      const pairs=[];
+      for(let i=0;i<CASES.length;i+=2){if(!used.has(i)&&!used.has(i+1)&&CASES[i]&&CASES[i+1])pairs.push(i)}
+      if(!pairs.length){for(const i of used)used.delete(i);return pairFor()}
+      const start=pairs[Math.floor(Math.random()*pairs.length)];
+      used.add(start);used.add(start+1);
+      return [CASES[start],CASES[start+1]];
+    }
+    function begin(){
+      started=true;intro.remove();
+      s.area.innerHTML=`<div class="court-layout"><div class="court-header"><h3>Заседание открыто</h3><div class="sub">Раунд 1 / ${TOTAL}</div></div><div class="court-cases"></div><div class="court-verdict"></div><div class="court-footer"><div><span class="lbl">Ты</span> <span id="courtYou">0</span></div><div><span class="lbl">Игорь</span> <span id="courtIgor">0</span></div></div></div>`;
+      initRound();
+    }
+    let casesEl,verdictEl,youEl,igorEl,headerSub;
+    function initRound(){
+      casesEl=$(".court-cases",s.area);verdictEl=$(".court-verdict",s.area);
+      youEl=$("#courtYou",s.area);igorEl=$("#courtIgor",s.area);headerSub=$(".court-header .sub",s.area);
+      renderRound();
+    }
+    function renderRound(){
+      locked=false;
+      headerSub.textContent=`Раунд ${round+1} / ${TOTAL}`;
+      casesEl.replaceChildren();
+      const pair=shuffle(pairFor());
+      pair.forEach((c,i)=>{const card=document.createElement("button");card.className="case-card";card.dataset.truth=c.truth?"1":"0";card.innerHTML=`<div class="badge">Версия ${i+1}</div><div class="text">${c.text}</div>`;card.addEventListener("click",()=>pickCase(card));casesEl.append(card)});
+      verdictEl.textContent="";
+    }
+    function pickCase(card){
+      if(paused||finished||locked)return;
+      locked=true;
+      const isTruth=card.dataset.truth==="1";
+      const allCards=$$(".case-card",casesEl);
+      allCards.forEach(c=>c.classList.add("disabled"));
+      if(isTruth){card.classList.add("picked","correct");you++;Sfx.correct();verdictEl.textContent="Верно. Именно так он и накосячил.";verdictEl.style.color="var(--c-pong)"}
+      else{card.classList.add("picked","wrong");igor++;Sfx.wrong();const other=allCards.find(c=>c!==card&&c.dataset.truth==="1");if(other)other.classList.add("picked","correct");verdictEl.textContent="Мимо. Правда — другая версия.";verdictEl.style.color="var(--c-pinata)"}
+      youEl.textContent=you;igorEl.textContent=igor;
+      setTimeout(()=>{if(finished)return;round++;if(round>=TOTAL)end();else renderRound()},1900);
+    }
+    function end(){
+      if(you>igor)finishGame(true,you*100,`Счёт: ТЫ ${you} : ${igor} ИГОРЬ. Игорь признан виновным.`,"ПРИГОВОР");
+      else finishGame(false,you*100,`Счёт: ТЫ ${you} : ${igor} ИГОРЬ. Игорь оправдан.`);
+    }
+    $("#courtStart",intro).addEventListener("click",begin);
+    return{update(){},draw(){},destroy:s.destroy};
+  }return{start}})();
+/* 11. ФИНАЛЬНЫЙ КЛИКЕР */
+const Final=(()=>{
+  function start(){
+    const screen=$("#final");
+    screen.innerHTML=`
+      <button class="final-exit" id="finalExit">← Меню</button>
+      <div class="final-stage">
+        <div class="final-igor" id="finalIgor"><img alt="Игорь"></div>
+      </div>
+      <div class="final-bar-vertical"><div class="final-bar-fill" id="finalBar"></div></div>
+      <div class="final-bar-label">ХАПФУ</div>
+      <div class="final-hud-top">
+        <div class="final-counter" id="finalCount">0</div>
+        <div class="final-timer" id="finalTime">30</div>
+      </div>
+      <div class="final-btn-wrap"><button class="final-btn" id="finalBtn">УВОЛИТЬ ИГОРЯ</button></div>`;
+    const igor=$("#finalIgor",screen),btn=$("#finalBtn",screen),bar=$("#finalBar",screen),cnt=$("#finalCount",screen),tmr=$("#finalTime",screen);
+    $("img",igor).src=Portrait.src();
+    let hits=0,progress=0,remaining=30,time=0,ended=false;
+    const area=screen;
+    function spawnHapfu(){
+      const el=document.createElement("div");el.className="final-hapfu";el.textContent="ХАПФУ";
+      const dir=Math.floor(Math.random()*4);
+      const rect=igor.getBoundingClientRect(),aRect=area.getBoundingClientRect();
+      const tX=rect.left-aRect.left+rect.width/2;
+      const tY=rect.top-aRect.top+rect.height/2;
+      let x,y,rot;
+      const w=aRect.width,h=aRect.height;
+      if(dir===0){x=-100;y=tY;rot=-25}
+      else if(dir===1){x=w+100;y=tY;rot=25}
+      else if(dir===2){x=tX;y=-100;rot=-10}
+      else{x=tX;y=h+100;rot=10}
+      el.style.left=x+"px";el.style.top=y+"px";el.style.transform=`rotate(${rot}deg) scale(.5)`;el.style.opacity="0";
+      area.append(el);
+      const dx=tX-x,dy=tY-y;
+      const dur=550;
+      const start=performance.now();
+      function anim(now){
+        const t=Math.min(1,(now-start)/dur);
+        const ease=t<.85?t/0.85:1;
+        const ex=x+dx*ease,ey=y+dy*ease;
+        const scale=t<.85?.5+t*1.5:2.5-(t-.85)*5;
+        const alpha=t<.15?t/.15:t<.85?1:1-(t-.85)/.15;
+        el.style.left=ex+"px";el.style.top=ey+"px";
+        el.style.transform=`rotate(${rot}deg) scale(${scale})`;
+        el.style.opacity=String(Math.max(0,alpha));
+        if(t<1)requestAnimationFrame(anim);else el.remove();
+      }
+      requestAnimationFrame(anim);
+    }
+    function hit(){
+      if(ended||paused)return;
+      hits++;progress=Math.min(100,progress+4);
+      cnt.textContent=hits;
+      bar.style.height=progress+"%";
+      Sfx.hitHard();
+      igor.classList.add("hit");setTimeout(()=>igor.classList.remove("hit"),100);
+      spawnHapfu();
+      if(progress>=100){
+        ended=true;
+        Sfx.win();
+        Storage.setCompleted(11);Storage.addStar(11);
+        setTimeout(()=>{
+          $("#resultTitle").textContent="ИГОРЬ УВОЛЕН";
+          $("#resultFlavor").textContent=`Хапфу нанесено: ${hits}.\nИгорь обхапфукан и уволен из компании навсегда.\n\nРита довольна. Победа Риты.`;
+          Router.showResult();
+        },600);
+      }
+    }
+    btn.addEventListener("pointerdown",e=>{e.preventDefault();hit()});
+    igor.addEventListener("pointerdown",e=>{e.preventDefault();hit()});
+    const kd=e=>{if(e.code==="Space"){e.preventDefault();hit()}};
+    document.addEventListener("keydown",kd);
+    $("#finalExit",screen).addEventListener("click",()=>{document.removeEventListener("keydown",kd);Router.go("menu")});
+    let raf=null,lastT=performance.now();
+    function loop(now){
+      if(ended)return;
+      const dt=Math.min((now-lastT)/1000,.05);lastT=now;
+      time+=dt;remaining-=dt;
+      if(remaining<0)remaining=0;
+      tmr.textContent=Math.ceil(remaining);
+      progress=Math.max(0,progress-22*dt);
+      bar.style.height=progress+"%";
+      if(remaining<=0&&!ended){
+        ended=true;
+        Sfx.lose();
+        document.removeEventListener("keydown",kd);
+        setTimeout(()=>{
+          $("#mockeryTitle").textContent="ИГОРЬ ОСТАЛСЯ";
+          $("#mockerySub").textContent=`Хапфу: ${hits}. Шкала: ${Math.floor(progress)}%.\n\nИгорь остаётся работать в компании навсегда.`;
+          $("#mockery").classList.add("active");
+          $("#pauseBtn").classList.add("hidden");
+        },400);
+        return;
+      }
+      raf=requestAnimationFrame(loop);
+    }
+    lastT=performance.now();raf=requestAnimationFrame(loop);
+    return{update(){},draw(){},destroy(){if(raf)cancelAnimationFrame(raf);document.removeEventListener("keydown",kd);screen.innerHTML=""}};
+  }return{start}})();
+/* ЛЕТАЮЩИЕ НАДПИСИ */
+const EblanFlies=(()=>{
+  const SECRET_COUNT=4;
+  let flyers=[],secrets=[],running=false;
+  function make(text,cls){const el=document.createElement("div");el.className="flying-eblan "+cls;el.textContent=text;document.getElementById("flies").append(el);return el}
+  function setup(el){el._x=Math.random()*Math.max(1,window.innerWidth-150);el._y=Math.random()*Math.max(1,window.innerHeight-40);const angle=Math.random()*Math.PI*2;const sp=.5+Math.random()*1.2;el._vx=Math.cos(angle)*sp*30;el._vy=Math.sin(angle)*sp*30;el._t=Math.random()*10;el.style.left=el._x+"px";el.style.top=el._y+"px"}
+  function init(){
+    if(running)return;running=true;
+    const flies=document.getElementById("flies");flies.innerHTML="";
+    flyers=[];secrets=[];
+    for(let i=0;i<12;i++){const el=make("ИГОРЬ ЕБЛАН","");setup(el);flyers.push(el)}
+    for(let idx=0;idx<SECRET_COUNT;idx++){
+      const el=make("ИГОРЬ ЕБЛАН","secret");el.dataset.idx=idx;
+      const found=Storage.foundSecret(idx);if(found)el.classList.add("activated");
+      setup(el);el._frozen=found;
+      el.addEventListener("click",()=>{
+        if(el.classList.contains("activated"))return;
+        Sfx.secret();Storage.markSecret(idx);
+        el.classList.add("activated");el._frozen=true;
+        el.style.left=el._x+"px";el.style.top=el._y+"px";
+        if(Storage.allSecretsFound()){Juice.flash();setTimeout(()=>Menu.renderLevels(),300);Juice.notice("ВСЕ УРОВНИ ОТКРЫТЫ")}
+      });
+      secrets.push(el);
+    }
+  }
+  function tick(dt){
+    if(!running)return;
+    const show=Router.current==="menu";
+    const w=window.innerWidth,h=window.innerHeight;
+    const upd=arr=>{for(const el of arr){el.style.display=show?"":"none";if(!show)continue;if(el._frozen){el.style.left=el._x+"px";el.style.top=el._y+"px";continue}el._t+=dt;el._x+=el._vx*dt;el._y+=el._vy*dt;const marginX=el.offsetWidth||120,marginY=16;if(el._x<=0){el._x=0;el._vx=Math.abs(el._vx)}if(el._x+marginX>=w){el._x=w-marginX;el._vx=-Math.abs(el._vx)}if(el._y<=0){el._y=0;el._vy=Math.abs(el._vy)}if(el._y+marginY>=h){el._y=h-marginY;el._vy=-Math.abs(el._vy)}const wib=Math.sin(el._t*2)*3;el.style.left=(el._x+wib)+"px";el.style.top=el._y+"px"}};
+    upd(flyers);upd(secrets);
+  }
+  function refresh(){running=false;init()}
+  return{init,tick,refresh};
+})();
+const Router={
+  current:"menu",
+  go(id){
+    $$(".screen").forEach(el=>el.classList.remove("active"));
+    const target=$("#"+id);if(target)target.classList.add("active");
+    this.current=id;setPaused(false);SoundManager.cancel();
+    if(id==="menu"||id==="result"){$$(".igor-comment").forEach(c=>c.textContent="")}
+    $("#pauseBtn").classList.toggle("hidden",id==="menu"||id==="result");
+  },
+  showResult(){$$(".screen").forEach(el=>el.classList.remove("active"));$("#result").classList.add("active");this.current="result";SoundManager.cancel();$$(".igor-comment").forEach(c=>c.textContent="");$("#pauseBtn").classList.add("hidden");lastLevel=currentLevel}
+};
+const Menu={
+  init(){Storage.load();SoundManager.setMuted(SoundManager.isMuted());const d=Storage.getDifficulty();$$(".diff-btn").forEach(b=>b.classList.toggle("active",b.dataset.diff===d));this.renderLevels();this.bind();EblanFlies.init()},
+  renderLevels(){
+    const grid=$("#levelGrid");grid.innerHTML="";
+    const done=LEVELS.filter(l=>Storage.isCompleted(l.id)).length;
+    $("#progressText").textContent=`Пройдено ${done}/${LEVELS.length}`;
+    LEVELS.forEach(lv=>{
+      const b=document.createElement("button");
+      const classes=["level-card"];
+      b.dataset.color=lv.color||"muted";
+      const unlocked=Storage.isUnlocked(lv.id,Storage.isSecretUnlocked());
+      if(lv.final)classes.push("secret-final");
+      if(!unlocked)classes.push("locked");
+      if(Storage.isCompleted(lv.id))classes.push("completed");
+      b.className=classes.join(" ");
+      const stars=Storage.getStars(lv.id);
+      const starsHTML=`<div class="level-stars">${[1,2,3].map(i=>`<span class="${i<=stars?"":"off"}">★</span>`).join("")}</div>`;
+      b.innerHTML=`<div class="level-number">Уровень ${String(lv.id).padStart(2,"0")}${lv.final?" · ФИНАЛ":""}</div>${starsHTML}<div class="level-name">${lv.name}</div><div class="level-meta">${lv.sub}</div>`;
+      if(unlocked)b.addEventListener("click",()=>this.startLevel(lv.id,lv.screen));
+      else b.addEventListener("click",()=>Juice.notice("Пройди предыдущий уровень"));
+      grid.append(b);
+    });
+  },
+  bind(){
+    $$(".diff-btn").forEach(b=>b.addEventListener("click",()=>{const d=b.dataset.diff;if(!DIFFICULTY[d])return;Storage.setDifficulty(d);$$(".diff-btn").forEach(x=>x.classList.toggle("active",x.dataset.diff===d));currentDifficulty=d;Sfx.click()}));
+    $("#muteBtn").addEventListener("click",()=>{const m=!SoundManager.isMuted();SoundManager.setMuted(m)});
+    $("#pauseBtn").addEventListener("click",()=>setPaused(!paused));
+    $("#resumeBtn").addEventListener("click",()=>setPaused(false));
+    $("#resetBtn").addEventListener("click",()=>{if(!confirm("Сбросить весь прогресс игры?"))return;Storage.reset();Portrait.reset();$$(".screen").forEach(el=>el.classList.remove("active"));$("#mockery").classList.remove("active");$("#pauseOverlay").classList.add("hidden");if(activeGame)try{activeGame.destroy()}catch(_){}activeGame=null;finished=false;paused=false;EblanFlies.refresh();this.init();Router.go("menu");Juice.notice("Прогресс сброшен")});
+    $("#btnMenu").addEventListener("click",()=>Router.go("menu"));
+    $("#btnReplay").addEventListener("click",()=>{if(lastLevel)this.startLevel(lastLevel.id,lastLevel.screen);else Router.go("menu")});
+    $("#mockeryBtn").addEventListener("click",()=>{$("#mockery").classList.remove("active");Router.go("menu")});
+    $("#mockeryRetry").addEventListener("click",()=>{$("#mockery").classList.remove("active");if(currentLevel)this.startLevel(currentLevel.id,currentLevel.screen);else Router.go("menu")});
+    $("#uploadBtn").addEventListener("click",()=>{const input=document.createElement("input");input.type="file";input.accept="image/*";input.onchange=e=>{const f=e.target.files[0];if(f)Portrait.upload(f)};input.click()});
+    document.addEventListener("visibilitychange",()=>{if(document.hidden&&activeGame&&!finished)setPaused(true)});
+    document.addEventListener("keydown",e=>{if(e.key==="Escape"&&activeGame&&!finished){e.preventDefault();setPaused(!paused)}});
+  },
+  startLevel(id,screen){
+    Sfx.click();
+    if(activeGame)try{activeGame.destroy()}catch(_){}
+    activeGame=null;finished=false;paused=false;
+    currentLevel=LEVELS.find(l=>l.id===id);if(!currentLevel)return;
+    currentDifficulty=Storage.getDifficulty();
+    const f={game:Pong,wordle:Wordle,tetris:Tetris,pinata:Pinata,osu:Osu,court:Court,duck:Duck,pyatnashki:Pyatnashki,saper:Saper,hanoi:Hanoi,final:Final}[screen];
+    if(!f){Juice.notice("Скоро");return}
+    Router.go(screen);
+    try{activeGame=f.start()}catch(e){console.error(e);Juice.notice("Ошибка запуска");Router.go("menu")}
+  }
+};
+let lastFrame=performance.now();
+function loop(now){
+  let dt=(now-lastFrame)/1000;lastFrame=now;
+  if(!isFinite(dt)||dt<0)dt=0;dt=Math.min(dt,.05);
+  Juice.tick(dt);EblanFlies.tick(dt);
+  if(activeGame&&!paused&&!finished){try{activeGame.update(dt);if(activeGame.draw)activeGame.draw()}catch(e){console.error("[game]",e)}}
+  requestAnimationFrame(loop);
+}
+window.addEventListener("load",()=>{
+  Portrait.init();Menu.init();Router.go("menu");requestAnimationFrame(loop);
+  const unlock=()=>{SoundManager.init();document.removeEventListener("pointerdown",unlock);document.removeEventListener("keydown",unlock)};
+  document.addEventListener("pointerdown",unlock,{once:true});
+  document.addEventListener("keydown",unlock,{once:true});
+});
+</script>
+</body>
+</html>
