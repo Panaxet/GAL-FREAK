@@ -385,8 +385,8 @@ const timeText = t => {
 };
 
 const W = 800, H = 520;
-const BALL_START = 5, BALL_STEP = 2, BALL_STEP_EVERY = 15;
-const PLATFORM_SPEED = 520, ROUND_TIME = 120;
+const BALL_START = 8, BALL_STEP = 2, BALL_STEP_EVERY = 10;
+const PLATFORM_SPEED = 520, ROUND_TIME = 90;
 
 const DIFFICULTY = {
   loser:   { aiQuality: .3,  wordLen: 4, tetrisGrowSpeed: .5,  osuLifetime: 1600, osuSpawnGap: .55, osuTarget: 3000,  osuMissLimit: 5,  duckSpeed: 1.0, duckManeuver: 0.6, pinataSpeed: 1.1 },
@@ -394,17 +394,11 @@ const DIFFICULTY = {
   monster: { aiQuality: .95, wordLen: 6, tetrisGrowSpeed: 1.15, osuLifetime: 900,  osuSpawnGap: .22, osuTarget: 10000, osuMissLimit: 15, duckSpeed: 2.2, duckManeuver: 2.0, pinataSpeed: 2.4 }
 };
 
-/* ============================================================
-   ФОТО ИГОРЯ И КОТА
-   ============================================================ */
 const IGOR_IMAGES = ["images/GOR1.jpg", "images/GOR2.jpg", "images/GOR3.jpg"];
 const MAO_IMAGES = ["images/MAO1.jpg", "images/MAO2.jpg"];
 const IGOR_PHOTO = pick(IGOR_IMAGES);
 const CAT_PHOTO = pick(MAO_IMAGES);
 
-/* ============================================================
-   УРОВНИ
-   ============================================================ */
 const LEVELS = [
   { id: 1,  screen: "game",        color: "pong",       name: "Пинг-понг",         sub: "5 голов. Разминка." },
   { id: 2,  screen: "pyatnashki",  color: "pyatnashki", name: "Собери Маобэя",     sub: "Кот Риты разобран." },
@@ -419,9 +413,6 @@ const LEVELS = [
   { id: 11, screen: "final",       color: "secret",     name: "УВОЛЬ ИГОРЯ",       sub: "Финал. Кликер.", final: true }
 ];
 
-/* ============================================================
-   ФРАЗЫ
-   ============================================================ */
 const P = {
   igorScored: ["Лох", "Ха-ха-ха", "Ты чё, спишь", "Слабак", "И это всё", "Позор семьи", "Глаза разуй"],
   youScored: ["Это нечестно", "Ты читер", "Мама", "Не считается", "Я моргнул", "У меня лаг"],
@@ -460,11 +451,8 @@ const P = {
   secret: ["Хапфу тебе", "Получай", "Лови", "Ещё раз", "Ха-ха-ха", "Больше", "Сильнее", "Быстрее", "Хапфу!"]
 };
 
-/* ============================================================
-   STORAGE
-   ============================================================ */
 const Storage = (() => {
-  const KEY = "otpizdi_igorya_v16";
+  const KEY = "otpizdi_igorya_v17";
   const fresh = () => ({ completed: {}, best: {}, stars: {}, difficulty: "normal", secretUnlocked: false, secretFound: [] });
   let data = fresh();
 
@@ -516,9 +504,6 @@ const Storage = (() => {
   };
 })();
 
-/* ============================================================
-   SOUND MANAGER (SFX + mute)
-   ============================================================ */
 const SoundManager = (() => {
   let ctx = null, master = null, muted = false;
   try { muted = localStorage.getItem("igor_muted") === "1"; } catch (_) {}
@@ -563,9 +548,6 @@ const SoundManager = (() => {
   return { init, tone, setMuted, isMuted: () => muted, context: () => ctx, output: () => master };
 })();
 
-/* ============================================================
-   MUSIC (реальные mp3 через <audio>)
-   ============================================================ */
 const Music = (() => {
   const audio = new Audio();
   audio.loop = true;
@@ -599,14 +581,11 @@ const Music = (() => {
       if (SoundManager.isMuted()) audio.pause();
       else if (currentSrc) audio.play().catch(() => {});
     },
-    set: () => {},  // заглушка для совместимости
+    set: () => {},
     tick: () => {}
   };
 })();
 
-/* ============================================================
-   SFX (звуки ударов, выстрелов, побед)
-   ============================================================ */
 const Sfx = (() => {
   const t = (...a) => SoundManager.tone(...a);
   const seq = (n, type = "triangle", step = .09, dur = .12) => n.forEach((f, i) => t(f, dur, type, 0, i * step, .2));
@@ -636,9 +615,6 @@ const Sfx = (() => {
   };
 })();
 
-/* ============================================================
-   PORTRAIT
-   ============================================================ */
 const Portrait = (() => {
   const img = new Image();
   let ready = false;
@@ -648,7 +624,6 @@ const Portrait = (() => {
     if (menuImg) menuImg.src = IGOR_PHOTO;
   };
   img.onerror = () => {
-    // fallback — встроенный SVG
     img.src = "data:image/svg+xml;base64," + btoa(
       '<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256">' +
       '<rect width="256" height="256" fill="#1c1c25"/>' +
@@ -671,9 +646,6 @@ const Portrait = (() => {
   return { init, draw, src: () => IGOR_PHOTO, catSrc: () => CAT_PHOTO };
 })();
 
-/* ============================================================
-   JUICE
-   ============================================================ */
 const Juice = (() => {
   let noticeTime = 0, flashTime = 0;
   const shakes = new Map();
@@ -696,7 +668,6 @@ const Juice = (() => {
   }
   return { shake, popup, notice, flash, tick };
 })();
-
 let activeGame = null, currentLevel = null, currentDifficulty = "normal";
 let paused = false, finished = false, lastLevel = null;
 const held = new Set();
@@ -772,9 +743,6 @@ function setPaused(v) {
   document.body.classList.toggle("paused", paused);
 }
 
-/* ============================================================
-   DEFEAT OVERLAY
-   ============================================================ */
 const DEFEAT_TYPES = [
   { key: "you-died", title: "YOU DIED", sub: "ИГОРЬ РЖЁТ ГДЕ-ТО РЯДОМ" },
   { key: "igor-laugh", title: "ИГОРЬ ЛИКУЕТ", sub: "ХА-ХА-ХА-ХА-ХА" },
@@ -834,12 +802,10 @@ function finishGame(win, score, detail, title = "ПОБЕДА") {
   }
 }
 
-/* ============================================================
-   1. ПИНГ-ПОНГ
-   ============================================================ */
+/* 1. ПИНГ-ПОНГ */
 const Pong = (() => {
   function start() {
-    const s = makeScene("game", "Мышь/тач/←→/A D · 5 голов · 2 минуты", true);
+    const s = makeScene("game", "Мышь/тач/←→/A D · 5 голов · 1.5 минуты", true);
     let px = 400, ix = 400, target = 400, aiTarget = 400, aiClock = 0;
     let you = 0, igor = 0, remaining = ROUND_TIME, serve = .8;
     let ballSpeed = BALL_START;
@@ -944,9 +910,7 @@ const Pong = (() => {
   return { start };
 })();
 
-/* ============================================================
-   2. ПЯТНАШКИ (Собери Маобэя)
-   ============================================================ */
+/* 2. ПЯТНАШКИ */
 const Pyatnashki = (() => {
   function start() {
     const s = makeScene("pyatnashki", "Клик по плитке рядом с пустой");
@@ -1016,9 +980,7 @@ const Pyatnashki = (() => {
   return { start };
 })();
 
-/* ============================================================
-   3. WORDLE
-   ============================================================ */
+/* 3. WORDLE */
 const Wordle = (() => {
   const WORDS = {
     4: ["МАМА", "ПАПА", "КОТЫ", "СЛОН", "РОТА", "НОГА", "РУКА", "ГОРА", "ЛУНА", "ЗИМА", "ЛЕТО", "МОРЕ", "ПОЛЕ", "ЛИСА", "СОВА", "РЫБА"],
@@ -1125,9 +1087,7 @@ const Wordle = (() => {
   return { start };
 })();
 
-/* ============================================================
-   4. САПЁР
-   ============================================================ */
+/* 4. САПЁР */
 const Saper = (() => {
   function start() {
     const s = makeScene("saper", "ЛКМ открыть · ПКМ флаг · первый клик безопасен");
@@ -1227,9 +1187,7 @@ const Saper = (() => {
   return { start };
 })();
 
-/* ============================================================
-   5. ХАНОЙ
-   ============================================================ */
+/* 5. ХАНОЙ */
 const Hanoi = (() => {
   function start() {
     const s = makeScene("hanoi", "Клик по стержню — взять/положить");
@@ -1292,9 +1250,7 @@ const Hanoi = (() => {
   return { start };
 })();
 
-/* ============================================================
-   6. ДОГОНИ ИГОРЯ
-   ============================================================ */
+/* 6. ДОГОНИ ИГОРЯ */
 const Pinata = (() => {
   function start() {
     const s = makeScene("pinata", "Тапай Игоря · заполни шкалу до 100%");
@@ -1385,9 +1341,7 @@ const Pinata = (() => {
   return { start };
 })();
 
-/* ============================================================
-   7. ТЕТРИС
-   ============================================================ */
+/* 7. ТЕТРИС */
 const Tetris = (() => {
   const SHAPES = [
     [[0, 0, 0, 0], [1, 1, 1, 1], [0, 0, 0, 0], [0, 0, 0, 0]],
@@ -1533,10 +1487,7 @@ const Tetris = (() => {
   }
   return { start };
 })();
-
-/* ============================================================
-   8. OSU
-   ============================================================ */
+/* 8. OSU */
 const Osu = (() => {
   const PATTERNS = ["circle", "zigzag", "square", "star", "line", "burst"];
   function start() {
@@ -1662,9 +1613,7 @@ const Osu = (() => {
   return { start };
 })();
 
-/* ============================================================
-   9. DUCK HUNT
-   ============================================================ */
+/* 9. DUCK HUNT */
 const Duck = (() => {
   const ROUNDS = 3, DUCKS_PER_ROUND = 8, AMMO_PER_ROUND = 12;
   function start() {
@@ -1811,9 +1760,7 @@ const Duck = (() => {
   return { start };
 })();
 
-/* ============================================================
-   10. СУД
-   ============================================================ */
+/* 10. СУД */
 const Court = (() => {
   const CASES = [
     { truth: true, text: "Игорь на синке сказал, что нашёл ряд багов. В итоге завёл только тот, который Рита уже завела раньше." },
@@ -1850,7 +1797,7 @@ const Court = (() => {
   const TOTAL = 10;
   function start() {
     const s = makeScene("court", "Каждый раунд — 2 версии. Обе про косяк. Где правда?");
-    let round = 0, you = 0, igor = 0, locked = false, started = false;
+    let round = 0, you = 0, igor = 0, locked = false;
     const used = new Set();
     const intro = document.createElement("div");
     intro.className = "court-intro";
@@ -1876,12 +1823,12 @@ const Court = (() => {
         if (!used.has(i) && !used.has(i + 1) && CASES[i] && CASES[i + 1]) pairs.push(i);
       }
       if (!pairs.length) { for (const i of used) used.delete(i); return pairFor(); }
-      const start = pairs[Math.floor(Math.random() * pairs.length)];
-      used.add(start); used.add(start + 1);
-      return [CASES[start], CASES[start + 1]];
+      const startI = pairs[Math.floor(Math.random() * pairs.length)];
+      used.add(startI); used.add(startI + 1);
+      return [CASES[startI], CASES[startI + 1]];
     }
     function begin() {
-      started = true; intro.remove();
+      intro.remove();
       s.area.innerHTML = `<div class="court-layout"><div class="court-header"><h3>Заседание открыто</h3><div class="sub">Раунд 1 / ${TOTAL}</div></div><div class="court-cases"></div><div class="court-verdict"></div><div class="court-footer"><div><span class="lbl">Ты</span> <span id="courtYou">0</span></div><div><span class="lbl">Игорь</span> <span id="courtIgor">0</span></div></div></div>`;
       initRound();
     }
@@ -1927,9 +1874,7 @@ const Court = (() => {
   return { start };
 })();
 
-/* ============================================================
-   11. ФИНАЛЬНЫЙ КЛИКЕР — УВОЛЬ ИГОРЯ
-   ============================================================ */
+/* 11. ФИНАЛЬНЫЙ КЛИКЕР — УВОЛЬ ИГОРЯ */
 const Final = (() => {
   function start() {
     const screen = $("#final");
@@ -2052,10 +1997,7 @@ const Final = (() => {
   }
   return { start };
 })();
-
-/* ============================================================
-   ЛЕТАЮЩИЕ НАДПИСИ
-   ============================================================ */
+/* ЛЕТАЮЩИЕ НАДПИСИ */
 const EblanFlies = (() => {
   const SECRET_COUNT = 4;
   let flyers = [], secrets = [], running = false;
@@ -2144,9 +2086,7 @@ const EblanFlies = (() => {
   return { init, tick, refresh };
 })();
 
-/* ============================================================
-   ROUTER
-   ============================================================ */
+/* ROUTER */
 const Router = {
   current: "menu",
   go(id) {
@@ -2158,7 +2098,7 @@ const Router = {
     if (id === "menu" || id === "result") { $$(".igor-comment").forEach(c => c.textContent = ""); }
     $("#pauseBtn").classList.toggle("hidden", id === "menu" || id === "result");
     if (id === "menu") {
-      // если финал открыт — играем M3, иначе меню
+      Menu.renderLevels();
       const finalUnlocked = Storage.isCompleted(10) || Storage.isSecretUnlocked();
       if (finalUnlocked && !Music._m3Played) Music.playPost();
       else Music.playMenu();
@@ -2166,7 +2106,6 @@ const Router = {
       Music.playFinal();
       Music._m3Played = true;
     } else if (id !== "result") {
-      // экран игры — музыка по уровню
       if (currentLevel) Music.playLevel(currentLevel.id);
     }
   },
@@ -2181,9 +2120,7 @@ const Router = {
   }
 };
 
-/* ============================================================
-   MENU
-   ============================================================ */
+/* MENU */
 const Menu = {
   init() {
     Storage.load();
@@ -2280,7 +2217,6 @@ const Menu = {
     }[screen];
     if (!f) { Juice.notice("Скоро"); return; }
     Router.go(screen);
-    // отдельная логика: для final Music.playFinal уже сработала в Router.go
     try {
       activeGame = f.start();
     } catch (e) {
@@ -2291,9 +2227,7 @@ const Menu = {
   }
 };
 
-/* ============================================================
-   ОСНОВНОЙ ЦИКЛ
-   ============================================================ */
+/* ОСНОВНОЙ ЦИКЛ */
 let lastFrame = performance.now();
 function loop(now) {
   let dt = (now - lastFrame) / 1000;
@@ -2311,9 +2245,7 @@ function loop(now) {
   requestAnimationFrame(loop);
 }
 
-/* ============================================================
-   СТАРТ
-   ============================================================ */
+/* СТАРТ */
 window.addEventListener("load", () => {
   Portrait.init();
   Menu.init();
@@ -2322,7 +2254,6 @@ window.addEventListener("load", () => {
 
   const unlock = () => {
     SoundManager.init();
-    // запуск музыки после первого user gesture
     if (Router.current === "menu") Music.playMenu();
     document.removeEventListener("pointerdown", unlock);
     document.removeEventListener("keydown", unlock);
