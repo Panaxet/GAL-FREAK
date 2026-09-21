@@ -4,9 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#0e0e12">
-<title>ОТПИЗДИ ИГОРЯ</title>
+<title>ОТПИЗДИ ГЕЙЛА</title>
 <style>
-:root{--bg:#0e0e12;--panel:#16161d;--panel-2:#1c1c25;--ink:#e8e6dd;--muted:#7c7a85;--line:#2a2a34;--line-bright:#3a3a46;--display:'Impact','Arial Narrow Bold',sans-serif;--mono:'Courier New',monospace;--body:system-ui,-apple-system,'Segoe UI',Arial,sans-serif;--c-pong:#00e5a0;--c-wordle:#ffb020;--c-tetris:#7d5cff;--c-pinata:#ff3d6b;--c-osu:#00b4ff;--c-court:#c8a800;--c-duck:#a0e030;--star:#ffcc00}
+:root{--bg:#0e0e12;--panel:#16161d;--panel-2:#1c1c25;--ink:#e8e6dd;--muted:#7c7a85;--line:#2a2a34;--line-bright:#3a3a46;--display:'Impact','Arial Narrow Bold',sans-serif;--mono:'Courier New',monospace;--body:system-ui,-apple-system,'Segoe UI',Arial,sans-serif;--c-pong:#00e5a0;--c-wordle:#ffb020;--c-tetris:#7d5cff;--c-pinata:#ff3d6b;--c-osu:#00b4ff;--c-duck:#a0e030;--star:#ffcc00}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{margin:0;min-height:100%;background:var(--bg);color:var(--ink);font-family:var(--body);overflow-x:hidden}
 button{font:inherit;color:inherit;cursor:pointer;background:transparent;border:1.5px solid var(--line-bright);border-radius:2px;padding:10px 16px;font-weight:600;letter-spacing:.5px;transition:background .12s,border-color .12s,transform .12s;text-transform:uppercase;font-size:12px}
@@ -69,7 +69,6 @@ button:disabled{opacity:.35;cursor:default}
 .level-card[data-color="tetris"]::before{background:var(--c-tetris)}
 .level-card[data-color="pinata"]::before{background:var(--c-pinata)}
 .level-card[data-color="osu"]::before{background:var(--c-osu)}
-.level-card[data-color="court"]::before{background:var(--c-court)}
 .level-card[data-color="duck"]::before{background:var(--c-duck)}
 .level-card[data-color="pyatnashki"]::before{background:#ff8a3c}
 .level-card[data-color="saper"]::before{background:#ff3a5a}
@@ -132,7 +131,6 @@ canvas{display:block;touch-action:none;max-width:100%;max-height:100%}
 #tetris.active{background:#0b0617}
 #pinata.active{background:#1a0209}
 #osu.active{background:#020d18}
-#court.active{background:#141005}
 #duck.active{background:#0a1604}
 #pyatnashki.active{background:#1a0d04}
 #saper.active{background:#0d0d18}
@@ -143,7 +141,6 @@ canvas{display:block;touch-action:none;max-width:100%;max-height:100%}
 #tetris .window-hud{border-bottom-color:var(--c-tetris)}
 #pinata .window-hud{border-bottom-color:var(--c-pinata)}
 #osu .window-hud{border-bottom-color:var(--c-osu)}
-#court .window-hud{border-bottom-color:var(--c-court)}
 #duck .window-hud{border-bottom-color:var(--c-duck)}
 #pyatnashki .window-hud{border-bottom-color:#ff8a3c}
 #saper .window-hud{border-bottom-color:#ff3a5a}
@@ -183,29 +180,6 @@ canvas{display:block;touch-action:none;max-width:100%;max-height:100%}
 .pinata-time-hud{position:absolute;top:14px;right:18px;font:700 22px var(--mono);letter-spacing:1px;z-index:5;color:var(--c-pinata)}
 .pinata-time-hud.warning{animation:pulse .5s infinite}
 @keyframes pulse{50%{opacity:.4}}
-.court-layout{height:100%;display:flex;flex-direction:column;padding:20px;gap:14px}
-.court-header{text-align:center;padding:4px 0 14px;border-bottom:1px solid var(--line)}
-.court-header h3{font:700 11px var(--body);color:var(--c-court);margin:0 0 6px;letter-spacing:4px;text-transform:uppercase}
-.court-header .sub{font-size:11px;color:var(--muted)}
-.court-cases{flex:1;display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);overflow-y:auto;border:1px solid var(--line)}
-.case-card{padding:22px;background:var(--bg);border:none;border-radius:0;cursor:pointer;transition:background .15s;display:flex;flex-direction:column;gap:12px;position:relative;overflow:hidden;text-align:left;text-transform:none;letter-spacing:0;font-weight:400;min-height:200px}
-.case-card:hover{background:var(--panel)}
-.case-card .badge{font:600 9px var(--mono);letter-spacing:3px;text-transform:uppercase;color:var(--muted);width:fit-content}
-.case-card .text{font:500 14px/1.55 var(--body);color:var(--ink);letter-spacing:.2px}
-.case-card.picked.correct{border-left:3px solid var(--c-pong);background:#02160f}
-.case-card.picked.correct::after{content:"ВЕРНО";position:absolute;top:14px;right:16px;color:var(--c-pong);font:700 10px var(--body);letter-spacing:3px}
-.case-card.picked.wrong{border-left:3px solid var(--c-pinata);background:#1a0209}
-.case-card.picked.wrong::after{content:"МИМО";position:absolute;top:14px;right:16px;color:var(--c-pinata);font:700 10px var(--body);letter-spacing:3px}
-.case-card.disabled{pointer-events:none}
-.court-footer{display:flex;justify-content:space-between;align-items:center;padding:12px 20px;background:var(--panel);border-top:1px solid var(--line);font:700 13px var(--mono);letter-spacing:1px}
-.court-footer .lbl{color:var(--muted);font-size:10px;letter-spacing:2px;text-transform:uppercase;margin-right:6px}
-.court-verdict{text-align:center;padding:8px;font:600 12px var(--body);letter-spacing:.5px;color:var(--muted);min-height:18px}
-.court-intro{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;padding:32px;text-align:center;gap:20px;background:#141005}
-.court-intro h2{font:700 clamp(32px,6vw,64px)/1 var(--display);color:var(--c-court);letter-spacing:-.5px;margin:0;text-transform:uppercase}
-.court-intro .stamp{font:700 10px var(--mono);letter-spacing:6px;color:#8a7840;text-transform:uppercase}
-.court-intro p{max-width:560px;line-height:1.7;color:var(--muted);font-size:14px}
-.court-intro .rules{max-width:520px;text-align:left;padding:16px 20px;border:1px solid var(--line);background:var(--panel);font-size:12px;line-height:1.8;color:#b0a880}
-.court-intro button{margin-top:8px}
 .pyat-field{width:100%;height:100%;display:grid;place-items:center;padding:50px 20px 20px}
 .pyat-board{display:grid;gap:3px;background:#2a1206;padding:6px;border:1px solid #4a2010;width:min(85%,520px);aspect-ratio:1;max-height:100%}
 .pyat-cell{background:#3a1808;border:1px solid #5a2810;cursor:pointer;position:relative;overflow:hidden;transition:transform .12s,background .12s;display:grid;place-items:center;color:#ff8a3c;font:700 20px var(--mono);background-size:cover}
@@ -282,8 +256,8 @@ canvas{display:block;touch-action:none;max-width:100%;max-height:100%}
 .shake-hard{animation:shakeHard .3s}
 @keyframes shakeHard{0%,100%{transform:translate(0,0)}25%{transform:translate(-5px,3px)}50%{transform:translate(5px,-3px)}75%{transform:translate(-3px,-2px)}}
 @keyframes phraseFly{0%{opacity:0;transform:translate(-50%,10px) scale(.6)}20%{opacity:1;transform:translate(-50%,0) scale(1)}80%{opacity:1}100%{opacity:0;transform:translate(-50%,-40px)}}
-@media(max-width:800px){.level-grid{grid-template-columns:repeat(3,1fr)}.hero{grid-template-columns:1.4fr 1fr;gap:20px}.court-cases{grid-template-columns:1fr}}
-@media(max-width:600px){#menu{padding:60px 18px 50px}.hero h1{font-size:clamp(42px,13vw,64px)}.hero-copy{font-size:12px}.hero-portrait{max-width:200px}.difficulty{grid-template-columns:1fr}.diff-btn{border-right:none;border-bottom:1px solid var(--line)}.diff-btn:last-child{border-bottom:none}.level-grid{grid-template-columns:repeat(2,1fr)}.level-card{min-height:140px;padding:14px}.level-name{font-size:13px}.menu-footer{flex-direction:column;font-size:9px}.game-window{width:100vw;height:100dvh;border:none;top:0;left:0;transform:none}.window-hud{padding:10px 12px;min-height:52px;padding-right:96px}.hud-title{font-size:11px;letter-spacing:2px}.hud-stat{font-size:12px}.back-btn{font-size:9px;padding:6px 10px}.global-buttons{top:8px;right:8px}.icon-btn{min-width:34px;height:32px;font-size:10px;padding:0 8px}.game-bottom{padding:8px 12px;min-height:50px}.igor-comment{font-size:11px}.mobile-controls{display:flex}.answers{grid-template-columns:1fr}.tile{width:clamp(32px,9vw,48px);height:clamp(32px,9vw,48px)}.key{padding:11px 0;font-size:12px}.case-card{padding:16px;min-height:auto}.case-card .text{font-size:12px}.pinata-igor{width:70px;height:70px}.pyat-field{padding:50px 10px 10px}.hanoi-field{padding:12px;gap:10px}.duck-round-text{font-size:36px}.final-stage{padding:60px 60px 140px}.final-igor{width:min(50vw,300px);height:min(50vw,300px)}.final-bar-vertical{right:16px;top:70px;bottom:140px;width:32px}.final-hapfu{font-size:28px}.final-btn{padding:16px 32px;font-size:18px;letter-spacing:2px}}
+@media(max-width:800px){.level-grid{grid-template-columns:repeat(3,1fr)}.hero{grid-template-columns:1.4fr 1fr;gap:20px}}
+@media(max-width:600px){#menu{padding:60px 18px 50px}.hero h1{font-size:clamp(42px,13vw,64px)}.hero-copy{font-size:12px}.hero-portrait{max-width:200px}.difficulty{grid-template-columns:1fr}.diff-btn{border-right:none;border-bottom:1px solid var(--line)}.diff-btn:last-child{border-bottom:none}.level-grid{grid-template-columns:repeat(2,1fr)}.level-card{min-height:140px;padding:14px}.level-name{font-size:13px}.menu-footer{flex-direction:column;font-size:9px}.game-window{width:100vw;height:100dvh;border:none;top:0;left:0;transform:none}.window-hud{padding:10px 12px;min-height:52px;padding-right:96px}.hud-title{font-size:11px;letter-spacing:2px}.hud-stat{font-size:12px}.back-btn{font-size:9px;padding:6px 10px}.global-buttons{top:8px;right:8px}.icon-btn{min-width:34px;height:32px;font-size:10px;padding:0 8px}.game-bottom{padding:8px 12px;min-height:50px}.igor-comment{font-size:11px}.mobile-controls{display:flex}.tile{width:clamp(32px,9vw,48px);height:clamp(32px,9vw,48px)}.key{padding:11px 0;font-size:12px}.pinata-igor{width:70px;height:70px}.pyat-field{padding:50px 10px 10px}.hanoi-field{padding:12px;gap:10px}.duck-round-text{font-size:36px}.final-stage{padding:60px 60px 140px}.final-igor{width:min(50vw,300px);height:min(50vw,300px)}.final-bar-vertical{right:16px;top:70px;bottom:140px;width:32px}.final-hapfu{font-size:28px}.final-btn{padding:16px 32px;font-size:18px;letter-spacing:2px}}
 body.paused *{animation-play-state:paused!important}
 </style>
 </head>
@@ -299,27 +273,27 @@ body.paused *{animation-play-state:paused!important}
 
 <div class="screen active" id="menu">
   <div class="menu-top">
-    <div class="brand">RITA / ARCADE</div>
+    <div class="brand">MINTHARA / ARCADE</div>
     <div class="save-badge" id="saveStatus">Сохранение активно</div>
   </div>
   <div class="hero">
     <div>
-      <div class="eyebrow">Сезон 01 — Игорь против всех</div>
-      <h1>ОТПИЗДИ<span>ИГОРЯ</span></h1>
-      <p class="hero-copy">— официальная игра по версии Риты —<br><strong>11 уровней. Один Игорь.</strong><br>Пройди путь до финала.</p>
+      <div class="eyebrow">Сезон 01 — Гейл против всех</div>
+      <h1>ОТПИЗДИ<span>ГЕЙЛА</span></h1>
+      <p class="hero-copy">— официальная игра по версии Минтары —<br><strong>10 уровней. Один Гейл.</strong><br>Пройди путь до финала.</p>
     </div>
     <div>
-      <div class="hero-portrait"><img id="menuPortrait" alt="Игорь"></div>
+      <div class="hero-portrait"><img id="menuPortrait" alt="Гейл"></div>
     </div>
   </div>
   <div class="difficulty">
-    <button class="diff-btn" data-diff="loser"><strong>Игорь Хуиланчик</strong><span>для слабаков · ★</span></button>
-    <button class="diff-btn" data-diff="normal"><strong>Игорь</strong><span>нормальный режим · ★★</span></button>
-    <button class="diff-btn" data-diff="monster"><strong>Чудовищный Ебака Игорь</strong><span>без шансов · ★★★</span></button>
+    <button class="diff-btn" data-diff="loser"><strong>Гейл Хуиланчик</strong><span>для слабаков · ★</span></button>
+    <button class="diff-btn" data-diff="normal"><strong>Гейл</strong><span>нормальный режим · ★★</span></button>
+    <button class="diff-btn" data-diff="monster"><strong>Чудовищный Ебака Гейл</strong><span>без шансов · ★★★</span></button>
   </div>
   <div class="section-heading"><h2>Выбирай неприятность</h2><span id="progressText"></span></div>
   <div class="level-grid" id="levelGrid"></div>
-  <div class="menu-footer"><span>Совет: некоторые оскорбления умеют хранить секреты</span><span>Вымышленный Игорь. Настоящее упрямство</span></div>
+  <div class="menu-footer"><span>Совет: некоторые оскорбления умеют хранить секреты</span><span>Вымышленный Гейл. Настоящее упрямство</span></div>
 </div>
 
 <div class="screen" id="game"></div>
@@ -327,7 +301,6 @@ body.paused *{animation-play-state:paused!important}
 <div class="screen" id="tetris"></div>
 <div class="screen" id="pinata"></div>
 <div class="screen" id="osu"></div>
-<div class="screen" id="court"></div>
 <div class="screen" id="duck"></div>
 <div class="screen" id="pyatnashki"></div>
 <div class="screen" id="saper"></div>
@@ -336,7 +309,7 @@ body.paused *{animation-play-state:paused!important}
 
 <div class="screen" id="result">
   <div class="result-layout">
-    <div class="result-sticker">Рита одобряет</div>
+    <div class="result-sticker">Минтара одобряет</div>
     <h2 class="result-title" id="resultTitle">ПОБЕДА</h2>
     <div class="result-flavor" id="resultFlavor"></div>
     <div><button class="primary" id="btnMenu">В меню</button><button class="secondary" id="btnReplay">Ещё раз</button></div>
@@ -345,7 +318,7 @@ body.paused *{animation-play-state:paused!important}
 
 <div class="screen" id="mockery" role="dialog" aria-modal="true">
   <div class="modal-card">
-    <div class="eyebrow">Игорь запомнит это</div>
+    <div class="eyebrow">Гейл запомнит это</div>
     <h2 class="mockery-text" id="mockeryTitle">НУ ТЫ И ЛОХ</h2>
     <p class="mockery-sub" id="mockerySub"></p>
     <button class="primary" id="mockeryRetry">Реванш</button>
@@ -355,7 +328,7 @@ body.paused *{animation-play-state:paused!important}
 
 <div id="pauseOverlay" class="hidden" role="dialog" aria-modal="true">
   <div>
-    <p class="eyebrow">Игорь тоже переводит дух</p>
+    <p class="eyebrow">Гейл тоже переводит дух</p>
     <h2 class="pause-title">ПАУЗА</h2>
     <button id="resumeBtn" class="primary">Продолжить</button>
     <p class="small">Esc — продолжить</p>
@@ -394,36 +367,35 @@ const DIFFICULTY = {
   monster: { aiQuality: .95, wordLen: 6, tetrisGrowSpeed: 1.15, osuLifetime: 900,  osuSpawnGap: .22, osuTarget: 10000, osuMissLimit: 15, duckSpeed: 2.2, duckManeuver: 2.0, pinataSpeed: 2.4 }
 };
 
-const IGOR_IMAGES = ["images/GOR1.jpg", "images/GOR2.jpg", "images/GOR3.jpg"];
-const MAO_IMAGES = ["images/MAO1.jpg", "images/MAO2.jpg"];
-const IGOR_PHOTO = pick(IGOR_IMAGES);
-const CAT_PHOTO = pick(MAO_IMAGES);
+const GALE_IMAGES = ["images/GAL1.jpg", "images/GAL2.jpg", "images/GAL3.jpg"];
+const TARA_IMAGES = ["images/TARA1.jpg", "images/TARA2.jpg"];
+const GALE_PHOTO = pick(GALE_IMAGES);
+const TARA_PHOTO = pick(TARA_IMAGES);
 
 const LEVELS = [
   { id: 1,  screen: "game",        color: "pong",       name: "Пинг-понг",         sub: "5 голов. Разминка." },
-  { id: 2,  screen: "pyatnashki",  color: "pyatnashki", name: "Собери Маобэя",     sub: "Кот Риты разобран." },
-  { id: 3,  screen: "wordle",      color: "wordle",     name: "Игордл",            sub: "Слово за 6 попыток." },
+  { id: 2,  screen: "pyatnashki",  color: "pyatnashki", name: "Собери Тару",       sub: "Кошка Минтары разобрана." },
+  { id: 3,  screen: "wordle",      color: "wordle",     name: "Гейлдл",            sub: "Слово за 6 попыток." },
   { id: 4,  screen: "saper",       color: "saper",      name: "Разминируй релиз",  sub: "Одна мина — прод горит." },
-  { id: 5,  screen: "hanoi",       color: "hanoi",      name: "Башни Игоря",       sub: "Переложи все диски." },
-  { id: 6,  screen: "pinata",      color: "pinata",     name: "Догони Игоря",      sub: "Он бегает. Заполни шкалу." },
+  { id: 5,  screen: "hanoi",       color: "hanoi",      name: "Башни Гейла",       sub: "Переложи все диски." },
+  { id: 6,  screen: "pinata",      color: "pinata",     name: "Догони Гейла",      sub: "Он бегает. Заполни шкалу." },
   { id: 7,  screen: "tetris",      color: "tetris",     name: "Тетрис",            sub: "20 линий и мусор." },
   { id: 8,  screen: "osu",         color: "osu",        name: "OSU Хапфу",         sub: "Попади в кружки." },
-  { id: 9,  screen: "duck",        color: "duck",       name: "Duck Hunt",         sub: "Утки с фото Игоря." },
-  { id: 10, screen: "court",       color: "court",      name: "Суд над Игорем",    sub: "Правда или фейк." },
-  { id: 11, screen: "final",       color: "secret",     name: "УВОЛЬ ИГОРЯ",       sub: "Финал. Кликер.", final: true }
+  { id: 9,  screen: "duck",        color: "duck",       name: "Duck Hunt",         sub: "Утки с фото Гейла." },
+  { id: 10, screen: "final",       color: "secret",     name: "УВОЛЬ ГЕЙЛА",       sub: "Финал. Кликер.", final: true }
 ];
 
 const P = {
-  igorScored: ["Лох", "Ха-ха-ха", "Ты чё, спишь", "Слабак", "И это всё", "Позор семьи", "Глаза разуй"],
+  galeScored: ["Лох", "Ха-ха-ха", "Ты чё, спишь", "Слабак", "И это всё", "Позор семьи", "Глаза разуй"],
   youScored: ["Это нечестно", "Ты читер", "Мама", "Не считается", "Я моргнул", "У меня лаг"],
   playerWins: ["Ладно, ты выиграл. Но это нечестно.", "Я тебе поддался.", "Реванш будет.", "Насмешки запомни. Я вернусь."],
-  mockery: ["Ну ты и лох", "Игорь выиграл. Бывает", "Это было жалко", "Реванш или слёзы", "Ты проиграл"],
-  mockerySub: ["Даже кот смотрит на тебя с осуждением.", "Игорь рассказал всем. Даже холодильнику.", "Рита сделала вид, что ничего не видела."],
+  mockery: ["Ну ты и лох", "Гейл выиграл. Бывает", "Это было жалко", "Реванш или слёзы", "Ты проиграл"],
+  mockerySub: ["Даже кошка смотрит на тебя с осуждением.", "Гейл рассказал всем. Даже холодильнику.", "Минтара сделала вид, что ничего не видела."],
   pinata: ["Ой, больно, чё", "Не по лицу, я жених", "Мама, они меня бьют", "Я в суд подам", "Руки убрал, животное"],
   osuWin: ["Ладно, ты крут. Но это в последний раз", "Хм. Неплохо. Для лоха"],
   duckHit: ["Я редкий вид", "Кря. В смысле, ай", "Я был облаком", "Ай, бля", "Мама"],
   duckMiss: ["Ты в небо попал", "Прицел купи", "Утки передают спасибо", "Ха-ха-ха, мазила", "Мимо, лох"],
-  duckEscape: ["Не попал, лох", "Убежал", "Ха-ха, я тут", "Улетел", "Пока, Игорь"],
+  duckEscape: ["Не попал, лох", "Убежал", "Ха-ха, я тут", "Улетел", "Пока, Гейл"],
   wordleStart: ["Ну давай, покажи, что умеешь", "Тут даже обезьяна справится"],
   wordleGood: ["О, случайно угадал", "Повезло", "Ты подозрительно близко"],
   wordleBad: ["Ха-ха-ха", "Лох", "Ты серьёзно", "Ты точно в школу ходил"],
@@ -432,18 +404,17 @@ const P = {
   wordleWin: ["Чё-то повезло", "Я поддался", "О, случайно угадал"],
   tetris: ["Держи мусор, лох", "Подарочек", "Играй с этим", "И это ты называешь строительством"],
   tetrisComment: ["Красиво строишь. Жалко будет", "У тебя вообще план есть", "Смотрю и ржу", "Долго думаешь. Мне аж скучно"],
-  courtStart: ["Докажи, что я виновен. Если сможешь", "Судья, я невиновен!", "Опять меня судить."],
-  pyatnashki: ["Кот разобран. Собери.", "Маобэй не одобряет.", "Осторожнее с котом Риты."],
-  saper: ["Одна мина — и релиз сгорит.", "Игорь уже наставил мин.", "Смотри под ноги."],
+  pyatnashki: ["Кошка разобрана. Собери.", "Тара не одобряет.", "Осторожнее с кошкой Минтары."],
+  saper: ["Одна мина — и релиз сгорит.", "Гейл уже наставил мин.", "Смотри под ноги."],
   saperDeath: [
     "Релиз улетел в прод. Мина на клетке {n}.",
-    "Игорь передаёт привет с той стороны прода.",
+    "Гейл передаёт привет с той стороны прода.",
     "Багов не нашли? Кроме одного. Мина {n}.",
     "Пользователи уже пишут в поддержку. Мина {n}.",
     "Ты кликнул. Прод сломался. Классика. Мина {n}.",
     "Хорошая новость: баг воспроизводится всегда. Мина {n}.",
-    "Даже Игорь бы справился лучше. Мина {n}.",
-    "Рита уже пишет баг-репорт. С твоим именем.",
+    "Даже Гейл бы справился лучше. Мина {n}.",
+    "Минтара уже пишет баг-репорт. С твоим именем.",
     "Хьюстон, у нас мина {n}.",
     "Опять. На той же клетке. То есть {n}."
   ],
@@ -452,7 +423,7 @@ const P = {
 };
 
 const Storage = (() => {
-  const KEY = "otpizdi_igorya_v17";
+  const KEY = "otpizdi_galea_v1";
   const fresh = () => ({ completed: {}, best: {}, stars: {}, difficulty: "normal", secretUnlocked: false, secretFound: [] });
   let data = fresh();
 
@@ -461,7 +432,7 @@ const Storage = (() => {
     try {
       const raw = JSON.parse(localStorage.getItem(KEY) || "null");
       if (raw && typeof raw === "object") {
-        if (raw.completed) for (let n = 1; n <= 11; n++) data.completed[n] = raw.completed[n] === true;
+        if (raw.completed) for (let n = 1; n <= 10; n++) data.completed[n] = raw.completed[n] === true;
         if (raw.best) for (const [k, v] of Object.entries(raw.best)) if (/^[0-9]+:(loser|normal|monster)$/.test(k) && Number.isFinite(v)) data.best[k] = v;
         if (raw.stars && typeof raw.stars === "object") data.stars = raw.stars;
         if (DIFFICULTY[raw.difficulty]) data.difficulty = raw.difficulty;
@@ -506,7 +477,7 @@ const Storage = (() => {
 
 const SoundManager = (() => {
   let ctx = null, master = null, muted = false;
-  try { muted = localStorage.getItem("igor_muted") === "1"; } catch (_) {}
+  try { muted = localStorage.getItem("gale_muted") === "1"; } catch (_) {}
 
   function init() {
     if (!ctx) {
@@ -540,7 +511,7 @@ const SoundManager = (() => {
   function setMuted(v) {
     muted = !!v;
     if (master) master.gain.setValueAtTime(muted ? 0 : .28, ctx.currentTime);
-    try { localStorage.setItem("igor_muted", muted ? "1" : "0"); } catch (_) {}
+    try { localStorage.setItem("gale_muted", muted ? "1" : "0"); } catch (_) {}
     const btn = $("#muteBtn");
     if (btn) btn.textContent = muted ? "MUTE" : "SOUND";
     if (typeof Music !== "undefined") Music.refresh();
@@ -574,7 +545,7 @@ const Music = (() => {
   return {
     playMenu: () => play(pick(["music/M1.mp3", "music/M2.mp3"]), "menu"),
     playLevel: n => play("music/L" + n + ".mp3", "level"),
-    playFinal: () => play("music/L11.mp3", "final"),
+    playFinal: () => play("music/L10.mp3", "final"),
     playPost: () => play("music/M3.mp3", "post"),
     stop,
     refresh() {
@@ -593,7 +564,7 @@ const Sfx = (() => {
     hit: () => t(220, .04, "square", -80),
     hitHard: () => t(140, .08, "sawtooth", -90),
     scoreYou: () => seq([660, 880]),
-    scoreIgor: () => t(200, .2, "sawtooth", -100),
+    scoreGale: () => t(200, .2, "sawtooth", -100),
     win: () => seq([261.63, 329.63, 392, 523.25], "triangle", .13, .22),
     lose: () => seq([392, 329, 261, 130], "sawtooth", .15, .2),
     click: () => t(880, .02),
@@ -609,8 +580,6 @@ const Sfx = (() => {
     shoot: () => t(800, .09, "sawtooth", -700),
     reload: () => seq([300, 400], "square", .12, .05),
     secret: () => seq([523, 659, 784, 1046], "triangle", .07, .2),
-    correct: () => seq([523, 784, 1046], "triangle", .08, .15),
-    wrong: () => seq([300, 200, 150], "sawtooth", .1, .18),
     defeat: () => { t(80, 1.4, "sawtooth", -40, 0, .28); setTimeout(() => t(60, 1.8, "sawtooth", -30, 0, .24), 200); }
   };
 })();
@@ -621,7 +590,7 @@ const Portrait = (() => {
   img.onload = () => {
     ready = true;
     const menuImg = $("#menuPortrait");
-    if (menuImg) menuImg.src = IGOR_PHOTO;
+    if (menuImg) menuImg.src = GALE_PHOTO;
   };
   img.onerror = () => {
     img.src = "data:image/svg+xml;base64," + btoa(
@@ -633,7 +602,7 @@ const Portrait = (() => {
       '</svg>'
     );
   };
-  function init() { img.src = IGOR_PHOTO; }
+  function init() { img.src = GALE_PHOTO; }
   function draw(ctx, x, y, w, h) {
     x = Math.floor(x); y = Math.floor(y);
     if (ready) {
@@ -643,7 +612,7 @@ const Portrait = (() => {
       ctx.fillStyle = "#c99772"; ctx.fillRect(x, y, w, h);
     }
   }
-  return { init, draw, src: () => IGOR_PHOTO, catSrc: () => CAT_PHOTO };
+  return { init, draw, src: () => GALE_PHOTO, taraSrc: () => TARA_PHOTO };
 })();
 
 const Juice = (() => {
@@ -668,7 +637,7 @@ const Juice = (() => {
   }
   return { shake, popup, notice, flash, tick };
 })();
-let activeGame = null, currentLevel = null, currentDifficulty = "normal";
+  let activeGame = null, currentLevel = null, currentDifficulty = "normal";
 let paused = false, finished = false, lastLevel = null;
 const held = new Set();
 
@@ -744,8 +713,8 @@ function setPaused(v) {
 }
 
 const DEFEAT_TYPES = [
-  { key: "you-died", title: "YOU DIED", sub: "ИГОРЬ РЖЁТ ГДЕ-ТО РЯДОМ" },
-  { key: "igor-laugh", title: "ИГОРЬ ЛИКУЕТ", sub: "ХА-ХА-ХА-ХА-ХА" },
+  { key: "you-died", title: "YOU DIED", sub: "ГЕЙЛ РЖЁТ ГДЕ-ТО РЯДОМ" },
+  { key: "igor-laugh", title: "ГЕЙЛ ЛИКУЕТ", sub: "ХА-ХА-ХА-ХА-ХА" },
   { key: "game-over", title: "GAME OVER", sub: "CONTINUE? 10..." },
   { key: "continue", title: "CONTINUE?", sub: "ВСТАВЬ МОНЕТУ" },
   { key: "forget", title: "ЗАБУДЬ", sub: "И НАЧНИ ЗАНОВО" }
@@ -759,7 +728,7 @@ function showDefeatOverlay(cb) {
   ov.append(bg);
   if (t.key === "igor-laugh") {
     const img = document.createElement("img");
-    img.className = "defeat-igor-img"; img.src = IGOR_PHOTO;
+    img.className = "defeat-igor-img"; img.src = GALE_PHOTO;
     ov.append(img);
   }
   const wrap = document.createElement("div");
@@ -788,7 +757,7 @@ function finishGame(win, score, detail, title = "ПОБЕДА") {
     Storage.setCompleted(currentLevel.id);
     Storage.addStar(currentLevel.id);
     $("#resultTitle").textContent = title;
-    $("#resultFlavor").textContent = detail + (record ? "\n\n★ Новый рекорд" : "") + "\n\nИгорь: «" + pick(P.playerWins) + "»";
+    $("#resultFlavor").textContent = detail + (record ? "\n\n★ Новый рекорд" : "") + "\n\nГейл: «" + pick(P.playerWins) + "»";
     Sfx.win();
     Router.showResult();
   } else {
@@ -807,7 +776,7 @@ const Pong = (() => {
   function start() {
     const s = makeScene("game", "Мышь/тач/←→/A D · 5 голов · 1.5 минуты", true);
     let px = 400, ix = 400, target = 400, aiTarget = 400, aiClock = 0;
-    let you = 0, igor = 0, remaining = ROUND_TIME, serve = .8;
+    let you = 0, gale = 0, remaining = ROUND_TIME, serve = .8;
     let ballSpeed = BALL_START;
     let nextSpeedUp = ROUND_TIME - BALL_STEP_EVERY;
     const pw = 132, ph = 16, r = 14;
@@ -851,9 +820,9 @@ const Pong = (() => {
     }
     function goal(player) {
       if (player) { you++; Sfx.scoreYou(); s.say(pick(P.youScored)); }
-      else { igor++; Sfx.scoreIgor(); s.say(pick(P.igorScored)); }
-      s.popup(player ? "ТВОЙ ГОЛ" : "ИГОРЬ ЗАБИЛ");
-      if (you >= 5 || igor >= 5) { finishGame(you > igor, you * 100, `Счёт ${you}:${igor}.`); return; }
+      else { gale++; Sfx.scoreGale(); s.say(pick(P.galeScored)); }
+      s.popup(player ? "ТВОЙ ГОЛ" : "ГЕЙЛ ЗАБИЛ");
+      if (you >= 5 || gale >= 5) { finishGame(you > gale, you * 100, `Счёт ${you}:${gale}.`); return; }
       reset(player ? 1 : -1);
     }
     function step(dt) {
@@ -881,13 +850,13 @@ const Pong = (() => {
       const g = s.g; backdrop(g, "#0a0a10");
       g.strokeStyle = "#1f1f28"; g.setLineDash([4, 8]); g.lineWidth = 1;
       g.beginPath(); g.moveTo(0, H / 2); g.lineTo(W, H / 2); g.stroke(); g.setLineDash([]);
-      txt(g, igor, W / 2, 160, 90, "#1c1c25");
+      txt(g, gale, W / 2, 160, 90, "#1c1c25");
       txt(g, you, W / 2, 360, 90, "#1c1c25");
       g.fillStyle = "#c99772"; g.fillRect(Math.floor(ix - pw / 2), 24, pw, ph);
       g.fillStyle = "#00e5a0"; g.fillRect(Math.floor(px - pw / 2), H - 40, pw, ph);
       circlePortrait(g, b.x, b.y, r);
       if (serve > 0) txt(g, "ПОДАЧА", 400, 215, 16, "#7c7a85");
-      s.stat.textContent = `${you} : ${igor} · ${timeText(remaining)}`;
+      s.stat.textContent = `${you} : ${gale} · ${timeText(remaining)}`;
     }
     return {
       update(dt) {
@@ -902,7 +871,7 @@ const Pong = (() => {
         }
         const n = Math.ceil(dt / (1 / 120));
         for (let i = 0; i < n && !finished; i++) step(dt / n);
-        if (remaining <= 0 && !finished) finishGame(you > igor, you * 100, `Счёт ${you}:${igor}.`);
+        if (remaining <= 0 && !finished) finishGame(you > gale, you * 100, `Счёт ${you}:${gale}.`);
       },
       draw, destroy: s.destroy
     };
@@ -910,7 +879,7 @@ const Pong = (() => {
   return { start };
 })();
 
-/* 2. ПЯТНАШКИ */
+/* 2. ПЯТНАШКИ (Собери Тару) */
 const Pyatnashki = (() => {
   function start() {
     const s = makeScene("pyatnashki", "Клик по плитке рядом с пустой");
@@ -945,7 +914,7 @@ const Pyatnashki = (() => {
         if (val === null) cell.classList.add("empty");
         else {
           const r = Math.floor(val / size), c = val % size;
-          cell.style.backgroundImage = `url("${CAT_PHOTO}")`;
+          cell.style.backgroundImage = `url("${TARA_PHOTO}")`;
           cell.style.backgroundSize = `${size * 100}% ${size * 100}%`;
           if (size > 1) cell.style.backgroundPosition = `${(c / (size - 1)) * 100}% ${(r / (size - 1)) * 100}%`;
         }
@@ -967,7 +936,7 @@ const Pyatnashki = (() => {
       Sfx.pop(); render();
       if (isSolved()) {
         Sfx.win();
-        setTimeout(() => finishGame(true, moves, `Маобэй собран за ${moves} ходов и ${timeText(time)}.`, "СОБРАН"), 400);
+        setTimeout(() => finishGame(true, moves, `Тара собрана за ${moves} ходов и ${timeText(time)}.`, "СОБРАНА"), 400);
       }
     }
     function isSolved() {
@@ -980,11 +949,11 @@ const Pyatnashki = (() => {
   return { start };
 })();
 
-/* 3. WORDLE */
+/* 3. WORDLE (Гейлдл) */
 const Wordle = (() => {
   const WORDS = {
     4: ["МАМА", "ПАПА", "КОТЫ", "СЛОН", "РОТА", "НОГА", "РУКА", "ГОРА", "ЛУНА", "ЗИМА", "ЛЕТО", "МОРЕ", "ПОЛЕ", "ЛИСА", "СОВА", "РЫБА"],
-    5: ["ИГОРЬ", "ШКОЛА", "КНИГА", "ДВЕРЬ", "ДИВАН", "ЛОЖКА", "ВИЛКА", "ЧАШКА", "БАНАН", "АРБУЗ", "ЗЕБРА", "ВЕТЕР", "ГОРОД", "САХАР", "ПОЕЗД", "КОШКА"],
+    5: ["ГЕЙЛ", "ШКОЛА", "КНИГА", "ДВЕРЬ", "ДИВАН", "ЛОЖКА", "ВИЛКА", "ЧАШКА", "БАНАН", "АРБУЗ", "ЗЕБРА", "ВЕТЕР", "ГОРОД", "САХАР", "ПОЕЗД", "КОШКА"],
     6: ["РАКЕТА", "СОБАКА", "КОРОВА", "ВОРОНА", "МАШИНА", "ДОРОГА", "ПОГОДА", "РАБОТА", "КОРОНА", "МОЛОКО", "ЯБЛОКО", "ОГУРЕЦ", "ПЛАТЬЕ", "ПИСЬМО", "МОНЕТА", "РАДУГА"]
   };
   function start() {
@@ -1187,7 +1156,7 @@ const Saper = (() => {
   return { start };
 })();
 
-/* 5. ХАНОЙ */
+/* 5. ХАНОЙ (Башни Гейла) */
 const Hanoi = (() => {
   function start() {
     const s = makeScene("hanoi", "Клик по стержню — взять/положить");
@@ -1250,26 +1219,26 @@ const Hanoi = (() => {
   return { start };
 })();
 
-/* 6. ДОГОНИ ИГОРЯ */
+/* 6. ДОГОНИ ГЕЙЛА */
 const Pinata = (() => {
   function start() {
-    const s = makeScene("pinata", "Тапай Игоря · заполни шкалу до 100%");
+    const s = makeScene("pinata", "Тапай Гейла · заполни шкалу до 100%");
     let score = 0, hits = 0, remaining = 60, time = 0, progress = 0;
-    let igorX = 0, igorY = 0, vx = 0, vy = 0, size = 88;
-    s.area.innerHTML = `<div class="pinata-field"><div class="pinata-score-hud">0</div><div class="pinata-time-hud">60</div><div class="pinata-igor" style="display:none"><img alt="Игорь"></div><div class="pinata-bar-wrap"><div class="pinata-bar-fill"></div><div class="pinata-bar-lbl">УНИЖЕНИЕ</div></div></div>`;
-    const field = $(".pinata-field", s.area), igor = $(".pinata-igor", field);
-    $("img", igor).src = IGOR_PHOTO;
+    let galeX = 0, galeY = 0, vx = 0, vy = 0, size = 88;
+    s.area.innerHTML = `<div class="pinata-field"><div class="pinata-score-hud">0</div><div class="pinata-time-hud">60</div><div class="pinata-igor" style="display:none"><img alt="Гейл"></div><div class="pinata-bar-wrap"><div class="pinata-bar-fill"></div><div class="pinata-bar-lbl">УНИЖЕНИЕ</div></div></div>`;
+    const field = $(".pinata-field", s.area), gale = $(".pinata-igor", field);
+    $("img", gale).src = GALE_PHOTO;
     const scoreHud = $(".pinata-score-hud", field), timeHud = $(".pinata-time-hud", field), barFill = $(".pinata-bar-fill", field);
     let fieldW = field.clientWidth || 600, fieldH = field.clientHeight || 400;
     function initPos() {
       fieldW = field.clientWidth; fieldH = field.clientHeight;
-      igorX = fieldW / 2 - size / 2; igorY = fieldH / 2 - size / 2;
+      galeX = fieldW / 2 - size / 2; galeY = fieldH / 2 - size / 2;
       const dir = Math.random() * Math.PI * 2;
       const sp = 110 * s.cfg.pinataSpeed;
       vx = Math.cos(dir) * sp; vy = Math.sin(dir) * sp;
-      igor.style.display = "block";
-      igor.style.left = igorX + "px";
-      igor.style.top = igorY + "px";
+      gale.style.display = "block";
+      gale.style.left = galeX + "px";
+      gale.style.top = galeY + "px";
     }
     setTimeout(initPos, 50);
     function spawnParticles(cx, cy) {
@@ -1284,28 +1253,28 @@ const Pinata = (() => {
         setTimeout(() => p.remove(), 700);
       }
     }
-    s.on(igor, "pointerdown", e => {
+    s.on(gale, "pointerdown", e => {
       if (paused || finished) return;
       e.preventDefault(); e.stopPropagation();
       score++; hits++;
       progress = Math.min(100, progress + 8);
       barFill.style.width = progress + "%";
       Sfx.hitHard();
-      igor.classList.add("hit");
-      setTimeout(() => igor.classList.remove("hit"), 250);
-      const rect = igor.getBoundingClientRect(), frect = field.getBoundingClientRect();
+      gale.classList.add("hit");
+      setTimeout(() => gale.classList.remove("hit"), 250);
+      const rect = gale.getBoundingClientRect(), frect = field.getBoundingClientRect();
       spawnParticles(rect.left - frect.left + rect.width / 2, rect.top - frect.top + rect.height / 2);
       let nx, ny, tries = 0;
       do { nx = Math.random() * (fieldW - size); ny = Math.random() * (fieldH - size); tries++; }
-      while (tries < 20 && Math.hypot(nx - igorX, ny - igorY) < Math.min(fieldW, fieldH) * 0.4);
-      igorX = nx; igorY = ny;
+      while (tries < 20 && Math.hypot(nx - galeX, ny - galeY) < Math.min(fieldW, fieldH) * 0.4);
+      galeX = nx; galeY = ny;
       const a = Math.random() * Math.PI * 2;
       const sp = (140 + score * 12) * s.cfg.pinataSpeed;
       vx = Math.cos(a) * sp; vy = Math.sin(a) * sp;
       if (hits % 3 === 0) s.say(pick(P.pinata));
       if (progress >= 100 && !finished) {
         Sfx.win();
-        setTimeout(() => finishGame(true, score, `Игорь доведён за ${timeText(time)}. Очков: ${score}.`, "ИСТЕРИКА"), 400);
+        setTimeout(() => finishGame(true, score, `Гейл доведён за ${timeText(time)}. Очков: ${score}.`, "ИСТЕРИКА"), 400);
       }
     });
     s.say("Попробуй попасть. Я быстрый.");
@@ -1316,19 +1285,19 @@ const Pinata = (() => {
         const drain = currentDifficulty === "loser" ? 1.5 : 2.5;
         progress = Math.max(0, progress - drain * dt);
         barFill.style.width = progress + "%";
-        if (!igor.style.display || igor.style.display === "none") return;
-        igorX += vx * dt; igorY += vy * dt;
-        if (igorX < 0) { igorX = 0; vx = Math.abs(vx); }
-        if (igorX + size > fieldW) { igorX = fieldW - size; vx = -Math.abs(vx); }
-        if (igorY < 0) { igorY = 0; vy = Math.abs(vy); }
-        if (igorY + size > fieldH) { igorY = fieldH - size; vy = -Math.abs(vy); }
+        if (!gale.style.display || gale.style.display === "none") return;
+        galeX += vx * dt; galeY += vy * dt;
+        if (galeX < 0) { galeX = 0; vx = Math.abs(vx); }
+        if (galeX + size > fieldW) { galeX = fieldW - size; vx = -Math.abs(vx); }
+        if (galeY < 0) { galeY = 0; vy = Math.abs(vy); }
+        if (galeY + size > fieldH) { galeY = fieldH - size; vy = -Math.abs(vy); }
         if (Math.random() < 0.7 * dt * s.cfg.pinataSpeed * 3) {
           const a = Math.random() * Math.PI * 2;
           const sp = (140 + score * 12) * s.cfg.pinataSpeed;
           vx = Math.cos(a) * sp; vy = Math.sin(a) * sp;
         }
-        igor.style.left = igorX + "px";
-        igor.style.top = igorY + "px";
+        gale.style.left = galeX + "px";
+        gale.style.top = galeY + "px";
         scoreHud.textContent = score;
         timeHud.textContent = Math.ceil(remaining);
         timeHud.classList.toggle("warning", remaining < 10);
@@ -1487,7 +1456,7 @@ const Tetris = (() => {
   }
   return { start };
 })();
-/* 8. OSU */
+  /* 8. OSU */
 const Osu = (() => {
   const PATTERNS = ["circle", "zigzag", "square", "star", "line", "burst"];
   function start() {
@@ -1760,128 +1729,14 @@ const Duck = (() => {
   return { start };
 })();
 
-/* 10. СУД */
-const Court = (() => {
-  const CASES = [
-    { truth: true, text: "Игорь на синке сказал, что нашёл ряд багов. В итоге завёл только тот, который Рита уже завела раньше." },
-    { truth: false, text: "Игорь на синке сказал, что нашёл багов больше всех. В итоге завёл три бага, но два из них отклонили как дубли." },
-    { truth: true, text: "Настя завела баг, который должен был найти Игорь — по его проверке. Игорь ничего не нашёл." },
-    { truth: false, text: "Игорь завёл баг, который потом Настя нашла повторно — Игорь неправильно описал шаги." },
-    { truth: true, text: "Игорь на созвоне сказал, что «вливался в рабочий процесс». При этом время не трекал." },
-    { truth: false, text: "Игорь на созвоне сказал, что «раскапывал сложный баг». Время трекал, но ни одной таски не закрыл." },
-    { truth: true, text: "Игорь не пришёл на синк команды. Оказалось — проспал. У него 5 вечера." },
-    { truth: false, text: "Игорь опоздал на синк на 40 минут. Сказал, что были проблемы с интернетом." },
-    { truth: true, text: "Игорь взял досматривать фичу Риты. Должен был закончить во вторник. Сказал — «часа 4 осталось». Не успел ни в срок, ни после." },
-    { truth: false, text: "Игорь взял фичу Риты. Должен был закончить в четверг. Сказал — «часа 2 осталось». Закончил в пятницу утром." },
-    { truth: true, text: "Игорь заводит баги на ошибки в конфигах, которые обычно не заводят." },
-    { truth: false, text: "Игорь заводит баги на опечатки в текстах, которые обычно не заводят." },
-    { truth: true, text: "Игорь отправил баг на мердж в основную ветку, при том что у бага была другая ветка." },
-    { truth: false, text: "Игорь отправил два бага в одну и ту же ветку. Один из них был закрыт месяц назад." },
-    { truth: true, text: "Игорь за неделю ни одного бага не завёл. В тест-ране 120 проверок не сделано. Статус — «в отпуске с понедельника»." },
-    { truth: false, text: "Игорь за неделю завёл 3 бага. В тест-ране 80 проверок не сделано. Статус — «в отпуске со среды»." },
-    { truth: true, text: "Игорь на созвоне сказал: «я смотрю желейную лотерею... ОЙ, планету»." },
-    { truth: false, text: "Игорь на созвоне сказал: «я смотрю лотерейный билет... ой, то есть планету»." },
-    { truth: true, text: "Игорь взял больничный на удаление прыща со лба — и скинул фотку в тестерский чат." },
-    { truth: false, text: "Игорь взял больничный на удаление зуба мудрости — и скинул фотку щеки в тестерский чат." },
-    { truth: true, text: "Игорь заразил тупостью другого тестера. Тот тоже не смог сделать презентацию." },
-    { truth: false, text: "Игорь заразил ленью другого тестера. Тот тоже не завёл ни одного бага за неделю." },
-    { truth: true, text: "Игорь хочет привести свою девушку в команду на позицию мидла." },
-    { truth: false, text: "Игорь хочет привести своего друга в команду на позицию джуна." },
-    { truth: true, text: "Игорь говорит, что все выхи нервничал лид и думал, как ему давать пиздюлей." },
-    { truth: false, text: "Игорь говорит, что все выхи Рита думала, как ему давать пиздюлей." },
-    { truth: true, text: "Игорь сказал, что «смотрит баг». Время не трекал. Ничего не сделал." },
-    { truth: false, text: "Игорь сказал, что «смотрит баг». Время трекал 4 часа. Завёл как «не воспроизводится»." },
-    { truth: true, text: "Игорь сказал, что заведёт ряд багов до конца дня. К концу дня — ни одного. Зато статус «в отпуске с понедельника»." },
-    { truth: false, text: "Игорь сказал, что заведёт баги. До конца дня завёл 1. Статус — «в отпуске со вторника»." }
-  ];
-  const TOTAL = 10;
-  function start() {
-    const s = makeScene("court", "Каждый раунд — 2 версии. Обе про косяк. Где правда?");
-    let round = 0, you = 0, igor = 0, locked = false;
-    const used = new Set();
-    const intro = document.createElement("div");
-    intro.className = "court-intro";
-    intro.innerHTML = `
-      <div class="stamp">ЗАСЕДАНИЕ · 2025</div>
-      <h2>СУД НАД<br>ИГОРЕМ</h2>
-      <p>Гражданин Игорь обвиняется в систематическом ебланстве на рабочем месте. Вы вызваны присяжным.</p>
-      <div class="rules">
-        <strong style="color:#e0d0a0">Ваша задача:</strong>
-        <ul style="margin:8px 0 0;padding-left:20px">
-          <li>10 раундов. В каждом — 2 версии событий.</li>
-          <li>Одна — реальный косяк Игоря, другая — выдумка.</li>
-          <li>Выбери правильную. За верный выбор +1 очко вам.</li>
-          <li>За ошибочный +1 очко Игорю.</li>
-          <li>В конце — чей счёт больше, тот и победил.</li>
-        </ul>
-      </div>
-      <button class="primary" id="courtStart">НАЧАТЬ ЗАСЕДАНИЕ</button>`;
-    s.area.append(intro);
-    function pairFor() {
-      const pairs = [];
-      for (let i = 0; i < CASES.length; i += 2) {
-        if (!used.has(i) && !used.has(i + 1) && CASES[i] && CASES[i + 1]) pairs.push(i);
-      }
-      if (!pairs.length) { for (const i of used) used.delete(i); return pairFor(); }
-      const startI = pairs[Math.floor(Math.random() * pairs.length)];
-      used.add(startI); used.add(startI + 1);
-      return [CASES[startI], CASES[startI + 1]];
-    }
-    function begin() {
-      intro.remove();
-      s.area.innerHTML = `<div class="court-layout"><div class="court-header"><h3>Заседание открыто</h3><div class="sub">Раунд 1 / ${TOTAL}</div></div><div class="court-cases"></div><div class="court-verdict"></div><div class="court-footer"><div><span class="lbl">Ты</span> <span id="courtYou">0</span></div><div><span class="lbl">Игорь</span> <span id="courtIgor">0</span></div></div></div>`;
-      initRound();
-    }
-    let casesEl, verdictEl, youEl, igorEl, headerSub;
-    function initRound() {
-      casesEl = $(".court-cases", s.area); verdictEl = $(".court-verdict", s.area);
-      youEl = $("#courtYou", s.area); igorEl = $("#courtIgor", s.area); headerSub = $(".court-header .sub", s.area);
-      renderRound();
-    }
-    function renderRound() {
-      locked = false;
-      headerSub.textContent = `Раунд ${round + 1} / ${TOTAL}`;
-      casesEl.replaceChildren();
-      const pair = shuffle(pairFor());
-      pair.forEach((c, i) => {
-        const card = document.createElement("button");
-        card.className = "case-card";
-        card.dataset.truth = c.truth ? "1" : "0";
-        card.innerHTML = `<div class="badge">Версия ${i + 1}</div><div class="text">${c.text}</div>`;
-        card.addEventListener("click", () => pickCase(card));
-        casesEl.append(card);
-      });
-      verdictEl.textContent = "";
-    }
-    function pickCase(card) {
-      if (paused || finished || locked) return;
-      locked = true;
-      const isTruth = card.dataset.truth === "1";
-      const allCards = $$(".case-card", casesEl);
-      allCards.forEach(c => c.classList.add("disabled"));
-      if (isTruth) { card.classList.add("picked", "correct"); you++; Sfx.correct(); verdictEl.textContent = "Верно. Именно так он и накосячил."; verdictEl.style.color = "var(--c-pong)"; }
-      else { card.classList.add("picked", "wrong"); igor++; Sfx.wrong(); const other = allCards.find(c => c !== card && c.dataset.truth === "1"); if (other) other.classList.add("picked", "correct"); verdictEl.textContent = "Мимо. Правда — другая версия."; verdictEl.style.color = "var(--c-pinata)"; }
-      youEl.textContent = you; igorEl.textContent = igor;
-      setTimeout(() => { if (finished) return; round++; if (round >= TOTAL) end(); else renderRound(); }, 1900);
-    }
-    function end() {
-      if (you > igor) finishGame(true, you * 100, `Счёт: ТЫ ${you} : ${igor} ИГОРЬ. Игорь признан виновным.`, "ПРИГОВОР");
-      else finishGame(false, you * 100, `Счёт: ТЫ ${you} : ${igor} ИГОРЬ. Игорь оправдан.`);
-    }
-    $("#courtStart", intro).addEventListener("click", begin);
-    return { update() {}, draw() {}, destroy: s.destroy };
-  }
-  return { start };
-})();
-
-/* 11. ФИНАЛЬНЫЙ КЛИКЕР — УВОЛЬ ИГОРЯ */
+/* 10. ФИНАЛЬНЫЙ КЛИКЕР — УВОЛЬ ГЕЙЛА */
 const Final = (() => {
   function start() {
     const screen = $("#final");
     screen.innerHTML = `
       <button class="final-exit" id="finalExit">← Меню</button>
       <div class="final-stage">
-        <div class="final-igor" id="finalIgor"><img alt="Игорь"></div>
+        <div class="final-igor" id="finalIgor"><img alt="Гейл"></div>
       </div>
       <div class="final-bar-vertical"><div class="final-bar-fill" id="finalBar"></div></div>
       <div class="final-bar-label">ХАПФУ</div>
@@ -1889,9 +1744,9 @@ const Final = (() => {
         <div class="final-counter" id="finalCount">0</div>
         <div class="final-timer" id="finalTime">30</div>
       </div>
-      <div class="final-btn-wrap"><button class="final-btn" id="finalBtn">УВОЛИТЬ ИГОРЯ</button></div>`;
-    const igor = $("#finalIgor", screen), btn = $("#finalBtn", screen), bar = $("#finalBar", screen), cnt = $("#finalCount", screen), tmr = $("#finalTime", screen);
-    $("img", igor).src = IGOR_PHOTO;
+      <div class="final-btn-wrap"><button class="final-btn" id="finalBtn">УВОЛИТЬ ГЕЙЛА</button></div>`;
+    const gale = $("#finalIgor", screen), btn = $("#finalBtn", screen), bar = $("#finalBar", screen), cnt = $("#finalCount", screen), tmr = $("#finalTime", screen);
+    $("img", gale).src = GALE_PHOTO;
     let hits = 0, progress = 0, remaining = 30, time = 0, ended = false;
     const area = screen;
 
@@ -1900,7 +1755,7 @@ const Final = (() => {
       el.className = "final-hapfu";
       el.textContent = "ХАПФУ";
       const dir = Math.floor(Math.random() * 4);
-      const rect = igor.getBoundingClientRect(), aRect = area.getBoundingClientRect();
+      const rect = gale.getBoundingClientRect(), aRect = area.getBoundingClientRect();
       const tX = rect.left - aRect.left + rect.width / 2;
       const tY = rect.top - aRect.top + rect.height / 2;
       let x, y, rot;
@@ -1937,24 +1792,24 @@ const Final = (() => {
       cnt.textContent = hits;
       bar.style.height = progress + "%";
       Sfx.hitHard();
-      igor.classList.add("hit");
-      setTimeout(() => igor.classList.remove("hit"), 100);
+      gale.classList.add("hit");
+      setTimeout(() => gale.classList.remove("hit"), 100);
       spawnHapfu();
       if (progress >= 100) {
         ended = true;
         Sfx.win();
-        Storage.setCompleted(11);
-        Storage.addStar(11);
+        Storage.setCompleted(10);
+        Storage.addStar(10);
         setTimeout(() => {
-          $("#resultTitle").textContent = "ИГОРЬ УВОЛЕН";
-          $("#resultFlavor").textContent = `Хапфу нанесено: ${hits}.\nИгорь обхапфукан и уволен из компании навсегда.\n\nРита довольна. Победа Риты.`;
+          $("#resultTitle").textContent = "ГЕЙЛ УВОЛЕН";
+          $("#resultFlavor").textContent = `Хапфу нанесено: ${hits}.\nГейл обхапфукан и уволен из компании навсегда.\n\nМинтара довольна. Победа Минтары.`;
           Router.showResult();
         }, 600);
       }
     }
 
     btn.addEventListener("pointerdown", e => { e.preventDefault(); hit(); });
-    igor.addEventListener("pointerdown", e => { e.preventDefault(); hit(); });
+    gale.addEventListener("pointerdown", e => { e.preventDefault(); hit(); });
     const kd = e => { if (e.code === "Space") { e.preventDefault(); hit(); } };
     document.addEventListener("keydown", kd);
     $("#finalExit", screen).addEventListener("click", () => { document.removeEventListener("keydown", kd); Router.go("menu"); });
@@ -1974,8 +1829,8 @@ const Final = (() => {
         Sfx.lose();
         document.removeEventListener("keydown", kd);
         setTimeout(() => {
-          $("#mockeryTitle").textContent = "ИГОРЬ ОСТАЛСЯ";
-          $("#mockerySub").textContent = `Хапфу: ${hits}. Шкала: ${Math.floor(progress)}%.\n\nИгорь остаётся работать в компании навсегда.`;
+          $("#mockeryTitle").textContent = "ГЕЙЛ ОСТАЛСЯ";
+          $("#mockerySub").textContent = `Хапфу: ${hits}. Шкала: ${Math.floor(progress)}%.\n\nГейл остаётся работать в компании навсегда.`;
           $("#mockery").classList.add("active");
           $("#pauseBtn").classList.add("hidden");
         }, 400);
@@ -1997,7 +1852,7 @@ const Final = (() => {
   }
   return { start };
 })();
-/* ЛЕТАЮЩИЕ НАДПИСИ */
+  /* ЛЕТАЮЩИЕ НАДПИСИ */
 const EblanFlies = (() => {
   const SECRET_COUNT = 4;
   let flyers = [], secrets = [], running = false;
@@ -2027,12 +1882,12 @@ const EblanFlies = (() => {
     flies.innerHTML = "";
     flyers = []; secrets = [];
     for (let i = 0; i < 12; i++) {
-      const el = make("ИГОРЬ ЕБЛАН", "");
+      const el = make("ГЕЙЛ ЕБЛАН", "");
       setup(el);
       flyers.push(el);
     }
     for (let idx = 0; idx < SECRET_COUNT; idx++) {
-      const el = make("ИГОРЬ ЕБЛАН", "secret");
+      const el = make("ГЕЙЛ ЕБЛАН", "secret");
       el.dataset.idx = idx;
       const found = Storage.foundSecret(idx);
       if (found) el.classList.add("activated");
@@ -2099,7 +1954,7 @@ const Router = {
     $("#pauseBtn").classList.toggle("hidden", id === "menu" || id === "result");
     if (id === "menu") {
       Menu.renderLevels();
-      const finalUnlocked = Storage.isCompleted(10) || Storage.isSecretUnlocked();
+      const finalUnlocked = Storage.isCompleted(9) || Storage.isSecretUnlocked();
       if (finalUnlocked && !Music._m3Played) Music.playPost();
       else Music.playMenu();
     } else if (id === "final") {
@@ -2212,7 +2067,7 @@ const Menu = {
     currentDifficulty = Storage.getDifficulty();
     const f = {
       game: Pong, wordle: Wordle, tetris: Tetris, pinata: Pinata,
-      osu: Osu, court: Court, duck: Duck, pyatnashki: Pyatnashki,
+      osu: Osu, duck: Duck, pyatnashki: Pyatnashki,
       saper: Saper, hanoi: Hanoi, final: Final
     }[screen];
     if (!f) { Juice.notice("Скоро"); return; }
